@@ -5,10 +5,38 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>TODO supply a title</title>
+        <title>Cadastro de Albums</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>
-        <div>TODO write content</div>
+        <div>
+            <h1>Registrar</h1>
+            <h:form>
+                <label for="marca">Nome do Album</label>
+                <br/>
+                <h:inputText id="marca" value="#{albumControle.album.nomeAlbum}"/>
+                <br/>
+                <label for="paisOr">Ano</label>
+                <br/>
+                <h:inputText id="paisOr" value="#{albumControle.album.ano}"/>                
+                <br/>
+                <h:commandButton action="#{albumControle.salvar}" value="Submit" onclick="update = @all"></h:commandButton>
+            </h:form>    
+            <h1>Alterar</h1>
+            <h:form>
+                <ui:repeat value="#{albumControle.albums}" var="q">
+                    <div>
+                        <table>
+                            <tr>
+                                <td>#{q.nomeAlbum}</td>
+                                <td>#{q.ano}</td>
+                                <td><h:commandButton action="#{albumControle.excluir}" value="Submit" onclick="update = @all"></h:commandButton></td>
+                            </tr>
+                        </table>                                        
+                    </div>
+                </ui:repeat>
+            </h:form>
+        </div>
     </h:body>
+
 </html>
