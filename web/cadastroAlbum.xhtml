@@ -3,40 +3,59 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Cadastro de Albums</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" type="text/css" href="css/modal.css"/>
+        <link rel="stylesheet" type="text/javascript" href="javascript/modal.js"/>
     </h:head>
     <h:body>
         <div>
             <h1>Registrar</h1>
-            <h:form>
-                <label for="marca">Nome do Album</label>
-                <br/>
-                <h:inputText id="marca" value="#{albumControle.album.nomeAlbum}"/>
-                <br/>
-                <label for="paisOr">Ano</label>
-                <br/>
-                <h:inputText id="paisOr" value="#{albumControle.album.ano}"/>                
-                <br/>
-                <h:commandButton action="#{albumControle.salvar}" value="Submit" onclick="update = @all"></h:commandButton>
+            <h:form id="formCadastro">
+                <h:panelGrid id="painel">
+                    <label for="nome">Nome do Album</label>
+                    <br/>
+                    <h:inputText id="nome" pt:type="text" value="#{albumControle.album.nomeAlbum}"/>
+                    <br/>
+                    <label for="ano">Ano</label>
+                    <br/>
+                    <h:inputText id="ano" pt:type="number" pt:min="1910" pt:max="9999" value="#{albumControle.album.ano}"/>             
+                    <br/>
+                    <h:commandButton action="#{albumControle.salvar()}" value="Submit" onclick="#{albumControle.preparaIncluir()}">
+                        <p:resetInput target=":formCadastro:painel" />
+                    </h:commandButton>
+                </h:panelGrid>
             </h:form>    
             <h1>Alterar</h1>
-            <h:form>
+            <h:form id="tabelaAlbuns">
                 <ui:repeat value="#{albumControle.albums}" var="q">
                     <div>
                         <table>
                             <tr>
                                 <td>#{q.nomeAlbum}</td>
                                 <td>#{q.ano}</td>
-                                <td><h:commandButton action="#{albumControle.excluir}" value="Submit" onclick="update = @all"></h:commandButton></td>
+                                <td><h:commandButton ></h:commandButton></td>
                             </tr>
                         </table>                                        
                     </div>
                 </ui:repeat>
             </h:form>
         </div>
+        <h:form id="cadastrar">
+            <button id="myBtn">Open Modal</button>
+            
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>Some text in the Modal..</p>
+                </div>
+
+            </div>
+        </h:form>
     </h:body>
 
 </html>
