@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cadastro de Albums</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <div>
+            <h1>Lista</h1>
+            <h:form id="tabelaAlbuns">
+                <ui:repeat value="#{musicaControle.musicas}" var="q">
+                    <div>
+                        <table>
+                            <tr>
+                                <td>#{q.nomeMusica}</td> 
+                            </tr>
+                        </table>
+                    </div>
+                </ui:repeat>
+            </h:form>
+        </div>
+    </h:body>
+
+</html>
