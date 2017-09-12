@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cadastro de Generos</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <div>
+            <h1>Registrar</h1>
+            <h:form id="formCadastro">
+                <h:panelGrid id="painel">
+                    <label for="nome">Nome do Genero</label>
+                    <br/>
+                    <h:inputText id="nome" pt:type="text" value="#{generoControle.genero.nome}"/>
+                    <br/>
+                    <h:commandButton action="#{generoControle.salvar()}" value="Submit" onclick="#{generoControle.preparaIncluir()}">
+                        <p:resetInput target=":formCadastro:painel" />
+                    </h:commandButton>
+                </h:panelGrid>
+            </h:form>    
+            <h1>Alterar</h1>
+            <h:form id="tabelaAlbuns">
+                <ui:repeat value="#{generoControle.generos}" var="q">
+                    <div>
+                        <table>
+                            <tr>
+                                <td>#{q.nome}</td>
+                                <td><h:commandButton value="Excluir" onclick="#{generoControle.excluir()}"></h:commandButton></td>
+                            </tr>
+                        </table>                                        
+                    </div>
+                </ui:repeat>
+            </h:form>
+        </div>
+    </h:body>
+
+</html>

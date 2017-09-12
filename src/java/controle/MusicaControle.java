@@ -88,4 +88,28 @@ public class MusicaControle {
         this.musica = musica;
     }
 
+    public Genero getGenero() {
+        return genero;
+    }
+
+    public void setGenero(Genero genero) {
+        this.genero = genero;
+    }
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
+
+    public boolean isSalvar() {
+        return salvar;
+    }
+
+    public void setSalvar(boolean salvar) {
+        this.salvar = salvar;
+    }
+
 }
