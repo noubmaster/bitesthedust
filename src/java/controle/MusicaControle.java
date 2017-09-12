@@ -24,7 +24,7 @@ public class MusicaControle {
     private Musica musica = new Musica();
     private Genero genero = new Genero();
     private Album album = new Album();
-    private boolean salvar = false;
+    private boolean salvart = false;
     
     @PostConstruct
     public void atualizarMusicas() {
@@ -36,25 +36,28 @@ public class MusicaControle {
     }
     
     public void preparaIncluir() {
-        salvar = true;
+        salvart = true;
         musica = new Musica();
+        album = new Album();
+        genero = new Genero();
     }
     
     public void preparaAlterar() {
-        salvar = false;
+        salvart = false;
     }
     
-    public void salvar() {
-        if (salvar) {
+    
+    public void salvarMusica() {
+        if (salvart) {
            try{
-               MusicaDAO.inserir(musica, album, genero);
+               MusicaDAO.inserir(musica);
                System.out.println("musica incluido");
            } catch (SQLException e) {
                e.printStackTrace();
            }
         }else{
             try{
-                MusicaDAO.alterar(musica, album, genero);
+                MusicaDAO.alterar(musica);
                 System.out.println("musica alterado");
             } catch (SQLException e) {
                e.printStackTrace();
@@ -63,6 +66,25 @@ public class MusicaControle {
         
         atualizarMusicas();
     }
+//    public void salvar() {
+//        if (salvart) {
+//           try{
+//               MusicaDAO.inserir(musica, album, genero);
+//               System.out.println("musica incluido");
+//           } catch (SQLException e) {
+//               e.printStackTrace();
+//           }
+//        }else{
+//            try{
+//                MusicaDAO.alterar(musica, album, genero);
+//                System.out.println("musica alterado");
+//            } catch (SQLException e) {
+//               e.printStackTrace();
+//           }
+//        }
+//        
+//        atualizarMusicas();
+//    }
     
     public void excluir() {
         try {
@@ -106,12 +128,12 @@ public class MusicaControle {
         this.album = album;
     }
 
-    public boolean isSalvar() {
-        return salvar;
+    public boolean isSalvart() {
+        return salvart;
     }
 
-    public void setSalvar(boolean salvar) {
-        this.salvar = salvar;
+    public void setSalvart(boolean salvart) {
+        this.salvart = salvart;
     }
 
     public List<Genero> getGeneros() {

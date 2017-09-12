@@ -26,13 +26,12 @@
                         <f:selectItems value="#{albumControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
                     </h:selectOneMenu>
                     <br/>
-                    <h:selectOneMenu id="idgenero" pt:type="number" value="#{musicaControle.genero}">
+                    <h:selectOneMenu id="idgenero" pt:type="number" value="#{musicaControle .genero}">
                         <f:selectItem itemValue="Selecione"/>
                         <f:selectItems value="#{generoControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
                     </h:selectOneMenu>
                     <br/>
-                    <h:commandButton action="#{musicaControle.salvar()}" value="Submit" onclick="#{musicaControle.preparaIncluir()}">
-                    </h:commandButton>
+                    <h:commandButton actionListener="#{musicaControle.salvarMusica()}" value="Submit"  onclick="#{musicaControle.preparaIncluir()}"/>
                 </h:panelGrid>
             </h:form>    
             <h1>Lista</h1>

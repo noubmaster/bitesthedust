@@ -17,7 +17,7 @@ import util.Conexao;
  * @author Galen Marek
  */
 public class MusicaDAO {
-    public static void inserir(Musica musica, Album album, Genero genero) throws SQLException{
+    public static void inserir(Musica musica) throws SQLException{
         Connection con = Conexao.getConnection();
         String sql
                 = "INSERT INTO `memes`.`musica` (`nomeMusica`, `score`, `letra`, `idAlbumMusica`, `idGeneroMusica`) VALUES (?, ?, ?, ?, ?);";
@@ -25,15 +25,15 @@ public class MusicaDAO {
         stmt.setString(1, musica.getNomeMusica());
         stmt.setFloat(2, musica.getScore());
         stmt.setString(3, musica.getLetra());
-        stmt.setInt(4, album.getIdAlbum());  
-        stmt.setInt(5, genero.getIdGenero());
+        stmt.setInt(4, musica.getAlbum().getIdAlbum());  
+        stmt.setInt(5, musica.getGenero().getIdGenero());
 
         stmt.execute();
         stmt.close();
         con.close();
     }
     
-    public static void alterar(Musica musica, Album album, Genero genero) throws SQLException{
+    public static void alterar(Musica musica) throws SQLException{
         Connection con = Conexao.getConnection();
         String sql
                 = "UPDATE `memes`.`musica` SET `nomeMusica`=?, `score`=?, `letra`=?, `idAlbumMusica`=?, `idGeneroMusica`=? WHERE  `idMusica`=?;";
@@ -41,8 +41,8 @@ public class MusicaDAO {
         stmt.setString(1, musica.getNomeMusica());
         stmt.setFloat(2, musica.getScore());
         stmt.setString(3, musica.getLetra());
-        stmt.setInt(4, album.getIdAlbum());  
-        stmt.setInt(5, genero.getIdGenero());
+        stmt.setInt(4, musica.getAlbum().getIdAlbum());  
+        stmt.setInt(5, musica.getGenero().getIdGenero());
         stmt.setInt(6, musica.getIdMusica());
         
         stmt.execute();
