@@ -19,6 +19,8 @@ import modelo.Album;
 @SessionScoped
 public class MusicaControle {
     private List<Musica> musicas = new ArrayList<Musica>();
+    private List<Genero> generos = new ArrayList<Genero>();
+    private List<Album> albums = new ArrayList<Album>();
     private Musica musica = new Musica();
     private Genero genero = new Genero();
     private Album album = new Album();
@@ -110,6 +112,22 @@ public class MusicaControle {
 
     public void setSalvar(boolean salvar) {
         this.salvar = salvar;
+    }
+
+    public List<Genero> getGeneros() {
+        return generos;
+    }
+
+    public void setGeneros(List<Genero> generos) {
+        this.generos = generos;
+    }
+
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
     }
 
 }

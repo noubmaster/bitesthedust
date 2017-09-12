@@ -12,6 +12,29 @@
     </h:head>
     <h:body>
         <div>
+            <h1>Registrar</h1>
+            <h:form id="formCadastro">
+                <h:panelGrid id="painel">
+                    <label for="nome">Nome da Música</label>
+                    <br/>
+                    <h:inputText id="nome" pt:type="text" value="#{musicaControle.musica.nomeMusica}"/>
+                    <br/>
+                    <h:inputText id="letra" pt:type="text" value="#{musicaControle.musica.letra}"/>
+                    <br/>
+                    <h:selectOneMenu id="idalbum" pt:type="number" value="#{musicaControle.album}">
+                        <f:selectItem itemValue="Selecione"/>
+                        <f:selectItems value="#{albumControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
+                    </h:selectOneMenu>
+                    <br/>
+                    <h:selectOneMenu id="idgenero" pt:type="number" value="#{musicaControle.genero}">
+                        <f:selectItem itemValue="Selecione"/>
+                        <f:selectItems value="#{generoControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
+                    </h:selectOneMenu>
+                    <br/>
+                    <h:commandButton action="#{musicaControle.salvar()}" value="Submit" onclick="#{musicaControle.preparaIncluir()}">
+                    </h:commandButton>
+                </h:panelGrid>
+            </h:form>    
             <h1>Lista</h1>
             <h:form id="tabelaMusicas">
                 <ui:repeat value="#{musicaControle.musicas}" var="q">
@@ -19,6 +42,8 @@
                         <table>
                             <tr>
                                 <td>#{q.nomeMusica}</td> 
+                                <td>#{q.album.nomeAlbum}</td> 
+                                <td>#{q.genero.nome}</td> 
                             </tr>
                         </table>
                     </div>
