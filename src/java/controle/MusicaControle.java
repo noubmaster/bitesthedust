@@ -24,7 +24,7 @@ public class MusicaControle {
     private Musica musica = new Musica();
     private Genero genero = new Genero();
     private Album album = new Album();
-    private boolean salvart = false;
+    private boolean salvar = false;
     
     @PostConstruct
     public void atualizarMusicas() {
@@ -36,19 +36,17 @@ public class MusicaControle {
     }
     
     public void preparaIncluir() {
-        salvart = true;
+        salvar = true;
         musica = new Musica();
-        album = new Album();
-        genero = new Genero();
     }
     
     public void preparaAlterar() {
-        salvart = false;
+        salvar = false;
     }
     
     
     public void salvarMusica() {
-        if (salvart) {
+        if (salvar) {
            try{
                MusicaDAO.inserir(musica);
                System.out.println("musica incluido");
@@ -67,7 +65,7 @@ public class MusicaControle {
         atualizarMusicas();
     }
 //    public void salvar() {
-//        if (salvart) {
+//        if (salvar) {
 //           try{
 //               MusicaDAO.inserir(musica, album, genero);
 //               System.out.println("musica incluido");
@@ -129,11 +127,11 @@ public class MusicaControle {
     }
 
     public boolean isSalvart() {
-        return salvart;
+        return salvar;
     }
 
-    public void setSalvart(boolean salvart) {
-        this.salvart = salvart;
+    public void setSalvart(boolean salvar) {
+        this.salvar = salvar;
     }
 
     public List<Genero> getGeneros() {
