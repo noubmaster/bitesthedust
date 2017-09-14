@@ -24,6 +24,17 @@
                         <table>
                             <tr>
                                 <td>#{q.nome}</td>
+                                <!-- Botao do Modal de excluir -->
+                                <td><h:form id="botaoExcluir">
+                                        <p:remoteCommand name="callExcluir"
+                                                         update=":tabelaAlbuns: botaoExcluir"/>
+                                        <h:commandButton pt:type="button" class="btn btn-info btn-sm" 
+                                                         value="Excluir" pt:data-toggle="modal" 
+                                                         pt:data-target="#modalExcluir"
+                                                         onclick="callExcluir();"> 
+                                            <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
+                                        </h:commandButton>
+                                    </h:form></td>
                             </tr>
                         </table>                                        
                     </div>
@@ -31,32 +42,58 @@
             </h:form>
         </div>
         <div class="container">
-            <!-- Trigger the modal with a button -->
-            <h:commandButton pt:type="button" class="btn btn-info btn-lg" value="memes" pt:data-toggle="modal" pt:data-target="#myModal">
-                <f:param name="#{generoControle.preparaIncluir()}" value="param.action"/>
-            </h:commandButton>
-
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&#215;</button>
-                            <h4 class="modal-title">Registrar</h4>
-                        </div>
-                        <div class="modal-body">
-                            <label for="nome">Nome do Genero</label>
-                            <br/>
-                            <h:inputText id="nome" pt:type="text" value="#{generoControle.genero.nome}"/>
-                            <br/>
-                        </div>
-                        <div class="modal-footer">
-                            <h:commandButton class="btn btn-default" action="#{generoControle.salvar()}" value="Submit"></h:commandButton>
-                            <h:commandButton type="button" class="btn btn-default" value="Close" pt:data-dismiss="modal"></h:commandButton>
+            <!-- Botao do Modal de cadastro -->
+            <h:form id="botaoCadastro">
+                <p:remoteCommand name="callActionCadastrar" action="#{generoControle.preparaIncluir()}"
+                                 update=":botaoCadastro"/>
+                <h:commandButton pt:type="button" class="btn btn-info btn-lg" 
+                                 value="Cadastrar" pt:data-toggle="modal" 
+                                 pt:data-target="#modalCdastro"
+                                 onclick="callActionCadastrar();"> 
+                    <p:resetInput target=":modalCadastro"/>
+                </h:commandButton>
+            </h:form>
+            <!-- Modal Cadastro -->
+            <h:form id="modalDeCadastro">
+                <div class="modal fade" id="modalCdastro" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Registrar</h4>
+                            </div>
+                            <div class="modal-body">
+                                <label for="nome">Nome do Genero</label>
+                                <br/>
+                                <h:inputText id="nome" pt:type="text" value="#{generoControle.genero.nome}"/>
+                                <br/>
+                            </div>
+                            <div class="modal-footer">
+                                <h:commandButton class="btn btn-default" action="#{generoControle.salvar}" value="Submit"></h:commandButton>
+                                <h:commandButton type="button" class="btn btn-default" value="Close" pt:data-dismiss="modal"></h:commandButton>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </h:form>
+
+            <!-- Modal Excluir -->
+            <h:form id="modalDeExcluir">
+                <div class="modal fade" id="modalExcluir" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Tens certeza da exclusão?</h4>
+                            </div>
+                            <div class="modal-footer">
+                                <h:commandButton class="btn btn-default" action="#{generoControle.excluir()}" value="Sim"></h:commandButton>
+                                <h:commandButton type="button" class="btn btn-default" value="Não" pt:data-dismiss="modal"></h:commandButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
         </div>
     </h:body>
 </html>
