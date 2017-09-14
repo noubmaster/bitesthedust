@@ -17,32 +17,46 @@
     </h:head>
     <h:body>
         <div>
-            <h1>Registrar</h1>
-            <h:form id="formCadastro">
-                <h:panelGrid id="painel">
-                    <label for="nome">Nome do Genero</label>
-                    <br/>
-                    <h:inputText id="nome" pt:type="text" value="#{generoControle.genero.nome}"/>
-                    <br/>
-                    <h:commandButton action="#{generoControle.salvar()}" class="btn btn-info btn-lg" value="Submit" onclick="#{generoControle.preparaIncluir()}">
-                        <p:resetInput target=":formCadastro:painel" />
-                    </h:commandButton>
-                </h:panelGrid>
-            </h:form>    
-            <h1>Alterar</h1>
+            <h1>Lista</h1>
             <h:form id="tabelaAlbuns">
                 <ui:repeat value="#{generoControle.generos}" var="q">
                     <div>
                         <table>
                             <tr>
                                 <td>#{q.nome}</td>
-                                <td><h:commandButton value="Excluir" onclick="#{generoControle.excluir()}"></h:commandButton></td>
                             </tr>
                         </table>                                        
                     </div>
                 </ui:repeat>
             </h:form>
         </div>
-    </h:body>
+        <div class="container">
+            <!-- Trigger the modal with a button -->
+            <h:commandButton pt:type="button" class="btn btn-info btn-lg" value="memes" pt:data-toggle="modal" pt:data-target="#myModal">
+                <f:param name="#{generoControle.preparaIncluir()}" value="param.action"/>
+            </h:commandButton>
 
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                            <h4 class="modal-title">Registrar</h4>
+                        </div>
+                        <div class="modal-body">
+                            <label for="nome">Nome do Genero</label>
+                            <br/>
+                            <h:inputText id="nome" pt:type="text" value="#{generoControle.genero.nome}"/>
+                            <br/>
+                        </div>
+                        <div class="modal-footer">
+                            <h:commandButton class="btn btn-default" action="#{generoControle.salvar()}" value="Submit"></h:commandButton>
+                            <h:commandButton type="button" class="btn btn-default" value="Close" pt:data-dismiss="modal"></h:commandButton>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
 </html>
