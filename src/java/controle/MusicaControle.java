@@ -36,6 +36,7 @@ public class MusicaControle {
     }
     
     public void preparaIncluir() {
+        System.out.println("ta passando pelo incluir");
         salvar = true;
         musica = new Musica();
     }

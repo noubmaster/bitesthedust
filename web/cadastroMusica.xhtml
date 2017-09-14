@@ -21,17 +21,17 @@
                     <br/>
                     <h:inputText id="letra" pt:type="text" value="#{musicaControle.musica.letra}"/>
                     <br/>
-                    <h:selectOneMenu id="idAlbum" pt:type="number" >
+                    <h:selectOneMenu id="idAlbum" pt:type="number" value="#{musicaControle.album}">
                         <f:selectItem itemValue="Selecione"/>
-                        <f:selectItems value="#{musicaControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
+                        <f:selectItems value="#{albumControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
                     </h:selectOneMenu>
                     <br/>
-                    <h:selectOneMenu id="idGenero" pt:type="number" >
+                    <h:selectOneMenu id="idGenero" pt:type="number" value="#{musicaControle.genero}">
                         <f:selectItem itemValue="Selecione"/>
-                        <f:selectItems value="#{musicaControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
+                        <f:selectItems value="#{generoControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
                     </h:selectOneMenu>
                     <br/>
-                    <h:commandButton actionListener="#{musicaControle.salvarMusica()}" value="Submit"  onclick="#{musicaControle.preparaIncluir()}"/>
+                    <h:commandButton actionListener="#{musicaControle.salvarMusica()}" value="Submit"/>
                 </h:panelGrid>
             </h:form>    
             <h1>Lista</h1>
