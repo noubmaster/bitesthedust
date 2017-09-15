@@ -87,7 +87,9 @@
                                 <h4 class="modal-title">Tens certeza da exclusão?</h4>
                             </div>
                             <div class="modal-footer">
-                                <h:commandButton class="btn btn-default" action="#{generoControle.excluir()}" value="Sim"></h:commandButton>
+                                <p:remoteCommand name="actionAExcluir" update=":modalDeCadastro" actionListener="#{generoControle.excluir()}" />
+                                <h:commandButton class="btn btn-default" onclick="actionAExcluir();" value="Sim">
+                                </h:commandButton>
                                 <h:commandButton type="button" class="btn btn-default" value="Não" pt:data-dismiss="modal"></h:commandButton>
                             </div>
                         </div>
