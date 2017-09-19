@@ -64,7 +64,7 @@ public class MusicaDAO {
     public static List<Musica> getLista() throws SQLException {
         List<Musica> lista = new ArrayList<Musica>();
         Connection con = Conexao.getConnection();
-        String sql = "SELECT * FROM musica mu, album al, genero ge WHERE mu.idMusica = al.idAlbum AND mu.idMusica = idGenero";
+        String sql = "SELECT * FROM musica mu, album al, genero ge WHERE mu.idAlbumMusica = al.idAlbum AND mu.idGeneroMusica = idGenero";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
@@ -102,6 +102,8 @@ public class MusicaDAO {
             for (Musica m : lista) {
                 System.out.println("ID....: "+m.getIdMusica());
                 System.out.println("NOME......: "+m.getNomeMusica());
+                System.out.println("NOME ALBUM......: "+m.getAlbum().getNomeAlbum());
+                System.out.println("NOME GENERO......: "+m.getGenero().getNome());
                 System.out.println("-----------------------------------");
             }
         } catch (SQLException e) {

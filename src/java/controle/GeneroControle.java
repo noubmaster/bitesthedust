@@ -30,6 +30,7 @@ public class GeneroControle {
     }
     
     public void preparaIncluir() {
+        System.out.println("ta passando pelo incluir");
         salvar = true;
         genero = new Genero();
     }
