@@ -37,32 +37,17 @@
                                             <td>#{q.nome}</td>
                                             <td>
                                                 <!-- Botao do Modal de excluir -->
-                                                <h:form id="botaoExcluir">
-                                                    <p:remoteCommand name="callExcluir"
-                                                                     update=":tabelaGenero: botaoExcluir"/>
-                                                    <h:commandLink pt:type="button" class="btn btn-info btn-sm" 
+                                                
+                                                <p:commandLink pt:type="button" class="btn btn-info btn-sm" 
                                                                    pt:data-toggle="modal" 
                                                                    pt:data-target="#modalExcluir"
                                                                    onclick="callExcluir();"> 
-                                                        <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
-                                                        <i class="glyphicon glyphicon-trash"/>
-                                                    </h:commandLink>
-                                                </h:form>
+                                                        <f:setPropertyActionListener value="#{q.idGenero}" target="#{generoControle.genero.idGenero}" />
+                                                        
+                                                    </p:commandLink>
+                                                
                                                 <!-- Botao do Modal de Alterar -->
-                                                <h:form id="botaoAlterar">
-                                                    <p:remoteCommand name="callActionCadastrar" action="#{generoControle.preparaAlterar()}"
-                                                                     update=":botaoCadastro">
-                                                        <p:resetInput target=":modalDeCadastro:painel"/>
-                                                    </p:remoteCommand>
-                                                    <h:commandLink pt:type="button" class="btn btn-info btn-sm"
-                                                                   pt:data-toggle="modal" 
-                                                                   pt:data-target="#modalCdastro"
-                                                                   onclick="callActionCadastrar();">
-                                                        <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
-                                                        <p:resetInput target=":modalDeCadastro:painel"/>
-                                                        <i class="glyphicon glyphicon-cog"/>
-                                                    </h:commandLink>
-                                                </h:form>
+                                                
                                             </td>
                                         </tr>
                                     </ui:repeat>
@@ -98,10 +83,9 @@
                                 <h4 class="modal-title">Registrar</h4>
                             </div>
                             <div class="modal-body">                               
-                                <h:panelGrid columns="2" id="painel">
                                     <label for="nome">Nome do Genero</label>
-                                    <h:inputText id="nome" pt:type="text" value="#{generoControle.genero.nome}"/>
-                                </h:panelGrid>
+                                    <br/>
+                                    <h:inputText styleClass="form-control" id="nome" pt:type="text" value="#{generoControle.genero.nome}"/>                               
                             </div>
                             <div class="modal-footer">
                                 <p:remoteCommand name="resetCadstro1"
