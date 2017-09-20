@@ -20,7 +20,6 @@
         <div>
             <h1>Lista Generos Musicais</h1>
             <h:form id="tabelaGenero">
-
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4">
@@ -40,7 +39,9 @@
                                                 <h:form id="botaoExcluir">
                                                     <p:commandLink
                                                         styleClass="btn btn-info btn-sm"
-                                                        oncomplete="PF('excluir').show()">
+                                                        onclick="$('#modalExcluir').modal('show');"
+                                                        update=":modalDeExcluir:exclusao" 
+                                                        immediate="true" >
                                                         <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
                                                         <i class="glyphicon glyphicon-trash"/>
                                                     </p:commandLink>
@@ -115,25 +116,28 @@
 
             <!-- Modal Excluir -->
             <h:form id="modalDeExcluir">
-                <div class="modal fade" id="modalExcluir" role="dialog">
+                <div class="modal fade" 
+                     id="modalExcluir" 
+                     tabindex="-1" role="dialog" 
+                     aria-labelledby="modalExcluir" 
+                     aria-hidden="true" 
+                     data-keyboard="false" 
+                     data-backdrop="static">
                     <div class="modal-dialog modal-sm">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
-                                <h4 class="modal-title">Tens certeza da exclusão?</h4>
-                            </div>
-                            <div class="modal-footer">
-                                <p:remoteCommand name="actionAExcluir" update=":modalDeCadastro" actionListener="#{generoControle.excluir()}" />
-                                <h:commandButton class="btn btn-default" onclick="actionAExcluir();" value="Sim">
-                                </h:commandButton>
-                                <h:commandButton type="button" class="btn btn-default" value="Não" pt:data-dismiss="modal"></h:commandButton>
-                            </div>
+                            <h:form id="exclusao">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                    <h4 class="modal-title">Tens certeza da exclusão?</h4>
+                                </div>
+                                <h:panelGroup layout="block" styleClass="modal-footer">
+                                    <p:commandLink value="Close" immediate="true" styleClass="btn btn-default" oncomplete="$('#modalExcluir').modal('hide');" />
+                                </h:panelGroup>
+                            </h:form>
                         </div>
                     </div>
                 </div>
-            </h:form> 
-
-
+            </h:form>
         </div>
     </h:body>
 </html>

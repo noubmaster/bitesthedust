@@ -46,7 +46,7 @@ public class GeneroDAO {
                 = "DELETE FROM `memes`.`genero` WHERE  `idGenero`=?;";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, genero.getIdGenero());
-        
+        System.out.println("id:" + genero.getIdGenero());
         stmt.execute();
         stmt.close();
         con.close();
