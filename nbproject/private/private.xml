@@ -5,11 +5,13 @@
         <group>
             <file>file:/C:/Users/Dendi/Desktop/bitesthedust/src/java/controle/MusicaControle.java</file>
             <file>file:/C:/Users/Dendi/Desktop/bitesthedust/src/java/dao/MusicaDAO.java</file>
+            <file>file:/C:/Users/Dendi/Desktop/bitesthedust/src/java/dao/GeneroDAO.java</file>
             <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/cadastroGenero.xhtml</file>
             <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/testes%20primefaces/manutencaoGenero.xhtml</file>
+            <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/cadastroGeneroTeste.xhtml</file>
             <file>file:/C:/Users/Dendi/Desktop/bitesthedust/src/java/controle/GeneroControle.java</file>
             <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/index.xhtml</file>
-            <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/testes%20primefaces/manutencaoAlbum.xhtml</file>
+            <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/exemplos%20bootstrap%20+%20primefaces/primefaces%20bootstrap%20modal.xhtml</file>
         </group>
     </open-files>
 </project-private>
