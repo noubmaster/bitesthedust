@@ -1,4 +1,4 @@
-thead, tr {
+.cGThead{
     width: 100%;
     display: inline-table;
     height:60px;
@@ -6,12 +6,12 @@ thead, tr {
 
 }
 
-table{
+.cGTable{
     height:300px; 
     display: -moz-groupbox;
 }
 
-tbody{
+.cGTbody{
     overflow-y: scroll;
     height: 200px;
     width: 100%;

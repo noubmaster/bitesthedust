@@ -24,16 +24,16 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
+                            <table class="table table-hover cGTable">
+                                <thead class="cGThead">
+                                    <tr class="cGThead">
                                         <th>Tipos</th>
                                         <th>Opções</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="cGTbody">
                                     <ui:repeat value="#{generoControle.generos}" var="q">
-                                        <tr>
+                                        <tr class="cGThead">
                                             <td>#{q.nome}</td>
                                             <td>
                                                 <!-- Botao do Modal de excluir -->
