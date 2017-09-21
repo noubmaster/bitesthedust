@@ -42,7 +42,7 @@
                                                         onclick="$('#modalExcluir').modal('show');"
                                                         update=":modalDeExcluir:exclusao" 
                                                         immediate="true" >
-                                                        <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
+                                                        
                                                         <i class="glyphicon glyphicon-trash"/>
                                                     </p:commandLink>
                                                 </h:form>
@@ -106,7 +106,8 @@
                                                  update=":tabelaGenero :modalDeCadastro">
                                     <p:resetInput target=":modalDeCadastro:painel"/>
                                 </p:remoteCommand>
-                                <h:commandLink  class="btn btn-default" action="#{generoControle.salvar}" onclick="resetCadstro1();" value="Submit"></h:commandLink>
+                                <h:commandLink  class="btn btn-default" action="#{generoControle.salvar}" 
+                                                onclick="resetCadstro1();" value="Submit"></h:commandLink>
                                 <button type="button" class="btn btn-default" value="Fechar" data-dismiss="modal">Fechar</button>
                             </div>
                         </div>
@@ -131,7 +132,15 @@
                                     <h4 class="modal-title">Tens certeza da exclusão?</h4>
                                 </div>
                                 <h:panelGroup layout="block" styleClass="modal-footer">
-                                    <p:commandLink value="Close" immediate="true" styleClass="btn btn-default" oncomplete="$('#modalExcluir').modal('hide');" />
+                                    <p:commandLink value="Sim" 
+                                                   styleClass="btn btn-danger"
+                                                   oncomplete="$('#modalExcluir').modal('hide');" 
+                                                   update=":tabelaGenero :modalDeCadastro"  
+                                                   actionListener="#{generoControle.excluir(generoControle.genero.idGenero)}"/>
+                                    <p:commandLink value="Não" 
+                                                   immediate="true" 
+                                                   styleClass="btn btn-default" 
+                                                   oncomplete="$('#modalExcluir').modal('hide');"/> 
                                 </h:panelGroup>
                             </h:form>
                         </div>
