@@ -36,31 +36,22 @@
                                             <td>#{q.nome}</td>
                                             <td>
                                                 <!-- Botao do Modal de excluir -->
-                                                <h:form id="botaoExcluir">
-                                                    <p:commandLink
-                                                        styleClass="btn btn-info btn-sm"
-                                                        onclick="$('#modalExcluir').modal('show');"
-                                                        update=":modalDeExcluir:exclusao" 
-                                                        immediate="true" >
-                                                        <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
-                                                        <i class="glyphicon glyphicon-trash"/>
-                                                    </p:commandLink>
-                                                </h:form>
+                                                <p:commandLink
+                                                    styleClass="btn btn-info btn-sm"
+                                                    onclick="$('#modalExcluir').modal('show');"
+                                                    immediate="true" >
+                                                    <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
+                                                    <i class="glyphicon glyphicon-trash"/>
+                                                </p:commandLink>
                                                 <!-- Botao do Modal de Alterar -->
-                                                <h:form id="botaoAlterar">
-                                                    <p:remoteCommand name="callActionCadastrar" action="#{generoControle.preparaAlterar()}"
-                                                                     update=":botaoCadastro">
-                                                        <p:resetInput target=":modalDeCadastro:painel"/>
-                                                    </p:remoteCommand>
-                                                    <h:commandLink pt:type="button" class="btn btn-info btn-sm"
-                                                                   pt:data-toggle="modal" 
-                                                                   pt:data-target="#modalCdastro"
-                                                                   onclick="callActionCadastrar();">
-                                                        <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
-                                                        <p:resetInput target=":modalDeCadastro:painel"/>
-                                                        <i class="glyphicon glyphicon-cog"/>
-                                                    </h:commandLink>
-                                                </h:form>
+                                                <p:commandLink class="btn btn-info btn-sm" 
+                                                               action="#{generoControle.preparaAlterar()}" 
+                                                               onclick="$('#modalCadastro').modal('show');" 
+                                                               update=":modalDeCadastro:cadastramento">
+                                                    <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
+                                                    <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
+                                                    <i class="glyphicon glyphicon-cog"/>
+                                                </p:commandLink>
                                             </td>
                                         </tr>
                                     </ui:repeat>
@@ -69,46 +60,55 @@
                         </div>                       
                     </div>
                 </div>
-
+                <!-- Botao do Modal de cadastro -->
+                <p:commandLink value="Novo" 
+                               class="btn btn-lg btn-default" 
+                               action="#{generoControle.preparaIncluir()}" 
+                               onclick="$('#modalCadastro').modal('show');" 
+                               update=":modalDeCadastro:cadastramento">
+                    <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
+                </p:commandLink>
             </h:form>
         </div>
         <div class="container">
-            <!-- Botao do Modal de cadastro -->
-            <h:form id="botaoCadastro">
-                <p:remoteCommand name="callActionCadastrar" action="#{generoControle.preparaIncluir()}"
-                                 update=":botaoCadastro">
-                    <p:resetInput target=":modalDeCadastro:painel"/>
-                </p:remoteCommand>
-                <h:commandButton pt:type="button" class="btn btn-info btn-lg" 
-                                 value="Cadastrar" pt:data-toggle="modal" 
-                                 pt:data-target="#modalCdastro"
-                                 onclick="callActionCadastrar();">
-                    <p:resetInput target=":modalDeCadastro:painel"/>
-                </h:commandButton>
-            </h:form>
             <!-- Modal Cadastro -->
             <h:form id="modalDeCadastro">
-                <div class="modal fade" id="modalCdastro" role="dialog">
+                <div class="modal fade" 
+                     id="modalCadastro" 
+                     tabindex="-1" role="dialog" 
+                     aria-labelledby="modalExcluir" 
+                     aria-hidden="true" 
+                     data-keyboard="false" 
+                     data-backdrop="static">
                     <div class="modal-dialog modal-sm">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
-                                <h4 class="modal-title">Registrar</h4>
-                            </div>
-                            <div class="modal-body">                               
-                                <h:panelGrid columns="2" id="painel">
-                                    <label for="nome">Nome do Genero</label>
-                                    <h:inputText id="nome" pt:type="text" value="#{generoControle.genero.nome}"/>
-                                </h:panelGrid>
-                            </div>
-                            <div class="modal-footer">
-                                <p:remoteCommand name="resetCadstro1"
-                                                 update=":tabelaGenero :modalDeCadastro">
-                                    <p:resetInput target=":modalDeCadastro:painel"/>
-                                </p:remoteCommand>
-                                <h:commandLink  class="btn btn-default" action="#{generoControle.salvar}" onclick="resetCadstro1();" value="Submit"></h:commandLink>
-                                <button type="button" class="btn btn-default" value="Fechar" data-dismiss="modal">Fechar</button>
-                            </div>
+                            <h:form id="cadastramento">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                    <h4 class="modal-title">Registrar</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <h:panelGrid columns="2" id="painel">
+                                        <label for="nome">Nome do Genero</label>
+                                        <p:inputText id="nome"
+                                                     required="true"
+                                                     maxlength="30"
+                                                     value="#{generoControle.genero.nome}"/>
+                                    </h:panelGrid>
+                                </div>
+                                <div class="modal-footer">
+                                    <p:commandLink value="Salvar" 
+                                                   class="btn btn-default"
+                                                   update=":tabelaGenero :modalDeCadastro"
+                                                   action="#{generoControle.salvar}"
+                                                   oncomplete="$('#modalCadastro').modal('hide');"
+                                                   />
+                                    <p:commandLink value="Não" 
+                                                   immediate="true" 
+                                                   styleClass="btn btn-default" 
+                                                   oncomplete="$('#modalCadastro').modal('hide');"/> 
+                                </div>
+                            </h:form>
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,15 @@
                                     <h4 class="modal-title">Tens certeza da exclusão?</h4>
                                 </div>
                                 <h:panelGroup layout="block" styleClass="modal-footer">
-                                    <p:commandLink value="Close" immediate="true" styleClass="btn btn-default" oncomplete="$('#modalExcluir').modal('hide');" />
+                                    <p:commandLink value="Sim" 
+                                                   styleClass="btn btn-danger"
+                                                   oncomplete="$('#modalExcluir').modal('hide');" 
+                                                   update=":tabelaGenero :modalDeCadastro"  
+                                                   actionListener="#{generoControle.excluir()}"/>
+                                    <p:commandLink value="Não" 
+                                                   immediate="true" 
+                                                   styleClass="btn btn-default" 
+                                                   oncomplete="$('#modalExcluir').modal('hide');"/> 
                                 </h:panelGroup>
                             </h:form>
                         </div>

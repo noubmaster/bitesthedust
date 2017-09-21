@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cadastro de Generos</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/teste.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </h:head>
+    <h:body>
+        <h:form id="tabelaGenero">
+            <div class="table-responsive">
+                <p:dataTable tableStyleClass="table table-striped" 
+                             scrollable="true" scrollHeight="150" 
+                             value="#{generoControle.generos}" var="aux">
+                    <p:growl id="msg" life="2000"/>
+                    <p:column headerText="memes" style="width: 200px">
+                        <h:outputText value="#{aux.nome}"/>
+                    </p:column>
+                    <p:column headerText="optioneses" style="width: 50px" priority="2">                        
+                        <!-- Botao do Modal de alterar -->
+                        <p:commandButton icon="ui-icon-pencil" 
+                                         oncomplete="PF('dialog').show()"
+                                         update=":formCadastro :tabelaGenero"
+                                         action="#{generoControle.preparaAlterar()}">
+                            <p:resetInput target=":formCadastro:painel" />
+                            <f:setPropertyActionListener value="#{aux}" target="#{generoControle.genero}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+        <!-- Modal Cadastro -->
+        <p:dialog
+            header="Cadastro de Albuns"
+            widgetVar="dialog"
+            resizable="false"
+            modal="true"
+            >
+            <h:form id="formCadastro">
+
+                <h:panelGrid columns="2" id="painel">
+
+                    <p:outputLabel value="Nome do Genero:"
+                                   for="nome"
+                                   />
+                    <p:inputText id="nome"
+                                 required="true"
+                                 maxlength="30"
+                                 value="#{generoControle.genero.nome}"/>
+
+                </h:panelGrid>
+                <p:commandButton value="Salvar" 
+                                 action="#{generoControle.salvar}" 
+                                 update=":tabelaGenero :formCadastro"
+                                 oncomplete="validar(xhr,status,args,'dialog');" 
+                                 icon="ui-icon-disk" 
+                                 />
+                <p:commandButton value="Cancelar" icon="ui-icon-close" oncomplete="PF('dialog').hide()"/>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
