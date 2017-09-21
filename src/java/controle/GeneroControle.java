@@ -59,7 +59,7 @@ public class GeneroControle {
         atualizarGeneros();
     }
     
-    public void excluir() {
+    public void excluir(int idGenero) {
         System.out.println("FOI");
         try {
             GeneroDAO.excluir(genero);
