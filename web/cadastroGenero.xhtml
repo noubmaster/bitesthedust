@@ -4,7 +4,6 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Cadastro de Generos</title>
@@ -70,13 +69,12 @@
                 </p:commandLink>
             </h:form>
         </div>
-        <div class="container">
             <!-- Modal Cadastro -->
             <h:form id="modalDeCadastro">
                 <div class="modal fade" 
                      id="modalCadastro" 
                      tabindex="-1" role="dialog" 
-                     aria-labelledby="modalExcluir" 
+                     aria-labelledby="modalCadastro" 
                      aria-hidden="true" 
                      data-keyboard="false" 
                      data-backdrop="static">
@@ -99,7 +97,7 @@
                                 <div class="modal-footer">
                                     <p:commandLink value="Salvar" 
                                                    class="btn btn-default"
-                                                   update=":tabelaGenero :modalDeCadastro"
+                                                   update=":tabelaGenero"
                                                    action="#{generoControle.salvar}"
                                                    oncomplete="$('#modalCadastro').modal('hide');"
                                                    />
@@ -146,6 +144,5 @@
                     </div>
                 </div>
             </h:form>
-        </div>
     </h:body>
 </html>
