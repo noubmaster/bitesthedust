@@ -129,16 +129,16 @@
                                 </h:panelGrid>
                             </div>
                             <div class="modal-footer">
-                                    <p:commandLink value="Salvar" 
-                                                   class="btn btn-default"
-                                                   update=":tabelaMusica"
-                                                   action="#{musicaControle.salvarMusica}"
-                                                   oncomplete="$('#modalCadastro').modal('hide');"
-                                                   />
-                                    <p:commandLink value="Não" 
-                                                   immediate="true" 
-                                                   styleClass="btn btn-default" 
-                                                   oncomplete="$('#modalCadastro').modal('hide');"/>
+                                <p:commandButton value="Salvar" 
+                                                 class="btn btn-default"
+                                                 update=":tabelaMusica"
+                                                 action="#{musicaControle.salvarMusica}"
+                                                 oncomplete="$('#modalCadastro').modal('hide');"
+                                                 />
+                                <p:commandLink value="Fechar" 
+                                               immediate="true" 
+                                               styleClass="btn btn-default" 
+                                               oncomplete="$('#modalCadastro').modal('hide');"/>
                             </div>
                         </h:form>
                     </div>
