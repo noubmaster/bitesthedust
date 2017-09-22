@@ -30,11 +30,13 @@ public class AlbumControle {
     }
     
     public void preparaIncluir() {
+        System.out.println("passando pelo incluir");
         salvar = true;
         album = new Album();
     }
     
     public void preparaAlterar() {
+        System.out.println("passando pelo alterar");
         salvar = false;
     }
     
