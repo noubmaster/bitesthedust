@@ -65,26 +65,7 @@ public class MusicaControle {
         
         atualizarMusicas();
     }
-//    public void salvar() {
-//        if (salvar) {
-//           try{
-//               MusicaDAO.inserir(musica, album, genero);
-//               System.out.println("musica incluido");
-//           } catch (SQLException e) {
-//               e.printStackTrace();
-//           }
-//        }else{
-//            try{
-//                MusicaDAO.alterar(musica, album, genero);
-//                System.out.println("musica alterado");
-//            } catch (SQLException e) {
-//               e.printStackTrace();
-//           }
-//        }
-//        
-//        atualizarMusicas();
-//    }
-    
+
     public void excluir() {
         try {
             MusicaDAO.excluir(musica);
@@ -127,11 +108,11 @@ public class MusicaControle {
         this.album = album;
     }
 
-    public boolean isSalvart() {
+    public boolean isSalvar() {
         return salvar;
     }
 
-    public void setSalvart(boolean salvar) {
+    public void setSalvar(boolean salvar) {
         this.salvar = salvar;
     }
 

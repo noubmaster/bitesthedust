@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cadastro de Musicas</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/listaAlbuns.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </h:head>
+    <h:body>
+        <div>
+            <h1>Lista Musicas</h1>
+            <h:form id="tabelaMusica">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <table class="table table-hover cATable">
+                                <thead class="cAThead">
+                                    <tr class="cAThead">
+                                        <th>Nomes</th>
+                                        <th>Genero</th>
+                                        <th>Album</th>
+                                        <th>Opções</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cATbody">
+                                    <ui:repeat value="#{musicaControle.musicas}" var="q">
+                                        <tr class="cAThead">
+                                            <td>#{q.nomeMusica}</td>
+                                            <td>#{q.genero.nome}</td>
+                                            <td>#{q.album.nomeAlbum}</td>
+                                            <td>
+                                                <!-- Botao do Modal de excluir -->
+                                                <p:commandLink
+                                                    styleClass="btn btn-info btn-sm"
+                                                    onclick="$('#modalExcluir').modal('show');"
+                                                    immediate="true" >
+                                                    <f:setPropertyActionListener value="#{q}" target="#{musicaControle.musica}" />
+                                                    <i class="glyphicon glyphicon-trash"/>
+                                                </p:commandLink>
+                                                <!-- Botao do Modal de Alterar -->
+                                                <p:commandLink class="btn btn-info btn-sm" 
+                                                               action="#{musicaControle.preparaAlterar()}" 
+                                                               onclick="$('#modalCadastro').modal('show');" 
+                                                               update=":modalDeCadastro:cadastramento">
+                                                    <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
+                                                    <f:setPropertyActionListener value="#{q}" target="#{musicaControle.musica}" />
+                                                    <i class="glyphicon glyphicon-cog"/>
+                                                </p:commandLink>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>                                        
+                        </div>                       
+                    </div>
+                </div>
+                <!-- Botao do Modal de cadastro -->
+                <p:commandLink value="Novo" 
+                               class="btn btn-lg btn-default" 
+                               action="#{musicaControle.preparaIncluir()}" 
+                               onclick="$('#modalCadastro').modal('show');" 
+                               update=":modalDeCadastro:cadastramento">
+                    <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
+                </p:commandLink>
+            </h:form>
+        </div>
+        <!-- Modal Cadastro -->
+        <h:form id="modalDeCadastro">
+            <div class="modal fade" 
+                 id="modalCadastro" 
+                 tabindex="-1" role="dialog" 
+                 aria-labelledby="modalCadastro" 
+                 aria-hidden="true" 
+                 data-keyboard="false" 
+                 data-backdrop="static">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <h:form id="cadastramento">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Registrar</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h:panelGrid columns="2" id="painel">
+                                    <label style="margin-right: 50px" for="nome">Nome</label>
+                                    <p:inputText 
+                                        style="width: 225px"
+                                        styleClass="form-control"
+                                        id="nome"
+                                        required="true"
+                                        maxlength="30"
+                                        value="#{musicaControle.musica.nomeMusica}"/>
+                                    <label for="genero">Genero</label>
+                                    <h:selectOneMenu 
+                                        style="width: 225px" 
+                                        required="true" id="genero" 
+                                        class="btn btn-default dropdown-toggle" 
+                                        value="#{musicaControle.genero}">
+                                        <f:selectItem itemValue="Selecione"/>
+                                        <f:selectItems value="#{generoControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
+                                    </h:selectOneMenu>
+                                    <label for="album">Albums</label>
+                                    <h:selectOneMenu 
+                                        style="width: 225px" 
+                                        required="true" id="album" 
+                                        class="btn btn-default dropdown-toggle" 
+                                        value="#{musicaControle.album}">
+                                        <f:selectItem itemValue="Selecione"/>
+                                        <f:selectItems value="#{albumControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
+                                    </h:selectOneMenu>
+                                    <label for="letra">Letra</label>
+                                    <h:inputTextarea 
+                                        style="width: 450px; height: 200px; resize: none;" 
+                                        styleClass="form-control"
+                                        id="letra"
+                                        rows="5"
+                                        cols="33"
+                                        required="true"
+                                        value="#{musicaControle.musica.letra}"/>
+                                </h:panelGrid>
+                            </div>
+                            <div class="modal-footer">
+                                    <p:commandLink value="Salvar" 
+                                                   class="btn btn-default"
+                                                   update=":tabelaMusica"
+                                                   action="#{musicaControle.salvarMusica}"
+                                                   oncomplete="$('#modalCadastro').modal('hide');"
+                                                   />
+                                    <p:commandLink value="Não" 
+                                                   immediate="true" 
+                                                   styleClass="btn btn-default" 
+                                                   oncomplete="$('#modalCadastro').modal('hide');"/>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+        <!-- Modal Excluir -->
+        <h:form id="modalDeExcluir">
+            <div class="modal fade" 
+                 id="modalExcluir" 
+                 tabindex="-1" role="dialog" 
+                 aria-labelledby="modalExcluir" 
+                 aria-hidden="true" 
+                 data-keyboard="false" 
+                 data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <h:form id="exclusao">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Tens certeza da exclusão?</h4>
+                            </div>
+                            <h:panelGroup layout="block" styleClass="modal-footer">
+                                <p:commandLink value="Sim" 
+                                               styleClass="btn btn-danger"
+                                               oncomplete="$('#modalExcluir').modal('hide');" 
+                                               update=":tabelaMusica :modalDeCadastro"  
+                                               actionListener="#{musicaControle.excluir()}"/>
+                                <p:commandLink value="Não" 
+                                               immediate="true" 
+                                               styleClass="btn btn-default" 
+                                               oncomplete="$('#modalExcluir').modal('hide');"/> 
+                            </h:panelGroup>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</html>

@@ -4,7 +4,6 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Cadastro de Albums</title>
@@ -72,38 +71,38 @@
                 </p:commandLink>
             </h:form>
         </div>
-        <div class="container">
-            <!-- Modal Cadastro -->
-            <h:form id="modalDeCadastro">
-                <div class="modal fade" 
-                     id="modalCadastro" 
-                     tabindex="-1" role="dialog" 
-                     aria-labelledby="modalCadastro" 
-                     aria-hidden="true" 
-                     data-keyboard="false" 
-                     data-backdrop="static">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <h:form id="cadastramento">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&#215;</button>
-                                    <h4 class="modal-title">Registrar</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <h:panelGrid columns="2" id="painel">
-                                        <label for="nome">Nome do Album</label>
-                                        <p:inputText id="nome"
-                                                     required="true"
-                                                     maxlength="30"
-                                                     value="#{albumControle.album.nomeAlbum}"/>
-                                        <label for="ano">Ano do Album</label>
-                                        <p:inputNumber id="ano"
-                                                       minValue="1910" maxValue="2050"
-                                                       required="true"
-                                                       value="#{albumControle.album.ano}"/>
-                                    </h:panelGrid>
-                                </div>
-                                <div class="modal-footer">
+        <!-- Modal Cadastro -->
+        <h:form id="modalDeCadastro">
+            <div class="modal fade" 
+                 id="modalCadastro" 
+                 tabindex="-1" role="dialog" 
+                 aria-labelledby="modalCadastro" 
+                 aria-hidden="true" 
+                 data-keyboard="false" 
+                 data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <h:form id="cadastramento">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Registrar</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h:panelGrid columns="2" id="painel">
+                                    <label for="nome">Nome do Album</label>
+                                    <p:inputText id="nome"
+                                                 required="true"
+                                                 maxlength="30"
+                                                 value="#{albumControle.album.nomeAlbum}"/>
+                                    <label for="ano">Ano do Album</label>
+                                    <p:inputNumber id="ano"
+                                                   minValue="1910" maxValue="2050"
+                                                   required="true"
+                                                   value="#{albumControle.album.ano}"/>
+                                </h:panelGrid>
+                            </div>
+                            <div class="modal-footer">
+                                <h:form>
                                     <p:commandLink value="Salvar" 
                                                    class="btn btn-default"
                                                    update=":tabelaAlbum"
@@ -113,46 +112,46 @@
                                     <p:commandLink value="Não" 
                                                    immediate="true" 
                                                    styleClass="btn btn-default" 
-                                                   oncomplete="$('#modalCadastro').modal('hide');"/> 
-                                </div>
-                            </h:form>
-                        </div>
+                                                   oncomplete="$('#modalCadastro').modal('hide');"/>
+                                </h:form>
+                            </div>
+                        </h:form>
                     </div>
                 </div>
-            </h:form>
+            </div>
+        </h:form>
 
-            <!-- Modal Excluir -->
-            <h:form id="modalDeExcluir">
-                <div class="modal fade" 
-                     id="modalExcluir" 
-                     tabindex="-1" role="dialog" 
-                     aria-labelledby="modalExcluir" 
-                     aria-hidden="true" 
-                     data-keyboard="false" 
-                     data-backdrop="static">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <h:form id="exclusao">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&#215;</button>
-                                    <h4 class="modal-title">Tens certeza da exclusão?</h4>
-                                </div>
-                                <h:panelGroup layout="block" styleClass="modal-footer">
-                                    <p:commandLink value="Sim" 
-                                                   styleClass="btn btn-danger"
-                                                   oncomplete="$('#modalExcluir').modal('hide');" 
-                                                   update=":tabelaAlbum :modalDeCadastro"  
-                                                   actionListener="#{albumControle.excluir()}"/>
-                                    <p:commandLink value="Não" 
-                                                   immediate="true" 
-                                                   styleClass="btn btn-default" 
-                                                   oncomplete="$('#modalExcluir').modal('hide');"/> 
-                                </h:panelGroup>
-                            </h:form>
-                        </div>
+        <!-- Modal Excluir -->
+        <h:form id="modalDeExcluir">
+            <div class="modal fade" 
+                 id="modalExcluir" 
+                 tabindex="-1" role="dialog" 
+                 aria-labelledby="modalExcluir" 
+                 aria-hidden="true" 
+                 data-keyboard="false" 
+                 data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <h:form id="exclusao">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Tens certeza da exclusão?</h4>
+                            </div>
+                            <h:panelGroup layout="block" styleClass="modal-footer">
+                                <p:commandLink value="Sim" 
+                                               styleClass="btn btn-danger"
+                                               oncomplete="$('#modalExcluir').modal('hide');" 
+                                               update=":tabelaAlbum :modalDeCadastro"  
+                                               actionListener="#{albumControle.excluir()}"/>
+                                <p:commandLink value="Não" 
+                                               immediate="true" 
+                                               styleClass="btn btn-default" 
+                                               oncomplete="$('#modalExcluir').modal('hide');"/> 
+                            </h:panelGroup>
+                        </h:form>
                     </div>
                 </div>
-            </h:form>
-        </div>
+            </div>
+        </h:form>
     </h:body>
 </html>
