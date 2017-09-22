@@ -60,7 +60,6 @@ public class GeneroControle {
     }
     
     public void excluir() {
-        System.out.println("FOI");
         try {
             GeneroDAO.excluir(genero);
             atualizarGeneros();
@@ -79,12 +78,10 @@ public class GeneroControle {
     }
 
     public Genero getGenero() {
-        System.out.println("getou");
         return genero;
     }
 
     public void setGenero(Genero genero) {
-        System.out.println("setou");
         this.genero = genero;
     }
 

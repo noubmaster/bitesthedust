@@ -70,13 +70,12 @@
                 </p:commandLink>
             </h:form>
         </div>
-        <div class="container">
             <!-- Modal Cadastro -->
             <h:form id="modalDeCadastro">
                 <div class="modal fade" 
                      id="modalCadastro" 
                      tabindex="-1" role="dialog" 
-                     aria-labelledby="modalExcluir" 
+                     aria-labelledby="modalCadastro" 
                      aria-hidden="true" 
                      data-keyboard="false" 
                      data-backdrop="static">
@@ -99,7 +98,7 @@
                                 <div class="modal-footer">
                                     <p:commandLink value="Salvar" 
                                                    class="btn btn-default"
-                                                   update=":tabelaGenero :modalDeCadastro"
+                                                   update=":tabelaGenero"
                                                    action="#{generoControle.salvar}"
                                                    oncomplete="$('#modalCadastro').modal('hide');"
                                                    />
@@ -146,6 +145,5 @@
                     </div>
                 </div>
             </h:form>
-        </div>
     </h:body>
 </html>
