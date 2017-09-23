@@ -10,10 +10,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <script src="https://apis.google.com/js/platform.js" async="defer"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="css/listaGeneros.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
     </h:head>
     <h:body>
         <div>
@@ -68,81 +70,95 @@
                     <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
                 </p:commandLink>
             </h:form>
+            <a href="login.xhtml">volta pro login</a>
+            <h:form id="f">
+                <h:inputText id="name" disabled="true" value="#{usuarioControle.usuario.login}"/>
+                <h:inputText id="profile" disabled="true" value="#{usuarioControle.usuario.perfil}"/>
+            </h:form>
         </div>
-            <!-- Modal Cadastro -->
-            <h:form id="modalDeCadastro">
-                <div class="modal fade" 
-                     id="modalCadastro" 
-                     tabindex="-1" role="dialog" 
-                     aria-labelledby="modalCadastro" 
-                     aria-hidden="true" 
-                     data-keyboard="false" 
-                     data-backdrop="static">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <h:form id="cadastramento">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&#215;</button>
-                                    <h4 class="modal-title">Registrar</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <h:panelGrid columns="2" id="painel">
-                                        <label for="nome">Nome do Genero</label>
-                                        <p:inputText id="nome"
-                                                     required="true"
-                                                     maxlength="30"
-                                                     value="#{generoControle.genero.nome}"/>
-                                    </h:panelGrid>
-                                </div>
-                                <div class="modal-footer">
-                                    <p:commandLink value="Salvar" 
-                                                   class="btn btn-default"
-                                                   update=":tabelaGenero"
-                                                   action="#{generoControle.salvar}"
-                                                   oncomplete="$('#modalCadastro').modal('hide');"
-                                                   />
-                                    <p:commandLink value="Não" 
-                                                   immediate="true" 
-                                                   styleClass="btn btn-default" 
-                                                   oncomplete="$('#modalCadastro').modal('hide');"/> 
-                                </div>
-                            </h:form>
-                        </div>
+        <!-- Modal Cadastro -->
+        <h:form id="modalDeCadastro">
+            <div class="modal fade" 
+                 id="modalCadastro" 
+                 tabindex="-1" role="dialog" 
+                 aria-labelledby="modalCadastro" 
+                 aria-hidden="true" 
+                 data-keyboard="false" 
+                 data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <h:form id="cadastramento">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Registrar</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h:panelGrid columns="2" id="painel">
+                                    <label for="nome">Nome do Genero</label>
+                                    <p:inputText id="nome"
+                                                 required="true"
+                                                 maxlength="30"
+                                                 value="#{generoControle.genero.nome}"/>
+                                </h:panelGrid>
+                            </div>
+                            <div class="modal-footer">
+                                <p:commandLink value="Salvar" 
+                                               class="btn btn-default"
+                                               update=":tabelaGenero"
+                                               action="#{generoControle.salvar}"
+                                               oncomplete="$('#modalCadastro').modal('hide');"
+                                               />
+                                <p:commandLink value="Não" 
+                                               immediate="true" 
+                                               styleClass="btn btn-default" 
+                                               oncomplete="$('#modalCadastro').modal('hide');"/> 
+                            </div>
+                        </h:form>
                     </div>
                 </div>
-            </h:form>
+            </div>
+        </h:form>
 
-            <!-- Modal Excluir -->
-            <h:form id="modalDeExcluir">
-                <div class="modal fade" 
-                     id="modalExcluir" 
-                     tabindex="-1" role="dialog" 
-                     aria-labelledby="modalExcluir" 
-                     aria-hidden="true" 
-                     data-keyboard="false" 
-                     data-backdrop="static">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <h:form id="exclusao">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&#215;</button>
-                                    <h4 class="modal-title">Tens certeza da exclusão?</h4>
-                                </div>
-                                <h:panelGroup layout="block" styleClass="modal-footer">
-                                    <p:commandLink value="Sim" 
-                                                   styleClass="btn btn-danger"
-                                                   oncomplete="$('#modalExcluir').modal('hide');" 
-                                                   update=":tabelaGenero :modalDeCadastro"  
-                                                   actionListener="#{generoControle.excluir()}"/>
-                                    <p:commandLink value="Não" 
-                                                   immediate="true" 
-                                                   styleClass="btn btn-default" 
-                                                   oncomplete="$('#modalExcluir').modal('hide');"/> 
-                                </h:panelGroup>
-                            </h:form>
-                        </div>
+        <!-- Modal Excluir -->
+        <h:form id="modalDeExcluir">
+            <div class="modal fade" 
+                 id="modalExcluir" 
+                 tabindex="-1" role="dialog" 
+                 aria-labelledby="modalExcluir" 
+                 aria-hidden="true" 
+                 data-keyboard="false" 
+                 data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <h:form id="exclusao">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Tens certeza da exclusão?</h4>
+                            </div>
+                            <h:panelGroup layout="block" styleClass="modal-footer">
+                                <p:commandLink value="Sim" 
+                                               styleClass="btn btn-danger"
+                                               oncomplete="$('#modalExcluir').modal('hide');" 
+                                               update=":tabelaGenero :modalDeCadastro"  
+                                               actionListener="#{generoControle.excluir()}"/>
+                                <p:commandLink value="Não" 
+                                               immediate="true" 
+                                               styleClass="btn btn-default" 
+                                               oncomplete="$('#modalExcluir').modal('hide');"/> 
+                            </h:panelGroup>
+                        </h:form>
                     </div>
                 </div>
-            </h:form>
+            </div>
+        </h:form>
+        <script type="text/javascript">
+            function onSignIn(googleUser) {
+                var profile = googleUser.getBasicProfile();
+                var a = document.getElementById("f:name");
+                a.value = profile.getName();
+                var b = document.getElementById("f:profile");
+                b.value = profile.getEmail();
+            }
+        </script>
     </h:body>
 </html>
