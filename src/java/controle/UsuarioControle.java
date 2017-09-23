@@ -19,7 +19,7 @@ public class UsuarioControle {
 
     private List<Usuario> usuarios = new ArrayList<Usuario>();
     private Usuario usuario = new Usuario();
-    private boolean salvar = false;
+    private boolean salvar = true;
 
     @PostConstruct
     public void atualizarUsuarios() {

@@ -16,21 +16,21 @@ and open the template in the editor.
         <script src="https://apis.google.com/js/platform.js" async="defer"></script>
         <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
     </h:head>
-    <h:body>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        <script>
-            function onSignIn(googleUser) {
-                var profile = googleUser.getBasicProfile();
-                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-                console.log('Name: ' + profile.getName());
-                console.log('Image URL: ' + profile.getImageUrl());
-                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-            }
-            function getUsrId (googleUser) {
-                var profile = googleUser.getBasicProfile();
-                document.write(profile.getId());
-            }
-        </script>
-        <h:commandButton onclick="getUsrId();"/>
-    </h:body>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <h:form id="f">
+        <h:inputText id="name" value="#{usuarioControle.usuario.login}"/>
+        <h:inputText id="profile" value="#{usuarioControle.usuario.perfil}"/>
+        <h:commandButton action="#{usuarioControle.salvar()}" value="Submit"/>
+
+
+    </h:form>
+    <script type="text/javascript">
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            var a = document.getElementById("f:name");
+            a.value = profile.getName();
+            var b = document.getElementById("f:profile");
+            b.value = profile.getEmail();
+        }
+    </script>
 </html>
