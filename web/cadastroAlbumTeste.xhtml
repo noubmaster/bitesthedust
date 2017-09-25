@@ -95,25 +95,23 @@
                                                  maxlength="30"
                                                  value="#{albumControle.album.nomeAlbum}"/>
                                     <label for="ano">Ano do Album</label>
-                                    <p:inputNumber id="ano"
-                                                   minValue="1910" maxValue="2050"
-                                                   required="true"
-                                                   value="#{albumControle.album.ano}"/>
+                                    <p:inputText id="ano"
+
+                                                 required="true"
+                                                 value="#{albumControle.album.ano}"/>
                                 </h:panelGrid>
                             </div>
                             <div class="modal-footer">
-                                <h:form>
-                                    <p:commandLink value="Salvar" 
-                                                   class="btn btn-default"
-                                                   update=":tabelaAlbum"
-                                                   action="#{albumControle.salvar}"
-                                                   oncomplete="$('#modalCadastro').modal('hide');"
-                                                   />
-                                    <p:commandLink value="Não" 
-                                                   immediate="true" 
-                                                   styleClass="btn btn-default" 
-                                                   oncomplete="$('#modalCadastro').modal('hide');"/>
-                                </h:form>
+                                <p:commandLink value="Salvar" 
+                                               class="btn btn-default"
+                                               update=":tabelaAlbum"
+                                               action="#{albumControle.salvar}"
+                                               oncomplete="$('#modalCadastro').modal('hide');"
+                                               />
+                                <p:commandLink value="Não" 
+                                               immediate="true" 
+                                               styleClass="btn btn-default" 
+                                               oncomplete="$('#modalCadastro').modal('hide');"/>
                             </div>
                         </h:form>
                     </div>

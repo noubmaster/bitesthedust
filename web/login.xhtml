@@ -23,7 +23,9 @@ and open the template in the editor.
     <h:form id="f">
         <h:inputText id="name" value="#{usuarioControle.usuario.login}"/>
         <h:inputText id="iduser" style="display: none" value="#{usuarioControle.usuario.senha}"/>
+        <br/>
         <h:inputText id="profile" value="#{usuarioControle.usuario.perfil}"/>
+        <br/>
         <p:commandLink class="btn btn-info btn-md" action="#{usuarioControle.salvar()}" value="Submit">
         </p:commandLink>
     </h:form>

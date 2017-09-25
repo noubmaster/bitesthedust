@@ -16,10 +16,11 @@ import modelo.Album;
 @ManagedBean
 @SessionScoped
 public class AlbumControle {
+
     private List<Album> albums = new ArrayList<Album>();
     private Album album = new Album();
     private boolean salvar = false;
-    
+
     @PostConstruct
     public void atualizarAlbums() {
         try {
@@ -28,38 +29,40 @@ public class AlbumControle {
             e.printStackTrace();
         }
     }
-    
+
     public void preparaIncluir() {
         System.out.println("passando pelo incluir");
         salvar = true;
         album = new Album();
     }
-    
+
     public void preparaAlterar() {
         System.out.println("passando pelo alterar");
         salvar = false;
     }
-    
+
     public void salvar() {
         if (salvar) {
-           try{
-               AlbumDAO.inserir(album);
-               System.out.println("album incluido");
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
-        }else{
-            try{
+            try {
+                AlbumDAO.inserir(album);
+                System.out.println("album incluido");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
                 AlbumDAO.alterar(album);
                 System.out.println("album alterado");
             } catch (SQLException e) {
-               e.printStackTrace();
-           }
+                e.printStackTrace();
+            }
         }
-        
         atualizarAlbums();
+        for(Album a : albums) {
+            System.out.println(a.getNomeAlbum());
+        }
     }
-    
+
     public void excluir() {
         try {
             AlbumDAO.excluir(album);
