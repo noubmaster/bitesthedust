@@ -21,8 +21,9 @@ and open the template in the editor.
     <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <a href="#" onclick="signOut();">Sign out</a>
     <h:form id="f">
-        <h:inputText id="name" disabled="true" value="#{usuarioControle.usuario.login}"/>
-        <h:inputText id="profile" disabled="true" value="#{usuarioControle.usuario.perfil}"/>
+        <h:inputText id="name" value="#{usuarioControle.usuario.login}"/>
+        <h:inputText id="iduser" style="display: none" value="#{usuarioControle.usuario.senha}"/>
+        <h:inputText id="profile" value="#{usuarioControle.usuario.perfil}"/>
         <p:commandLink class="btn btn-info btn-md" action="#{usuarioControle.salvar()}" value="Submit">
         </p:commandLink>
     </h:form>
@@ -30,20 +31,14 @@ and open the template in the editor.
     <a href="cadastroGeneroTeste.xhtml">vai pro outro</a>
     <script type="text/javascript">
         function onSignIn(googleUser) {
-            var id_token = googleUser.getAuthResponse().id_token;
             var profile = googleUser.getBasicProfile();
             var a = document.getElementById("f:name");
             a.value = profile.getName();
             var b = document.getElementById("f:profile");
             b.value = profile.getEmail();
+            var c = document.getElementById("f:iduser");
+            c.value = profile.getId();
             document.getElementById("img").src = profile.getImageUrl();
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://yourbackend.example.com/tokensignin');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function () {
-                console.log('Signed in as: ' + xhr.responseText);
-            };
-            xhr.send('idtoken=' + id_token);
         }
         function signOut() {
             var auth2 = gapi.auth2.getAuthInstance();
@@ -54,6 +49,8 @@ and open the template in the editor.
             a.value = null;
             var b = document.getElementById("f:profile");
             b.value = null;
+            var c = document.getElementById("f:iduser");
+            c.value = null;
             document.getElementById("img").src = null;
         }
     </script>
