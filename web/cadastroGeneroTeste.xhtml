@@ -18,9 +18,7 @@
         <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
     </h:head>
     <h:body>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        <a href="#" onclick="signOut();">Sign out</a>
-        <div>
+        <ui:include src="ui/navbar.xhtml"/>
             <h1>Lista Generos Musicais</h1>
             <h:form id="tabelaGenero">
                 <div class="container-fluid">

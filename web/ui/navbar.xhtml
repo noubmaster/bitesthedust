@@ -12,7 +12,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+        <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
+        <script src="https://apis.google.com/js/platform.js" async="defer"></script>
     </h:head>
     <h:body>
         <h:form>
@@ -54,13 +55,12 @@
                             </ul>
                         </div>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#">Link</a></li>
+                            <li><div class="g-signin2" data-onsuccess="onSignIn" id="login"></div></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
+                                    <li><a href="#" onclick="signOut();">Sign out</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">Separated link</a></li>
                                 </ul>
@@ -70,6 +70,36 @@
                 </div><!-- /.container-fluid -->
             </nav>
         </h:form>
+        <div style="height: 51px;"/>
+        <div id="gSignInWrapper">
+            <span class="label">Sign in with:</span>
+            <div id="customBtn" class="customGPlusSignIn">
+                <span class="icon"></span>
+                <span class="buttonText">Google</span>
+            </div>
+        </div>
+        <script type="text/javascript">
+            function onSignIn(googleUser) {
+                var profile = googleUser.getBasicProfile();
+                var login = document.getElementById("login");
+                if (profile.getId() !== null) {
+                    login.style.display = "none";
+                }
+                if (profile.getId() = null) {
+                    login.style.display = "list-item";
+                }
+            }
+            ;
+
+            function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    console.log('User signed out.');
+                    login.style.display = "list-item";
+                });
+
+            }
+        </script>
     </h:body>
 </html>
 
