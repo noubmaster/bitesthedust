@@ -1,5 +1,7 @@
 package controle;
 
+import dao.AlbumDAO;
+import dao.GeneroDAO;
 import dao.MusicaDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class MusicaControle {
     public void atualizarMusicas() {
         try {
             musicas = MusicaDAO.getLista();
+            generos = GeneroDAO.getLista();
+            albums = AlbumDAO.getLista();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,6 +56,7 @@ public class MusicaControle {
                MusicaDAO.inserir(musica);
                System.out.println("musica incluido");
            } catch (SQLException e) {
+               System.out.println("erro no incluir");
                e.printStackTrace();
            }
         }else{
@@ -59,6 +64,7 @@ public class MusicaControle {
                 MusicaDAO.alterar(musica);
                 System.out.println("musica alterado");
             } catch (SQLException e) {
+                System.out.println("erro no alterar");
                e.printStackTrace();
            }
         }

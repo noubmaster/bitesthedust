@@ -6,7 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Cadastro de Musicas</title>
+        <title>Cadastro de Avaliacoes</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -18,8 +18,8 @@
     <h:body>
         <ui:include src="ui/navbar.xhtml"/>
         <div>
-            <h1>Lista Musicas</h1>
-            <h:form id="tabelaMusica">
+            <h1>Lista Avaliacoes</h1>
+            <h:form id="tabelaAvaliacao">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4">
@@ -33,27 +33,27 @@
                                     </tr>
                                 </thead>
                                 <tbody class="cATbody">
-                                    <ui:repeat value="#{musicaControle.musicas}" var="q">
+                                    <ui:repeat value="#{avaliacaoControle.avaliacoes}" var="q">
                                         <tr class="cAThead">
-                                            <td>#{q.nomeMusica}</td>
-                                            <td>#{q.genero.nome}</td>
-                                            <td>#{q.album.nomeAlbum}</td>
+                                            <td>#{q.comentario}</td>
+                                            <td>#{q.usuario.login}</td>
+                                            <td>#{q.musica.nomeMusica}</td>
                                             <td>
                                                 <!-- Botao do Modal de excluir -->
                                                 <p:commandLink
                                                     styleClass="btn btn-info btn-sm"
                                                     onclick="$('#modalExcluir').modal('show');"
                                                     immediate="true" >
-                                                    <f:setPropertyActionListener value="#{q}" target="#{musicaControle.musica}" />
+                                                    <f:setPropertyActionListener value="#{q}" target="#{avaliacaoControle.avaliacao}" />
                                                     <i class="glyphicon glyphicon-trash"/>
                                                 </p:commandLink>
                                                 <!-- Botao do Modal de Alterar -->
                                                 <p:commandLink class="btn btn-info btn-sm" 
-                                                               action="#{musicaControle.preparaAlterar()}" 
+                                                               action="#{avaliacaoControle.preparaAlterar()}" 
                                                                onclick="$('#modalCadastro').modal('show');" 
                                                                update=":modalDeCadastro:cadastramento">
                                                     <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
-                                                    <f:setPropertyActionListener value="#{q}" target="#{musicaControle.musica}" />
+                                                    <f:setPropertyActionListener value="#{q}" target="#{avaliacaoControle.avaliacao}" />
                                                     <i class="glyphicon glyphicon-cog"/>
                                                 </p:commandLink>
                                             </td>
@@ -67,7 +67,7 @@
                 <!-- Botao do Modal de cadastro -->
                 <p:commandLink value="Novo" 
                                class="btn btn-lg btn-default" 
-                               action="#{musicaControle.preparaIncluir()}" 
+                               action="#{avaliacaoControle.preparaIncluir()}" 
                                onclick="$('#modalCadastro').modal('show');" 
                                update=":modalDeCadastro:cadastramento">
                     <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
@@ -99,24 +99,24 @@
                                         id="nome"
                                         required="true"
                                         maxlength="30"
-                                        value="#{musicaControle.musica.nomeMusica}"/>
+                                        value="#{avaliacaoControle.avaliacao.comentario}"/>
                                     <label for="genero">Genero</label>
                                     <h:selectOneMenu 
                                         style="width: 225px" 
                                         required="true" id="genero" 
                                         class="btn btn-default dropdown-toggle" 
-                                        value="#{musicaControle.genero.idGenero}">
+                                        value="#{avaliacaoControle.avaliacao.musica}">
                                         <f:selectItem itemValue="Selecione"/>
-                                        <f:selectItems value="#{musicaControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
+                                        <f:selectItems value="#{generoControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
                                     </h:selectOneMenu>
                                     <label for="album">Albums</label>
                                     <h:selectOneMenu 
                                         style="width: 225px" 
                                         required="true" id="album" 
                                         class="btn btn-default dropdown-toggle" 
-                                        value="#{musicaControle.musica.idMusica}">
+                                        value="#{avaliacaoControle.usuario.login}">
                                         <f:selectItem itemValue="Selecione"/>
-                                        <f:selectItems value="#{musicaControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
+                                        <f:selectItems value="#{albumControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
                                     </h:selectOneMenu>
                                     <label for="letra">Letra</label>
                                     <h:inputTextarea 
@@ -126,14 +126,14 @@
                                         rows="5"
                                         cols="33"
                                         required="true"
-                                        value="#{musicaControle.musica.letra}"/>
+                                        value="#{avaliacaoControle.avaliacao.revisao}"/>
                                 </h:panelGrid>
                             </div>
                             <div class="modal-footer">
                                 <p:commandLink value="Salvar" 
                                                class="btn btn-default"
-                                               update=":tabelaMusica"
-                                               action="#{musicaControle.salvarMusica}"
+                                               update=":tabelaAvaliacao"
+                                               action="#{avaliacaoControle.salvarAvaliacao}"
                                                oncomplete="$('#modalCadastro').modal('hide');"
                                                />
                                 <p:commandLink value="Fechar" 
@@ -167,8 +167,8 @@
                                 <p:commandLink value="Sim" 
                                                styleClass="btn btn-danger"
                                                oncomplete="$('#modalExcluir').modal('hide');" 
-                                               update=":tabelaMusica :modalDeCadastro"  
-                                               actionListener="#{musicaControle.excluir()}"/>
+                                               update=":tabelaAvaliacao :modalDeCadastro"  
+                                               actionListener="#{avaliacaoControle.excluir()}"/>
                                 <p:commandLink value="Não" 
                                                immediate="true" 
                                                styleClass="btn btn-default" 
