@@ -16,6 +16,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </h:head>
     <h:body>
+        <ui:include src="ui/navbar.xhtml"/>
         <div>
             <h1>Lista Musicas</h1>
             <h:form id="tabelaMusica">
@@ -129,12 +130,12 @@
                                 </h:panelGrid>
                             </div>
                             <div class="modal-footer">
-                                <p:commandButton value="Salvar" 
-                                                 class="btn btn-default"
-                                                 update=":tabelaMusica"
-                                                 action="#{musicaControle.salvarMusica}"
-                                                 oncomplete="$('#modalCadastro').modal('hide');"
-                                                 />
+                                <p:commandLink value="Salvar" 
+                                               class="btn btn-default"
+                                               update=":tabelaMusica"
+                                               action="#{musicaControle.salvarMusica}"
+                                               oncomplete="$('#modalCadastro').modal('hide');"
+                                               />
                                 <p:commandLink value="Fechar" 
                                                immediate="true" 
                                                styleClass="btn btn-default" 

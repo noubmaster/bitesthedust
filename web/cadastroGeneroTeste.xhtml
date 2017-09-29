@@ -10,72 +10,66 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <script src="https://apis.google.com/js/platform.js" async="defer"></script>
+        
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="css/listaGeneros.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
+        
     </h:head>
     <h:body>
         <ui:include src="ui/navbar.xhtml"/>
-            <h1>Lista Generos Musicais</h1>
-            <h:form id="tabelaGenero">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <table class="table table-hover cGTable">
-                                <thead class="cGThead">
+        <h1>Lista Generos Musicais</h1>
+        <h:form id="tabelaGenero">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <table class="table table-hover cGTable">
+                            <thead class="cGThead">
+                                <tr class="cGThead">
+                                    <th>Tipos</th>
+                                    <th>Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody class="cGTbody">
+                                <ui:repeat value="#{generoControle.generos}" var="q">
                                     <tr class="cGThead">
-                                        <th>Tipos</th>
-                                        <th>Opções</th>
+                                        <td>#{q.nome}</td>
+                                        <td>
+                                            <!-- Botao do Modal de excluir -->
+                                            <p:commandLink
+                                                styleClass="btn btn-info btn-sm"
+                                                onclick="$('#modalExcluir').modal('show');"
+                                                immediate="true" >
+                                                <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
+                                                <i class="glyphicon glyphicon-trash"/>
+                                            </p:commandLink>
+                                            <!-- Botao do Modal de Alterar -->
+                                            <p:commandLink class="btn btn-info btn-sm" 
+                                                           action="#{generoControle.preparaAlterar()}" 
+                                                           onclick="$('#modalCadastro').modal('show');" 
+                                                           update=":modalDeCadastro:cadastramento">
+                                                <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
+                                                <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
+                                                <i class="glyphicon glyphicon-cog"/>
+                                            </p:commandLink>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody class="cGTbody">
-                                    <ui:repeat value="#{generoControle.generos}" var="q">
-                                        <tr class="cGThead">
-                                            <td>#{q.nome}</td>
-                                            <td>
-                                                <!-- Botao do Modal de excluir -->
-                                                <p:commandLink
-                                                    styleClass="btn btn-info btn-sm"
-                                                    onclick="$('#modalExcluir').modal('show');"
-                                                    immediate="true" >
-                                                    <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
-                                                    <i class="glyphicon glyphicon-trash"/>
-                                                </p:commandLink>
-                                                <!-- Botao do Modal de Alterar -->
-                                                <p:commandLink class="btn btn-info btn-sm" 
-                                                               action="#{generoControle.preparaAlterar()}" 
-                                                               onclick="$('#modalCadastro').modal('show');" 
-                                                               update=":modalDeCadastro:cadastramento">
-                                                    <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
-                                                    <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
-                                                    <i class="glyphicon glyphicon-cog"/>
-                                                </p:commandLink>
-                                            </td>
-                                        </tr>
-                                    </ui:repeat>
-                                </tbody>
-                            </table>                                        
-                        </div>                       
-                    </div>
+                                </ui:repeat>
+                            </tbody>
+                        </table>                                        
+                    </div>                       
                 </div>
-                <!-- Botao do Modal de cadastro -->
-                <p:commandLink value="Novo" 
-                               class="btn btn-lg btn-default" 
-                               action="#{generoControle.preparaIncluir()}" 
-                               onclick="$('#modalCadastro').modal('show');" 
-                               update=":modalDeCadastro:cadastramento">
-                    <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
-                </p:commandLink>
-            </h:form>
-            <a href="login.xhtml">volta pro login</a>
-            <h:form id="f">
-                <h:inputText id="name" disabled="true" value="#{usuarioControle.usuario.login}"/>
-                <h:inputText id="profile" disabled="true" value="#{usuarioControle.usuario.perfil}"/>
-            </h:form>
-        </div>
+            </div>
+            <!-- Botao do Modal de cadastro -->
+            <p:commandLink value="Novo" 
+                           class="btn btn-lg btn-default" 
+                           action="#{generoControle.preparaIncluir()}" 
+                           onclick="$('#modalCadastro').modal('show');" 
+                           update=":modalDeCadastro:cadastramento">
+                <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
+            </p:commandLink>
+        </h:form>        
         <!-- Modal Cadastro -->
         <h:form id="modalDeCadastro">
             <div class="modal fade" 
@@ -151,24 +145,5 @@
                 </div>
             </div>
         </h:form>
-        <script type="text/javascript">
-            function onSignIn(googleUser) {
-                var profile = googleUser.getBasicProfile();
-                var a = document.getElementById("f:name");
-                a.value = profile.getName();
-                var b = document.getElementById("f:profile");
-                b.value = profile.getEmail();
-            }
-            function signOut() {
-                var auth2 = gapi.auth2.getAuthInstance();
-                auth2.signOut().then(function () {
-                    console.log('User signed out.');
-                });
-                var a = document.getElementById("f:name");
-                a.value = null;
-                var b = document.getElementById("f:profile");
-                b.value = null;
-            }
-        </script>
     </h:body>
 </html>

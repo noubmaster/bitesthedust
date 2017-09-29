@@ -16,6 +16,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </h:head>
     <h:body>
+        <ui:include src="ui/navbar.xhtml"/>
         <div>
             <h1>Lista Albums Musicais</h1>
             <h:form id="tabelaAlbum">
@@ -96,7 +97,6 @@
                                                  value="#{albumControle.album.nomeAlbum}"/>
                                     <label for="ano">Ano do Album</label>
                                     <p:inputText id="ano"
-
                                                  required="true"
                                                  value="#{albumControle.album.ano}"/>
                                 </h:panelGrid>
