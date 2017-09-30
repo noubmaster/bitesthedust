@@ -5,24 +5,16 @@ package modelo;
  * @author Dendi
  */
 public class Participa {
-    private int papel, ordem;
+    private String papel;
     private Artista artista;
     private Musica musica;
 
-    public int getPapel() {
+    public String getPapel() {
         return papel;
     }
 
-    public void setPapel(int papel) {
+    public void setPapel(String papel) {
         this.papel = papel;
-    }
-
-    public int getOrdem() {
-        return ordem;
-    }
-
-    public void setOrdem(int ordem) {
-        this.ordem = ordem;
     }
 
     public Artista getArtista() {

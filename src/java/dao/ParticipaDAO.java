@@ -20,12 +20,11 @@ public class ParticipaDAO {
     public static void inserir(Participa participa) throws SQLException {
         Connection con = Conexao.getConnection();
         String sql
-                = "INSERT INTO `memes`.`participa` (`Musica_idMusica`, `Artista_idArtista`, `papel`, `ordem`) VALUES (?, ?, ?, ?);";
+                = "INSERT INTO `memes`.`participa` (`Musica_idMusica`, `Artista_idArtista`, `papel`) VALUES (?, ?, ?);";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, participa.getMusica().getIdMusica());
         stmt.setInt(2, participa.getArtista().getIdArtista());
-        stmt.setInt(3, participa.getPapel());
-        stmt.setInt(4, participa.getOrdem());
+        stmt.setString(3, participa.getPapel());
 
         stmt.execute();
         stmt.close();
@@ -35,14 +34,13 @@ public class ParticipaDAO {
     public static void alterar(Participa participa) throws SQLException {
         Connection con = Conexao.getConnection();
         String sql
-                = "UPDATE `memes`.`participa` SET `Musica_idMusica`=?, `Artista_idArtista`=?, `papel`=?, `ordem`=? WHERE  `Musica_idMusica`=? AND `Artista_idArtista`=?;";
+                = "UPDATE `memes`.`participa` SET `Musica_idMusica`=?, `Artista_idArtista`=?, `papel`=? WHERE  `Musica_idMusica`=? AND `Artista_idArtista`=?;";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, participa.getMusica().getIdMusica());
         stmt.setInt(2, participa.getArtista().getIdArtista());
-        stmt.setInt(3, participa.getPapel());
-        stmt.setInt(4, participa.getOrdem());
-        stmt.setInt(5, participa.getMusica().getIdMusica());
-        stmt.setInt(6, participa.getArtista().getIdArtista());
+        stmt.setString(3, participa.getPapel());
+        stmt.setInt(4, participa.getMusica().getIdMusica());
+        stmt.setInt(5, participa.getArtista().getIdArtista());
 
         stmt.execute();
         stmt.close();
@@ -52,7 +50,7 @@ public class ParticipaDAO {
     public static void excluir(Participa participa) throws SQLException {
         Connection con = Conexao.getConnection();
         String sql
-                = "DELETE FROM `memes`.`participa` WHERE  `Musica_idMusica`=2 AND `Artista_idArtista`=1;";
+                = "DELETE FROM `memes`.`participa` WHERE  `Musica_idMusica`=? AND `Artista_idArtista`=?;";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, participa.getMusica().getIdMusica());
         stmt.setInt(2, participa.getArtista().getIdArtista());
@@ -80,8 +78,7 @@ public class ParticipaDAO {
             artista.setNomeArtista(rs.getString("nomeArtista"));
 
             Participa participa = new Participa();
-            participa.setOrdem(rs.getInt("ordem"));
-            participa.setPapel(rs.getInt("papel"));
+            participa.setPapel(rs.getString("papel"));
             
             participa.setArtista(artista);
             participa.setMusica(musica);
@@ -102,7 +99,6 @@ public class ParticipaDAO {
             for (Participa m : lista) {
                 System.out.println("ARTISTA....: " + m.getArtista().getNomeArtista());
                 System.out.println("MUSICA......: " + m.getMusica().getNomeMusica());
-                System.out.println("MUSICA......: " + m.getOrdem());
                 System.out.println("MUSICA......: " + m.getPapel());
                 System.out.println("-----------------------------------");
             }
