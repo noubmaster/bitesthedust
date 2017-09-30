@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import modelo.Usuario;
+
 /**
  *
  * @author Galen Marek
@@ -19,6 +20,24 @@ public class UsuarioControle {
     private List<Usuario> usuarios = new ArrayList<Usuario>();
     private Usuario usuario = new Usuario();
     private boolean salvar = true;
+    private String idR = null;
+    private int tipo = 0;
+
+    public String getIdR() {
+        return idR;
+    }
+
+    public void setIdR(String idR) {
+        this.idR = idR;
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
 
     @PostConstruct
     public void atualizarUsuarios() {
@@ -39,11 +58,17 @@ public class UsuarioControle {
         salvar = false;
     }
 
+    public void pegerIdR() {
+        
+    }
+
     public void salvar() {
         if (salvar) {
             try {
                 UsuarioDAO.inserir(usuario);
                 System.out.println("usuario incluido");
+            } catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
+                System.out.println("este usuario ja foi cadastrado :D");
             } catch (SQLException e) {
                 e.printStackTrace();
             }

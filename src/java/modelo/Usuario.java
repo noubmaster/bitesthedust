@@ -10,8 +10,8 @@ package modelo;
  */
 public class Usuario {
 
-    private int idUsuario;
-    private String login, senha, perfil;
+    private int idUsuario, tipo;
+    private String email, idR, perfil;
 
     public int getIdUsuario() {
         return idUsuario;
@@ -21,20 +21,28 @@ public class Usuario {
         this.idUsuario = idUsuario;
     }
 
-    public String getLogin() {
-        return login;
+    public int getTipo() {
+        return tipo;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getEmail() {
+        return email;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getIdR() {
+        return idR;
+    }
+
+    public void setIdR(String idR) {
+        this.idR = idR;
     }
 
     public String getPerfil() {
@@ -44,4 +52,6 @@ public class Usuario {
     public void setPerfil(String perfil) {
         this.perfil = perfil;
     }
+
+    
 }

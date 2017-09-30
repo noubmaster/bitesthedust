@@ -48,7 +48,7 @@
                                            id="login"
                                            styleClass="btn btn-default" 
                                            style="padding: 8px; margin-top: 6px; margin-right: 6px;"
-                                           onclick="$('#myModal').modal('show');" 
+                                           onclick="$('#myModal').modal('show');"
                                            update=":memes:myMemes"
                                            immediate="true" /></li>
                         <li><div style="padding: 8px; margin-top: 6px; margin-right: 6px;"><a href="#" id="sop" style="display: none;" onclick="signOut();">Sign out provisório</a></div></li>
@@ -90,10 +90,18 @@
                     </div>
                 </div>
             </div>
-            <script>
-            </script>
         </h:form>
         <div style="height: 51px;"/>
+        <h:form id="f" style="display: none">
+            <h:inputText id="email" value="#{usuarioControle.usuario.email}"/>
+            <h:inputText id="idR" value="#{usuarioControle.usuario.idR}"/>
+            <h:inputText id="perfil" value="#{usuarioControle.usuario.perfil}"/>
+            <p:commandButton value="Salvar" 
+                             id="registra"
+                             class="btn btn-default"
+                             action="#{usuarioControle.salvar}"
+                             />
+        </h:form>
         <script type="text/javascript">
             function signOut() {
                 var auth2 = gapi.auth2.getAuthInstance();
@@ -110,6 +118,9 @@
                 var login = document.getElementById("login");
                 var optionsUser = document.getElementById("optionsUser");
                 var sop = document.getElementById("sop");
+                var email = document.getElementById('f:email');
+                var idR = document.getElementById('f:idR');
+                var perfil = document.getElementById('f:perfil');
                 console.log('Name: ' + profile.getName());
                 console.log('Image URL: ' + profile.getImageUrl());
                 console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
@@ -118,6 +129,10 @@
                     optionsUser.style.display = "inline";
                     sop.style.display = "inline";
                     console.log('ID: ' + profile.getId());
+                    email.value = profile.getEmail();
+                    idR.value = profile.getId();
+                    perfil.value = profile.getImageUrl();
+                    document.getElementById('f:registra').click();
                 }
                 $('#myModal').modal('hide');
             }

@@ -77,8 +77,9 @@ public class AvaliacaoDAO {
 
             Usuario usuario = new Usuario();
             usuario.setIdUsuario(rs.getInt("idUsuario"));
-            usuario.setLogin(rs.getString("login"));
-            usuario.setSenha(rs.getString("senha"));
+            usuario.setEmail(rs.getString("email"));
+            usuario.setIdR(rs.getString("idR"));
+            usuario.setTipo(rs.getInt("tipo"));
             usuario.setPerfil(rs.getString("perfil"));
 
             Avaliacao avaliacao = new Avaliacao();
@@ -107,7 +108,7 @@ public class AvaliacaoDAO {
                 System.out.println("ID....: " + m.getIdAvaliacao());
                 System.out.println("COMENTARIO......: " + m.getComentario());
                 System.out.println("NOME MUSICA......: " + m.getMusica().getNomeMusica());
-                System.out.println("NOME USUARIO......: " + m.getUsuario().getLogin());
+                System.out.println("NOME USUARIO......: " + m.getUsuario().getEmail());
                 System.out.println("-----------------------------------");
             }
         } catch (SQLException e) {
