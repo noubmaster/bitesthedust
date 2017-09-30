@@ -26,17 +26,15 @@
                             <table class="table table-hover cATable">
                                 <thead class="cAThead">
                                     <tr class="cAThead">
-                                        <th>Nota</th>
-                                        <th>Usuario</th>
+                                        <th>Artista</th>
                                         <th>Musica</th>
                                         <th>Opções</th>
                                     </tr>
                                 </thead>
                                 <tbody class="cATbody">
-                                    <ui:repeat value="#{avaliacaoControle.avaliacoes}" var="q">
+                                    <ui:repeat value="#{composicaoControle.composicoes}" var="q">
                                         <tr class="cAThead">
-                                            <td>#{q.nota}</td>
-                                            <td>#{q.usuario.login}</td>
+                                            <td>#{q.artista.nomeArtista}</td>
                                             <td>#{q.musica.nomeMusica}</td>
                                             <td>
                                                 <!-- Botao do Modal de excluir -->
@@ -44,16 +42,16 @@
                                                     styleClass="btn btn-info btn-sm"
                                                     onclick="$('#modalExcluir').modal('show');"
                                                     immediate="true" >
-                                                    <f:setPropertyActionListener value="#{q}" target="#{avaliacaoControle.avaliacao}" />
+                                                    <f:setPropertyActionListener value="#{q}" target="#{composicaoControle.composicao}" />
                                                     <i class="glyphicon glyphicon-trash"/>
                                                 </p:commandLink>
                                                 <!-- Botao do Modal de Alterar -->
                                                 <p:commandLink class="btn btn-info btn-sm" 
-                                                               action="#{avaliacaoControle.preparaAlterar()}" 
+                                                               action="#{composicaoControle.preparaAlterar()}" 
                                                                onclick="$('#modalCadastro').modal('show');" 
                                                                update=":modalDeCadastro:cadastramento">
                                                     <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
-                                                    <f:setPropertyActionListener value="#{q}" target="#{avaliacaoControle.avaliacao}" />
+                                                    <f:setPropertyActionListener value="#{q}" target="#{composicaoControle.composicao}" />
                                                     <i class="glyphicon glyphicon-cog"/>
                                                 </p:commandLink>
                                             </td>
@@ -67,7 +65,7 @@
                 <!-- Botao do Modal de cadastro -->
                 <p:commandLink value="Novo" 
                                class="btn btn-lg btn-default" 
-                               action="#{avaliacaoControle.preparaIncluir()}" 
+                               action="#{composicaoControle.preparaIncluir()}" 
                                onclick="$('#modalCadastro').modal('show');" 
                                update=":modalDeCadastro:cadastramento">
                     <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
@@ -92,48 +90,31 @@
                             </div>
                             <div class="modal-body">
                                 <h:panelGrid columns="2" id="painel">
-                                    <label style="margin-right: 50px" for="nome">Nota</label>
-                                    <p:inputText 
-                                        style="width: 225px"
-                                        styleClass="form-control"
-                                        id="nome"
-                                        required="true"
-                                        maxlength="30"
-                                        value="#{avaliacaoControle.avaliacao.nota}"></p:inputText>
-                                    <label for="usuario">Usuario</label>
+                                    <label for="usuario">Artista</label>
                                     <h:selectOneMenu 
                                         style="width: 225px" 
                                         required="true" id="usuario" 
                                         class="btn btn-default dropdown-toggle" 
-                                        value="#{avaliacaoControle.idUsuario}">
+                                        value="#{composicaoControle.idArtista}">
                                         <f:selectItem itemValue="Selecione"/>
-                                        <f:selectItems value="#{usuarioControle.usuarios}" var="aux" itemValue="#{aux.idUsuario}" itemLabel="#{aux.login}"></f:selectItems>
+                                        <f:selectItems value="#{artistaControle.artistas}" var="aux" itemValue="#{aux.idArtista}" itemLabel="#{aux.nomeArtista}"></f:selectItems>
                                     </h:selectOneMenu>
                                     <label for="musica">Musica</label>
                                     <h:selectOneMenu 
                                         style="width: 225px" 
                                         required="true" id="musica" 
                                         class="btn btn-default dropdown-toggle" 
-                                        value="#{avaliacaoControle.idMusica}">
+                                        value="#{composicaoControle.idMusica}">
                                         <f:selectItem itemValue="Selecione"/>
                                         <f:selectItems value="#{musicaControle.musicas}" var="aux" itemValue="#{aux.idMusica}" itemLabel="#{aux.nomeMusica}"></f:selectItems>
                                     </h:selectOneMenu>
-                                    <label for="letra">Comentario</label>
-                                    <h:inputTextarea 
-                                        style="width: 450px; height: 200px; resize: none;" 
-                                        styleClass="form-control"
-                                        id="letra"
-                                        rows="5"
-                                        cols="33"
-                                        required="true"
-                                        value="#{avaliacaoControle.avaliacao.comentario}"></h:inputTextarea>
                                 </h:panelGrid>
                             </div>
                             <div class="modal-footer">
                                 <p:commandLink value="Salvar" 
                                                class="btn btn-default"
                                                update=":tabelaAvaliacao"
-                                               action="#{avaliacaoControle.salvar}"
+                                               action="#{composicaoControle.salvar}"
                                                oncomplete="$('#modalCadastro').modal('hide');"
                                                />
                                 <p:commandLink value="Fechar" 
@@ -168,7 +149,7 @@
                                                styleClass="btn btn-danger"
                                                oncomplete="$('#modalExcluir').modal('hide');" 
                                                update=":tabelaAvaliacao :modalDeCadastro"  
-                                               actionListener="#{avaliacaoControle.excluir()}"/>
+                                               actionListener="#{composicaoControle.excluir()}"/>
                                 <p:commandLink value="Não" 
                                                immediate="true" 
                                                styleClass="btn btn-default" 

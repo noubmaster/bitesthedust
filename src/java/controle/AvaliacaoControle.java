@@ -7,28 +7,38 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import modelo.Usuario;
 import modelo.Avaliacao;
 import modelo.Musica;
-import modelo.Usuario;
 
-/**
- *
- * @author Galen Marek
- */
 @ManagedBean
 @SessionScoped
 public class AvaliacaoControle {
 
     private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
-    private List<Musica> musicas = new ArrayList<Musica>();
-    private List<Usuario> usuarios = new ArrayList<Usuario>();
     private Avaliacao avaliacao = new Avaliacao();
-    private Musica musica = new Musica();
-    private Usuario usuario = new Usuario();
     private boolean salvar = false;
+    private int idUsuario = 0;
+    private int idMusica = 0;
 
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public int getIdMusica() {
+        return idMusica;
+    }
+
+    public void setIdMusica(int idMusica) {
+        this.idMusica = idMusica;
+    }
+    
     @PostConstruct
-    public void atualizarAvaliacaos() {
+    public void atualizaAvaliacoes() {
         try {
             avaliacoes = AvaliacaoDAO.getLista();
         } catch (SQLException e) {
@@ -37,40 +47,49 @@ public class AvaliacaoControle {
     }
 
     public void preparaIncluir() {
-        System.out.println("ta passando pelo incluir");
         salvar = true;
         avaliacao = new Avaliacao();
+        idUsuario = 0;
+        idMusica = 0;
     }
 
     public void preparaAlterar() {
         salvar = false;
+        idUsuario = avaliacao.getUsuario().getIdUsuario();
+        idMusica = avaliacao.getMusica().getIdMusica();
+        
     }
 
-    public void salvarAvaliacao() {
+    public void salvar() {
+        Usuario usuario = new Usuario();
+        Musica musica = new Musica();
+        usuario.setIdUsuario(idUsuario);
+        musica.setIdMusica(idMusica);
+        
+        avaliacao.setUsuario(usuario);
+        avaliacao.setMusica(musica);
+        
         if (salvar) {
             try {
                 AvaliacaoDAO.inserir(avaliacao);
-                System.out.println("avaliacao incluido");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
             try {
                 AvaliacaoDAO.alterar(avaliacao);
-                System.out.println("avaliacao alterado");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-
-        atualizarAvaliacaos();
+     
+        atualizaAvaliacoes();
     }
 
     public void excluir() {
         try {
             AvaliacaoDAO.excluir(avaliacao);
-            atualizarAvaliacaos();
-            System.out.println("avaliacao excluido");
+            atualizaAvaliacoes();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -84,22 +103,6 @@ public class AvaliacaoControle {
         this.avaliacoes = avaliacoes;
     }
 
-    public List<Musica> getMusicas() {
-        return musicas;
-    }
-
-    public void setMusicas(List<Musica> musicas) {
-        this.musicas = musicas;
-    }
-
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
-    }
-
     public Avaliacao getAvaliacao() {
         return avaliacao;
     }
@@ -107,29 +110,4 @@ public class AvaliacaoControle {
     public void setAvaliacao(Avaliacao avaliacao) {
         this.avaliacao = avaliacao;
     }
-
-    public Musica getMusica() {
-        return musica;
-    }
-
-    public void setMusica(Musica musica) {
-        this.musica = musica;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public boolean isSalvar() {
-        return salvar;
-    }
-
-    public void setSalvar(boolean salvar) {
-        this.salvar = salvar;
-    }
-
 }
