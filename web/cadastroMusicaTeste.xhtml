@@ -99,24 +99,24 @@
                                         id="nome"
                                         required="true"
                                         maxlength="30"
-                                        value="#{musicaControle.musica.nomeMusica}"/>
+                                        value="#{musicaControle.musica.nomeMusica}"></p:inputText>
                                     <label for="genero">Genero</label>
                                     <h:selectOneMenu 
                                         style="width: 225px" 
                                         required="true" id="genero" 
                                         class="btn btn-default dropdown-toggle" 
-                                        value="#{musicaControle.genero.idGenero}">
+                                        value="#{musicaControle.idGenero}">
                                         <f:selectItem itemValue="Selecione"/>
-                                        <f:selectItems value="#{musicaControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
+                                        <f:selectItems value="#{generoControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
                                     </h:selectOneMenu>
                                     <label for="album">Albums</label>
                                     <h:selectOneMenu 
                                         style="width: 225px" 
                                         required="true" id="album" 
                                         class="btn btn-default dropdown-toggle" 
-                                        value="#{musicaControle.musica.idMusica}">
+                                        value="#{musicaControle.idAlbum}">
                                         <f:selectItem itemValue="Selecione"/>
-                                        <f:selectItems value="#{musicaControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
+                                        <f:selectItems value="#{albumControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
                                     </h:selectOneMenu>
                                     <label for="letra">Letra</label>
                                     <h:inputTextarea 
@@ -126,14 +126,14 @@
                                         rows="5"
                                         cols="33"
                                         required="true"
-                                        value="#{musicaControle.musica.letra}"/>
+                                        value="#{musicaControle.musica.letra}"></h:inputTextarea>
                                 </h:panelGrid>
                             </div>
                             <div class="modal-footer">
                                 <p:commandLink value="Salvar" 
                                                class="btn btn-default"
                                                update=":tabelaMusica"
-                                               action="#{musicaControle.salvarMusica}"
+                                               action="#{musicaControle.salvar}"
                                                oncomplete="$('#modalCadastro').modal('hide');"
                                                />
                                 <p:commandLink value="Fechar" 
