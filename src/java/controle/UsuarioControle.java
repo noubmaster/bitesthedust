@@ -59,7 +59,14 @@ public class UsuarioControle {
     }
 
     public void pegerIdR() {
-        
+        try {
+            UsuarioDAO.getTipo(usuario);
+            atualizarUsuarios();
+            tipo = usuario.getTipo();
+            System.out.println(tipo);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void salvar() {

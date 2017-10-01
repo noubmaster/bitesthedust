@@ -33,9 +33,8 @@ public class UsuarioDAO {
         con.close();
     }
 
-    public static List<UsuarioControle> getTipo() throws SQLException {
-        List<UsuarioControle> lista = new ArrayList<UsuarioControle>();
-        UsuarioControle usuario = new UsuarioControle();
+    public static List<Usuario> getTipo(Usuario usuario) throws SQLException {
+        List<Usuario> lista = new ArrayList<Usuario>();
         Connection con = Conexao.getConnection();
         String sql = "SELECT `tipo` FROM `memes`.`usuario` WHERE  `idR` = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
@@ -99,20 +98,6 @@ public class UsuarioDAO {
         con.close();
 
         return lista;
-    }
-
-    public static void main(String[] args) {
-
-        try {
-            List<UsuarioControle> lista = getTipo();
-
-            for (UsuarioControle m : lista) {
-                System.out.println("ID....: " + m.getTipo());
-                System.out.println("-----------------------------------");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }
