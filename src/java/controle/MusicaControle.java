@@ -7,89 +7,89 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import modelo.Musica;
 import modelo.Genero;
+import modelo.Musica;
 import modelo.Album;
 
-/**
- *
- * @author Galen Marek
- */
 @ManagedBean
 @SessionScoped
 public class MusicaControle {
+
     private List<Musica> musicas = new ArrayList<Musica>();
-    private List<Genero> generos = new ArrayList<Genero>();
-    private List<Album> albums = new ArrayList<Album>();
     private Musica musica = new Musica();
-    private Genero genero = new Genero();
-    private Album album = new Album();
     private boolean salvar = false;
+    private int idGenero = 0;
+    private int idAlbum = 0;
+
+    public int getIdGenero() {
+        return idGenero;
+    }
+
+    public void setIdGenero(int idGenero) {
+        this.idGenero = idGenero;
+    }
+
+    public int getIdAlbum() {
+        return idAlbum;
+    }
+
+    public void setIdAlbum(int idAlbum) {
+        this.idAlbum = idAlbum;
+    }
     
     @PostConstruct
-    public void atualizarMusicas() {
+    public void atualizaMusicas() {
         try {
             musicas = MusicaDAO.getLista();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
+
     public void preparaIncluir() {
-        System.out.println("ta passando pelo incluir");
         salvar = true;
         musica = new Musica();
+        idGenero = 0;
+        idAlbum = 0;
     }
-    
+
     public void preparaAlterar() {
         salvar = false;
-    }
-    
-    
-    public void salvarMusica() {
-        if (salvar) {
-           try{
-               MusicaDAO.inserir(musica);
-               System.out.println("musica incluido");
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
-        }else{
-            try{
-                MusicaDAO.alterar(musica);
-                System.out.println("musica alterado");
-            } catch (SQLException e) {
-               e.printStackTrace();
-           }
-        }
+        idGenero = musica.getGenero().getIdGenero();
+        idAlbum = musica.getAlbum().getIdAlbum();
         
-        atualizarMusicas();
     }
-//    public void salvar() {
-//        if (salvar) {
-//           try{
-//               MusicaDAO.inserir(musica, album, genero);
-//               System.out.println("musica incluido");
-//           } catch (SQLException e) {
-//               e.printStackTrace();
-//           }
-//        }else{
-//            try{
-//                MusicaDAO.alterar(musica, album, genero);
-//                System.out.println("musica alterado");
-//            } catch (SQLException e) {
-//               e.printStackTrace();
-//           }
-//        }
-//        
-//        atualizarMusicas();
-//    }
-    
+
+    public void salvar() {
+        Genero genero = new Genero();
+        Album album = new Album();
+        genero.setIdGenero(idGenero);
+        album.setIdAlbum(idAlbum);
+        
+        musica.setGenero(genero);
+        musica.setAlbum(album);
+        
+        if (salvar) {
+            try {
+                MusicaDAO.inserir(musica);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                MusicaDAO.alterar(musica);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+     
+        atualizaMusicas();
+    }
+
     public void excluir() {
         try {
             MusicaDAO.excluir(musica);
-            atualizarMusicas();
-            System.out.println("musica excluido");
+            atualizaMusicas();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -110,45 +110,4 @@ public class MusicaControle {
     public void setMusica(Musica musica) {
         this.musica = musica;
     }
-
-    public Genero getGenero() {
-        return genero;
-    }
-
-    public void setGenero(Genero genero) {
-        this.genero = genero;
-    }
-
-    public Album getAlbum() {
-        return album;
-    }
-
-    public void setAlbum(Album album) {
-        this.album = album;
-    }
-
-    public boolean isSalvart() {
-        return salvar;
-    }
-
-    public void setSalvart(boolean salvar) {
-        this.salvar = salvar;
-    }
-
-    public List<Genero> getGeneros() {
-        return generos;
-    }
-
-    public void setGeneros(List<Genero> generos) {
-        this.generos = generos;
-    }
-
-    public List<Album> getAlbums() {
-        return albums;
-    }
-
-    public void setAlbums(List<Album> albums) {
-        this.albums = albums;
-    }
-
 }

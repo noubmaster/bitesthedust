@@ -5,7 +5,7 @@ package modelo;
  * @author Galen Marek
  */
 public class Musica {
-    private int idMusica, idAlbumMusica, idGeneroMusica;
+    private int idMusica;
     private String nomeMusica, letra;
     private float score;
     private Album album;
@@ -59,21 +59,4 @@ public class Musica {
         this.idMusica = idMusica;
     }
 
-    public int getIdAlbumMusica() {
-        return idAlbumMusica;
-    }
-
-    public void setIdAlbumMusica(int idAlbumMusica) {
-        this.idAlbumMusica = idAlbumMusica;
-    }
-
-    public int getIdGeneroMusica() {
-        return idGeneroMusica;
-    }
-
-    public void setIdGeneroMusica(int idGeneroMusica) {
-        this.idGeneroMusica = idGeneroMusica;
-    }
-    
-    
 }

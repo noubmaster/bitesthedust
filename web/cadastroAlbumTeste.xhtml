@@ -6,53 +6,52 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Cadastro de Generos</title>
+        <title>Cadastro de Albums</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <script src="https://apis.google.com/js/platform.js" async="defer"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="css/listaGeneros.css"/>
+        <link rel="stylesheet" href="css/listaAlbuns.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
     </h:head>
     <h:body>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        <a href="#" onclick="signOut();">Sign out</a>
+        <ui:include src="ui/navbar.xhtml"/>
         <div>
-            <h1>Lista Generos Musicais</h1>
-            <h:form id="tabelaGenero">
+            <h1>Lista Albums Musicais</h1>
+            <h:form id="tabelaAlbum">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4">
-                            <table class="table table-hover cGTable">
-                                <thead class="cGThead">
-                                    <tr class="cGThead">
-                                        <th>Tipos</th>
+                            <table class="table table-hover cATable">
+                                <thead class="cAThead">
+                                    <tr class="cAThead">
+                                        <th>Nomes</th>
+                                        <th>Anos</th>
                                         <th>Opções</th>
                                     </tr>
                                 </thead>
-                                <tbody class="cGTbody">
-                                    <ui:repeat value="#{generoControle.generos}" var="q">
-                                        <tr class="cGThead">
-                                            <td>#{q.nome}</td>
+                                <tbody class="cATbody">
+                                    <ui:repeat value="#{albumControle.albums}" var="q">
+                                        <tr class="cAThead">
+                                            <td>#{q.nomeAlbum}</td>
+                                            <td>#{q.ano}</td>
                                             <td>
                                                 <!-- Botao do Modal de excluir -->
                                                 <p:commandLink
                                                     styleClass="btn btn-info btn-sm"
                                                     onclick="$('#modalExcluir').modal('show');"
                                                     immediate="true" >
-                                                    <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
+                                                    <f:setPropertyActionListener value="#{q}" target="#{albumControle.album}" />
                                                     <i class="glyphicon glyphicon-trash"/>
                                                 </p:commandLink>
                                                 <!-- Botao do Modal de Alterar -->
                                                 <p:commandLink class="btn btn-info btn-sm" 
-                                                               action="#{generoControle.preparaAlterar()}" 
+                                                               action="#{albumControle.preparaAlterar()}" 
                                                                onclick="$('#modalCadastro').modal('show');" 
                                                                update=":modalDeCadastro:cadastramento">
                                                     <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
-                                                    <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
+                                                    <f:setPropertyActionListener value="#{q}" target="#{albumControle.album}" />
                                                     <i class="glyphicon glyphicon-cog"/>
                                                 </p:commandLink>
                                             </td>
@@ -66,16 +65,11 @@
                 <!-- Botao do Modal de cadastro -->
                 <p:commandLink value="Novo" 
                                class="btn btn-lg btn-default" 
-                               action="#{generoControle.preparaIncluir()}" 
+                               action="#{albumControle.preparaIncluir()}" 
                                onclick="$('#modalCadastro').modal('show');" 
                                update=":modalDeCadastro:cadastramento">
                     <p:resetInput target=":modalDeCadastro:cadastramento:painel" />
                 </p:commandLink>
-            </h:form>
-            <a href="login.xhtml">volta pro login</a>
-            <h:form id="f">
-                <h:inputText id="name" disabled="true" value="#{usuarioControle.usuario.login}"/>
-                <h:inputText id="profile" disabled="true" value="#{usuarioControle.usuario.perfil}"/>
             </h:form>
         </div>
         <!-- Modal Cadastro -->
@@ -96,24 +90,28 @@
                             </div>
                             <div class="modal-body">
                                 <h:panelGrid columns="2" id="painel">
-                                    <label for="nome">Nome do Genero</label>
+                                    <label for="nome">Nome do Album</label>
                                     <p:inputText id="nome"
                                                  required="true"
                                                  maxlength="30"
-                                                 value="#{generoControle.genero.nome}"/>
+                                                 value="#{albumControle.album.nomeAlbum}"/>
+                                    <label for="ano">Ano do Album</label>
+                                    <p:inputText id="ano"
+                                                 required="true"
+                                                 value="#{albumControle.album.ano}"/>
                                 </h:panelGrid>
                             </div>
                             <div class="modal-footer">
                                 <p:commandLink value="Salvar" 
                                                class="btn btn-default"
-                                               update=":tabelaGenero"
-                                               action="#{generoControle.salvar}"
+                                               update=":tabelaAlbum"
+                                               action="#{albumControle.salvar}"
                                                oncomplete="$('#modalCadastro').modal('hide');"
                                                />
                                 <p:commandLink value="Não" 
                                                immediate="true" 
                                                styleClass="btn btn-default" 
-                                               oncomplete="$('#modalCadastro').modal('hide');"/> 
+                                               oncomplete="$('#modalCadastro').modal('hide');"/>
                             </div>
                         </h:form>
                     </div>
@@ -141,8 +139,8 @@
                                 <p:commandLink value="Sim" 
                                                styleClass="btn btn-danger"
                                                oncomplete="$('#modalExcluir').modal('hide');" 
-                                               update=":tabelaGenero :modalDeCadastro"  
-                                               actionListener="#{generoControle.excluir()}"/>
+                                               update=":tabelaAlbum :modalDeCadastro"  
+                                               actionListener="#{albumControle.excluir()}"/>
                                 <p:commandLink value="Não" 
                                                immediate="true" 
                                                styleClass="btn btn-default" 
@@ -153,24 +151,5 @@
                 </div>
             </div>
         </h:form>
-        <script type="text/javascript">
-            function onSignIn(googleUser) {
-                var profile = googleUser.getBasicProfile();
-                var a = document.getElementById("f:name");
-                a.value = profile.getName();
-                var b = document.getElementById("f:profile");
-                b.value = profile.getEmail();
-            }
-            function signOut() {
-                var auth2 = gapi.auth2.getAuthInstance();
-                auth2.signOut().then(function () {
-                    console.log('User signed out.');
-                });
-                var a = document.getElementById("f:name");
-                a.value = null;
-                var b = document.getElementById("f:profile");
-                b.value = null;
-            }
-        </script>
     </h:body>
 </html>

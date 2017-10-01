@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <script src="https://apis.google.com/js/api:client.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
+        <script>
+            var googleUser = {};
+            var startApp = function () {
+                gapi.load('auth2', function () {
+                    auth2 = gapi.auth2.init({
+                        client_id: '488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com',
+                        cookiepolicy: 'single_host_origin'
+                    });
+                    attachSignin(document.getElementById('customBtn'));
+                });
+            };
+
+            function attachSignin(element) {
+                console.log(element.id);
+                auth2.attachClickHandler(element, {},
+                        function (googleUser) {
+                            document.getElementById('name').innerText = "Signed in: " +
+                                    googleUser.getBasicProfile().getName();
+
+                        }, function (error) {
+                    alert(JSON.stringify(error, undefined, 2));
+                });
+            }
+            function onSignIn(googleUser) {
+                var profile = googleUser.getBasicProfile();
+                var customBtn = document.getElementById("loginForm:customBtn");
+                if (profile.getId() !== null) {
+
+                }
+            }
+        </script>
+        <style type="text/css">
+            .sign-in {
+                background: url('svg/btn_google_light_normal_ios.svg') #ffffff;
+                background-position: -9px -7px;
+                background-repeat: no-repeat;
+                background-size: 39px 43px;
+                padding-left: 41px;
+                color: #000;
+            }
+            .sign-in:hover {
+                background: url('svg/btn_google_light_pressed_ios.svg') #eeeeee;
+                background-position: -9px -7px;
+                background-repeat: no-repeat;
+                background-size: 39px 43px;
+                padding-left: 41px;
+                color: #000;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div style="height: 500px"></div>
+            <h:commandLink class="btn btn-default" value="asd" type="buton" id="customBtn" onclick="onSignIn();" style="padding: 0px"><img style="height: 37px; width: 37px;" src="svg/btn_google_light_normal_ios.svg"/></h:commandLink>
+        <div id="name"></div>
+        <script>startApp();</script>
+    </h:body>
+</html>

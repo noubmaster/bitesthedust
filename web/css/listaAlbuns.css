@@ -1,16 +1,16 @@
-.cGThead{
+.cAThead{
     width: 100%;
     display: inline-table;
     height:60px;
     table-layout: fixed;
 }
 
-.cGTable{
+.cATable{
     height:300px; 
     display: -moz-groupbox;
 }
 
-.cGTbody{
+.cATbody{
     overflow-y: scroll;
     height: 200px;
     width: 100%;

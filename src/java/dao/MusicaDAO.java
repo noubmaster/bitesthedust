@@ -20,13 +20,12 @@ public class MusicaDAO {
     public static void inserir(Musica musica) throws SQLException{
         Connection con = Conexao.getConnection();
         String sql
-                = "INSERT INTO `memes`.`musica` (`nomeMusica`, `score`, `letra`, `idAlbumMusica`, `idGeneroMusica`) VALUES (?, ?, ?, ?, ?);";
+                = "INSERT INTO `memes`.`musica` (`nomeMusica`, `letra`, `idAlbumMusica`, `idGeneroMusica`) VALUES (?, ?, ?, ?);";
         PreparedStatement stmt = con.prepareStatement(sql);       
         stmt.setString(1, musica.getNomeMusica());
-        stmt.setFloat(2, musica.getScore());
-        stmt.setString(3, musica.getLetra());
-        stmt.setInt(4, musica.getAlbum().getIdAlbum());  
-        stmt.setInt(5, musica.getGenero().getIdGenero());
+        stmt.setString(2, musica.getLetra());
+        stmt.setInt(3, musica.getAlbum().getIdAlbum());  
+        stmt.setInt(4, musica.getGenero().getIdGenero());
 
         stmt.execute();
         stmt.close();

@@ -9,12 +9,10 @@ public class Genero {
     private String nome;
 
     public int getIdGenero() {
-        System.out.println("pegou idgenero");
         return idGenero;
     }
 
     public void setIdGenero(int idGenero) {
-        System.out.println("setou idgenero");
         this.idGenero = idGenero;
     }
 

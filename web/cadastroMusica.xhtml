@@ -31,7 +31,7 @@
                         <f:selectItems value="#{generoControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
                     </h:selectOneMenu>
                     <br/>
-                    <h:commandButton actionListener="#{musicaControle.salvarMusica()}" value="Submit"/>
+                    <h:commandButton actionListener="#{musicaControle.salvar()}" value="Submit"/>
                 </h:panelGrid>
             </h:form>    
             <h1>Lista</h1>
