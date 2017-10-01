@@ -20,6 +20,23 @@ import util.Conexao;
 
 public class BuscaDAO {
 
+    public static List<Busca> searchMain() throws SQLException {
+        List<Busca> lista = new ArrayList<Busca>();
+        Connection con = Conexao.getConnection();
+        String sql = "select * from musica, artista WHERE musica.nomeMusica like '%?%' "
+                + "or musica.letra like '%?%' or artista.nomeArtista like '%?%';";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+
+        }
+        stmt.close();
+        rs.close();
+        con.close();
+
+        return lista;
+    }
+
     public static List<Busca> getListaMusicas() throws SQLException {
         List<Busca> lista = new ArrayList<Busca>();
         Connection con = Conexao.getConnection();

@@ -1,0 +1,1 @@
+select * from musica, artista, composicao, participa WHERE musica.nomeMusica like '%van halen%' and musica.letra like '%van halen%' and not artista.nomeArtista like '%van halen%' and musica.idMusica=composicao.Musica_idMusica and musica.idMusica=participa.Musica_idMusica and artista.idArtista=composicao.Artista_idArtista and artista.idArtista=participa.Artista_idArtista;
