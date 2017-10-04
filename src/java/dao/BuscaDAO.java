@@ -23,12 +23,43 @@ public class BuscaDAO {
     public static List<Busca> searchMain() throws SQLException {
         List<Busca> lista = new ArrayList<Busca>();
         Connection con = Conexao.getConnection();
-        String sql = "select * from musica, artista WHERE musica.nomeMusica like '%?%' "
-                + "or musica.letra like '%?%' or artista.nomeArtista like '%?%';";
+        String sql = "SELECT\n"
+                + "*\n"
+                + "FROM\n"
+                + "	musica m\n"
+                + "LEFT JOIN\n"
+                + "	participa p ON p.Musica_idMusica = m.idMusica\n"
+                + "LEFT JOIN\n"
+                + "	artista a ON p.Artista_idArtista = a.idArtista\n"
+                + "WHERE\n"
+                + "	m.nomeMusica like '%?%' or\n"
+                + "	m.letra like '%?%' or\n"
+                + "	a.nomeArtista like '%?%'\n"
+                + "GROUP BY\n"
+                + "	m.idMusica";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
+            Musica musica = new Musica();
+            musica.setIdMusica(rs.getInt("idMusica"));
+            musica.setNomeMusica(rs.getString("nomeMusica"));
+            musica.setScore(rs.getFloat("score"));
+            musica.setLetra(rs.getString("letra"));
 
+            Artista artista = new Artista();
+            artista.setIdArtista(rs.getInt("idArtista"));
+            artista.setNomeArtista(rs.getString("nomeArtista"));
+
+            Participa participa = new Participa();
+            participa.setPapel(rs.getString("papel"));
+            participa.setArtista(artista);
+            participa.setMusica(musica);
+
+            Busca busca = new Busca();
+            busca.setArtista(artista);
+            busca.setMusica(musica);
+            busca.setParticipa(participa);
+            lista.add(busca);
         }
         stmt.close();
         rs.close();
@@ -95,14 +126,10 @@ public class BuscaDAO {
     public static void main(String[] args) {
 
         try {
-            List<Busca> lista = getListaMusicas();
+            List<Busca> lista = searchMain();
 
             for (Busca m : lista) {
-                System.out.println("ARTISTA....: " + m.getAlbum().getNomeAlbum());
                 System.out.println("MUSICA......: " + m.getArtista().getNomeArtista());
-                System.out.println("MUSICA......: " + m.getComposicao().getArtista().getNomeArtista());
-                System.out.println("MUSICA......: " + m.getComposicao().getMusica().getNomeMusica());
-                System.out.println("MUSICA......: " + m.getGenero().getNome());
                 System.out.println("MUSICA......: " + m.getMusica().getNomeMusica());
                 System.out.println("MUSICA......: " + m.getParticipa().getArtista().getNomeArtista());
                 System.out.println("MUSICA......: " + m.getParticipa().getMusica().getNomeMusica());

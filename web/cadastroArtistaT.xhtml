@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/lista.css"/>
         <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
         <script src="https://apis.google.com/js/platform.js"></script>
     </h:head>
@@ -72,32 +73,154 @@
             <div style="height: 51px;"/>
             <!-- Checagem de usuario -->
             <h:form id="f" style="display: none">
-                <p:panel id="panel">
-                    <p:inputText id="email" value="#{usuarioControle.usuario.email}"/>
-                    <p:inputText id="idR" value="#{usuarioControle.usuario.idR}"/>
-                    <p:inputText id="perfil" value="#{usuarioControle.usuario.perfil}"/>
-                    <p:commandButton value="Salvar" 
-                                     id="registra"
-                                     class="btn btn-default"
-                                     action="#{usuarioControle.salvar}">
-                    </p:commandButton>
-                </p:panel>
+                <h:inputText id="email" value="#{usuarioControle.usuario.email}"/>
+                <h:inputText id="idR" value="#{usuarioControle.usuario.idR}"/>
+                <h:inputText id="perfil" value="#{usuarioControle.usuario.perfil}"/>
+                <p:commandButton value="Salvar" 
+                                 id="registra"
+                                 class="btn btn-default"
+                                 action="#{usuarioControle.salvar}"
+                                 />
             </h:form>
             <h:form id="f1" style="display: none">
-                <p:panel id="panel">
-                    <p:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
-                    <p:inputText id="idR" value="#{usuarioControle.idR}"/>
-                    <p:commandButton value="Salvar" 
-                                     id="registra"
-                                     class="btn btn-default"
-                                     update="f1"
-                                     actionListener="#{usuarioControle.pegerIdR()}">
-                    </p:commandButton>
-                </p:panel>
+                <p:inputText id="idR" value="#{usuarioControle.idR}"/>
+                <p:commandButton value="Salvar" 
+                                 id="registra"
+                                 class="btn btn-default"
+                                 update="f1"
+                                 action="#{usuarioControle.pegerIdR()}"
+                                 />
+                <p:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
+            </h:form>
+            <!-- Inicio Pagina de cadastro -->
+            <h1>Cadastro Artistas Musicais</h1>
+            <h:form id="tabelaArtista">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <table class="table table-hover cTable">
+                                <thead class="cThead">
+                                    <tr class="cThead">
+                                        <th>Tipos</th>
+                                        <th>Opções</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cTbody">
+                                    <ui:repeat value="#{artistaControle.artistas}" var="q">
+                                        <tr class="cThead">
+                                            <td>#{q.nomeArtista}</td>
+                                            <td>
+                                                <!-- Botao do Modal de excluir -->
+                                                <p:commandLink
+                                                    styleClass="btn btn-info btn-sm"
+                                                    onclick="$('#modalExcluir').modal('show');"
+                                                    immediate="true" >
+                                                    <f:setPropertyActionListener value="#{q}" target="#{artistaControle.artista}" />
+                                                    <i class="glyphicon glyphicon-trash"/>
+                                                </p:commandLink>
+                                                <!-- Botao do Modal de Alterar -->
+                                                <p:commandLink class="btn btn-info btn-sm" 
+                                                               action="#{artistaControle.preparaAlterar()}" 
+                                                               onclick="$('#modalCadastro').modal('show');" 
+                                                               update=":cadastramento">
+                                                    <p:resetInput target=":cadastramento:painel" />
+                                                    <f:setPropertyActionListener value="#{q}" target="#{artistaControle.artista}" />
+                                                    <i class="glyphicon glyphicon-cog"/>
+                                                </p:commandLink>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>                                        
+                        </div>                       
+                    </div>
+                </div>
+                <!-- Botao do Modal de cadastro -->
+                <p:commandLink value="Novo" 
+                               class="btn btn-lg btn-default" 
+                               action="#{artistaControle.preparaIncluir()}" 
+                               onclick="$('#modalCadastro').modal('show');" 
+                               update=":cadastramento">
+                    <p:resetInput target=":cadastramento:painel" />
+                </p:commandLink>
             </h:form>
         </div>
+        <!-- Modal Cadastro -->
+            <div class="modal fade" 
+                 id="modalCadastro" 
+                 tabindex="-1" role="dialog" 
+                 aria-labelledby="modalCadastro" 
+                 aria-hidden="true" 
+                 data-keyboard="false" 
+                 data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <h:form id="cadastramento">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Registrar</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h:panelGrid columns="2" id="painel">
+                                    <label for="nome">Nome do Artista</label>
+                                    <p:inputText id="nome"
+                                                 required="true"
+                                                 maxlength="30"
+                                                 value="#{artistaControle.artista.nomeArtista}"/>
+                                </h:panelGrid>
+                            </div>
+                            <div class="modal-footer">
+                                <p:commandLink value="Salvar" 
+                                               class="btn btn-default"
+                                               update=":tabelaArtista"
+                                               action="#{artistaControle.salvar}"
+                                               oncomplete="$('#modalCadastro').modal('hide');"
+                                               />
+                                <p:commandLink value="Não" 
+                                               immediate="true" 
+                                               styleClass="btn btn-default" 
+                                               oncomplete="$('#modalCadastro').modal('hide');"/> 
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Modal Excluir -->
+        <h:form id="modalDeExcluir">
+            <div class="modal fade" 
+                 id="modalExcluir" 
+                 tabindex="-1" role="dialog" 
+                 aria-labelledby="modalExcluir" 
+                 aria-hidden="true" 
+                 data-keyboard="false" 
+                 data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <h:form id="exclusao">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Tens certeza da exclusão?</h4>
+                            </div>
+                            <h:panelGroup layout="block" styleClass="modal-footer">
+                                <p:commandLink value="Sim" 
+                                               styleClass="btn btn-danger"
+                                               oncomplete="$('#modalExcluir').modal('hide');" 
+                                               update=":tabelaArtista"  
+                                               actionListener="#{artistaControle.excluir()}"/>
+                                <p:commandLink value="Não" 
+                                               immediate="true" 
+                                               styleClass="btn btn-default" 
+                                               oncomplete="$('#modalExcluir').modal('hide');"/> 
+                            </h:panelGroup>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <!-- Fim Pagina de cadastro -->
         <!-- botao do login parte 2 -->
-        <div id="loginIfBlock" style="display: none">
+        <div id="loginIfBlock" >
             <p:commandLink value="Log In"
                            styleClass="btn btn-default" 
                            style="padding: 8px; margin-top: 6px; margin-right: 6px;"
@@ -133,16 +256,15 @@
                 </div>
             </div>
         </h:form>
-        <script type="text/javascript">
+  <script type="text/javascript">
             var currentPath = window.location.pathname;
             var currentPge = window.location.href;
-            var block = document.getElementById("block");
+            var block = document.getElementById("block");            
             var loginIfBlock = document.getElementById("loginIfBlock");
             var tipo = document.getElementById("f1:tipoUser").value;
             var admUser = document.getElementById("admUser");
-
-            if (currentPath === "/memes/faces/cadastroGeneroT.xhtml" ||
-                    currentPath === "/memes/faces/cadastroGeneroT.xhtml#") {
+            if (currentPath === "/memes/faces/cadastroArtistaT.xhtml" ||
+                    currentPath === "/memes/faces/cadastroArtistaT.xhtml#") {
                 console.log(tipo);
                 if (tipo === "0") {
                     block.style.display = "none";
@@ -153,7 +275,7 @@
                 }
             }
             ;
-
+            
             if (tipo === "0") {
                 admUser.style.display = "none";
             } else {
@@ -167,10 +289,9 @@
                     console.log('User signed out.');
                     login.style.display = "inline";
                     optionsUser.style.display = "none";
+
                 });
-                idRGet = null;
-                idR.value = idRGet;
-                idR2.value = idRGet;
+                document.getElementById('f1:registra').click();
                 location.reload();
             }
 
@@ -182,18 +303,16 @@
                 var idR = document.getElementById('f:idR');
                 var idR2 = document.getElementById('f1:idR');
                 var perfil = document.getElementById('f:perfil');
-                var idRGet;
                 console.log('Name: ' + profile.getName());
                 console.log('Image URL: ' + profile.getImageUrl());
                 console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
                 if (profile.getId() !== null) {
-                    idRGet = profile.getId();
                     login.style.display = "none";
                     optionsUser.style.display = "inline";
                     console.log('ID: ' + profile.getId());
                     email.value = profile.getEmail();
-                    idR.value = idRGet;
-                    idR2.value = idRGet;
+                    idR.value = profile.getId();
+                    idR2.value = profile.getId();
                     perfil.value = profile.getImageUrl();
                     document.getElementById('f:registra').click();
                     document.getElementById('f1:registra').click();

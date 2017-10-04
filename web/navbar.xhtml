@@ -37,10 +37,10 @@
                                 <button class="btn btn-default dropdown-toggle" id="admUser" style="display: none; padding: 8px; margin-top: 6px; margin-right: 6px;" type="button" data-toggle="dropdown"> Admin Options
                                     <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="/memes/faces/cadastroMusicaT.xhtml">Cadastro Musica</a></li>
-                                    <li><a href="/memes/faces/cadastroGeneroT.xhtml">Cadastro Genero</a></li>
-                                    <li><a href="/memes/faces/cadastroAlbumT.xhtml">Cadastro Album</a></li>
-                                    <li><a href="/memes/faces/cadastroArtistaT.xhtml">Cadastro Artista</a></li>
+                                    <li><a href="/memes/faces/cadastroMusicaTeste.xhtml">MusicaTeste</a></li>
+                                    <li><a href="/memes/faces/cadastroGeneroT.xhtml">GeneroTeste</a></li>
+                                    <li><a href="/memes/faces/cadastroAlbumTeste.xhtml">AlbumTeste</a></li>
+                                    <li><a href="/memes/faces/cadastroArtistaT.xhtml">ArtistaTeste</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -58,6 +58,7 @@
                                                onclick="$('#myModal').modal('show');"
                                                update=":memes:myMemes"
                                                immediate="true" /></li>
+                            <li><div style="padding: 8px; margin-top: 6px; margin-right: 6px;"><a href="#" id="sop" style="display: none;" onclick="signOut();">Sign out provisório</a></div></li>
                             <li class="dropdown">
                                 <button class="btn btn-default dropdown-toggle" id="optionsUser" style="display: none; padding: 8px; margin-top: 6px; margin-right: 6px;" type="button" data-toggle="dropdown">Options
                                     <span class="caret"></span></button>
@@ -72,32 +73,28 @@
             <div style="height: 51px;"/>
             <!-- Checagem de usuario -->
             <h:form id="f" style="display: none">
-                <p:panel id="panel">
-                    <p:inputText id="email" value="#{usuarioControle.usuario.email}"/>
-                    <p:inputText id="idR" value="#{usuarioControle.usuario.idR}"/>
-                    <p:inputText id="perfil" value="#{usuarioControle.usuario.perfil}"/>
-                    <p:commandButton value="Salvar" 
-                                     id="registra"
-                                     class="btn btn-default"
-                                     action="#{usuarioControle.salvar}">
-                    </p:commandButton>
-                </p:panel>
+                <h:inputText id="email" value="#{usuarioControle.usuario.email}"/>
+                <h:inputText id="idR" value="#{usuarioControle.usuario.idR}"/>
+                <h:inputText id="perfil" value="#{usuarioControle.usuario.perfil}"/>
+                <p:commandButton value="Salvar" 
+                                 id="registra"
+                                 class="btn btn-default"
+                                 action="#{usuarioControle.salvar}"
+                                 />
             </h:form>
             <h:form id="f1" style="display: none">
-                <p:panel id="panel">
-                    <p:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
-                    <p:inputText id="idR" value="#{usuarioControle.idR}"/>
-                    <p:commandButton value="Salvar" 
-                                     id="registra"
-                                     class="btn btn-default"
-                                     update="f1"
-                                     actionListener="#{usuarioControle.pegerIdR()}">
-                    </p:commandButton>
-                </p:panel>
+                <p:inputText id="idR" value="#{usuarioControle.idR}"/>
+                <p:commandButton value="Salvar" 
+                                 id="registra"
+                                 class="btn btn-default"
+                                 update="f1"
+                                 action="#{usuarioControle.pegerIdR()}"
+                                 />
+                <p:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
             </h:form>
         </div>
         <!-- botao do login parte 2 -->
-        <div id="loginIfBlock" style="display: none">
+        <div id="loginIfBlock" >
             <p:commandLink value="Log In"
                            styleClass="btn btn-default" 
                            style="padding: 8px; margin-top: 6px; margin-right: 6px;"
@@ -137,12 +134,13 @@
             var currentPath = window.location.pathname;
             var currentPge = window.location.href;
             var block = document.getElementById("block");
+            var block2 = document.getElementById("block2");
             var loginIfBlock = document.getElementById("loginIfBlock");
-            var tipo = document.getElementById("f1:tipoUser").value;
-            var admUser = document.getElementById("admUser");
-
-            if (currentPath === "/memes/faces/cadastroGeneroT.xhtml" ||
-                    currentPath === "/memes/faces/cadastroGeneroT.xhtml#") {
+            if (currentPath === "/memes/faces/navbar.xhtml" ||
+                    currentPath === "/memes/faces/navbar.xhtml#" ||
+                    currentPath === "/memes/faces/cadastroArtistaTeste.xhtml" ||
+                    currentPath === "/memes/faces/cadastroArtistaTeste.xhtml#") {
+                var tipo = document.getElementById("f1:tipoUser").value;
                 console.log(tipo);
                 if (tipo === "0") {
                     block.style.display = "none";
@@ -153,24 +151,16 @@
                 }
             }
             ;
-
-            if (tipo === "0") {
-                admUser.style.display = "none";
-            } else {
-                admUser.style.display = "inline";
-            }
-            ;
-
             function signOut() {
                 var auth2 = gapi.auth2.getAuthInstance();
                 auth2.signOut().then(function () {
                     console.log('User signed out.');
                     login.style.display = "inline";
                     optionsUser.style.display = "none";
+                    sop.style.display = "none";
+
                 });
-                idRGet = null;
-                idR.value = idRGet;
-                idR2.value = idRGet;
+                document.getElementById('f1:registra').click();
                 location.reload();
             }
 
@@ -178,22 +168,22 @@
                 var profile = googleUser.getBasicProfile();
                 var login = document.getElementById("login");
                 var optionsUser = document.getElementById("optionsUser");
+                var sop = document.getElementById("sop");
                 var email = document.getElementById('f:email');
                 var idR = document.getElementById('f:idR');
                 var idR2 = document.getElementById('f1:idR');
                 var perfil = document.getElementById('f:perfil');
-                var idRGet;
                 console.log('Name: ' + profile.getName());
                 console.log('Image URL: ' + profile.getImageUrl());
                 console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
                 if (profile.getId() !== null) {
-                    idRGet = profile.getId();
                     login.style.display = "none";
                     optionsUser.style.display = "inline";
+                    sop.style.display = "inline";
                     console.log('ID: ' + profile.getId());
                     email.value = profile.getEmail();
-                    idR.value = idRGet;
-                    idR2.value = idRGet;
+                    idR.value = profile.getId();
+                    idR2.value = profile.getId();
                     perfil.value = profile.getImageUrl();
                     document.getElementById('f:registra').click();
                     document.getElementById('f1:registra').click();

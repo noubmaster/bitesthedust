@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/lista.css"/>
         <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
         <script src="https://apis.google.com/js/platform.js"></script>
     </h:head>
@@ -33,10 +34,16 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="/memes/faces/cadastroMusicaTeste.xhtml">MusicaTeste <span class="sr-only">(current)</span></a></li>
-                            <li><a href="/memes/faces/cadastroGeneroTeste.xhtml">GeneroTeste</a></li>
-                            <li><a href="/memes/faces/cadastroAlbumTeste.xhtml">AlbumTeste</a></li>
-                            <li><a href="/memes/faces/cadastroArtistaTeste.xhtml">ArtistaTeste</a></li>
+                            <li class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" id="admUser" style="display: none; padding: 8px; margin-top: 6px; margin-right: 6px;" type="button" data-toggle="dropdown"> Admin Options
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/memes/faces/cadastroMusicaT.xhtml">Cadastro Musica</a></li>
+                                    <li><a href="/memes/faces/cadastroGeneroT.xhtml">Cadastro Genero</a></li>
+                                    <li><a href="/memes/faces/cadastroAlbumT.xhtml">Cadastro Album</a></li>
+                                    <li><a href="/memes/faces/cadastroArtistaT.xhtml">Cadastro Artista</a></li>
+                                </ul>
+                            </li>
                         </ul>
                         <div class="navbar-form navbar-left">
                             <ul class="nav navbar-nav">
@@ -52,7 +59,6 @@
                                                onclick="$('#myModal').modal('show');"
                                                update=":memes:myMemes"
                                                immediate="true" /></li>
-                            <li><div style="padding: 8px; margin-top: 6px; margin-right: 6px;"><a href="#" id="sop" style="display: none;" onclick="signOut();">Sign out provisório</a></div></li>
                             <li class="dropdown">
                                 <button class="btn btn-default dropdown-toggle" id="optionsUser" style="display: none; padding: 8px; margin-top: 6px; margin-right: 6px;" type="button" data-toggle="dropdown">Options
                                     <span class="caret"></span></button>
@@ -86,7 +92,133 @@
                                  />
                 <p:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
             </h:form>
+            <!-- Inicio Pagina de cadastro -->
+            <h1>Cadastro Generos Musicais</h1>
+            <h:form id="tabelaGenero">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <table class="table table-hover cTable">
+                                <thead class="cThead">
+                                    <tr class="cThead">
+                                        <th>Tipos</th>
+                                        <th>Opções</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cTbody">
+                                    <ui:repeat value="#{generoControle.generos}" var="q">
+                                        <tr class="cThead">
+                                            <td>#{q.nome}</td>
+                                            <td>
+                                                <!-- Botao do Modal de excluir -->
+                                                <p:commandLink
+                                                    styleClass="btn btn-info btn-sm"
+                                                    onclick="$('#modalExcluir').modal('show');"
+                                                    immediate="true" >
+                                                    <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
+                                                    <i class="glyphicon glyphicon-trash"/>
+                                                </p:commandLink>
+                                                <!-- Botao do Modal de Alterar -->
+                                                <p:commandLink class="btn btn-info btn-sm" 
+                                                               action="#{generoControle.preparaAlterar()}" 
+                                                               onclick="$('#modalCadastro').modal('show');" 
+                                                               update=":cadastramento">
+                                                    <p:resetInput target=":cadastramento:painel" />
+                                                    <f:setPropertyActionListener value="#{q}" target="#{generoControle.genero}" />
+                                                    <i class="glyphicon glyphicon-cog"/>
+                                                </p:commandLink>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>                                        
+                        </div>                       
+                    </div>
+                </div>
+                <!-- Botao do Modal de cadastro -->
+                <p:commandLink value="Novo" 
+                               class="btn btn-lg btn-default" 
+                               action="#{generoControle.preparaIncluir()}" 
+                               onclick="$('#modalCadastro').modal('show');" 
+                               update=":cadastramento">
+                    <p:resetInput target=":cadastramento:painel" />
+                </p:commandLink>
+            </h:form>  
         </div>
+        <!-- Modal Cadastro -->
+            <div class="modal fade" 
+                 id="modalCadastro" 
+                 tabindex="-1" role="dialog" 
+                 aria-labelledby="modalCadastro" 
+                 aria-hidden="true" 
+                 data-keyboard="false" 
+                 data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <h:form id="cadastramento">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Registrar</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h:panelGrid columns="2" id="painel">
+                                    <label for="nome">Nome do Genero</label>
+                                    <p:inputText id="nome"
+                                                 required="true"
+                                                 maxlength="30"
+                                                 value="#{generoControle.genero.nome}"/>
+                                </h:panelGrid>
+                            </div>
+                            <div class="modal-footer">
+                                <p:commandLink value="Salvar" 
+                                               class="btn btn-default"
+                                               update=":tabelaGenero"
+                                               action="#{generoControle.salvar}"
+                                               oncomplete="$('#modalCadastro').modal('hide');"
+                                               />
+                                <p:commandLink value="Não" 
+                                               immediate="true" 
+                                               styleClass="btn btn-default" 
+                                               oncomplete="$('#modalCadastro').modal('hide');"/> 
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Modal Excluir -->
+        <h:form id="modalDeExcluir">
+            <div class="modal fade" 
+                 id="modalExcluir" 
+                 tabindex="-1" role="dialog" 
+                 aria-labelledby="modalExcluir" 
+                 aria-hidden="true" 
+                 data-keyboard="false" 
+                 data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <h:form id="exclusao">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Tens certeza da exclusão?</h4>
+                            </div>
+                            <h:panelGroup layout="block" styleClass="modal-footer">
+                                <p:commandLink value="Sim" 
+                                               styleClass="btn btn-danger"
+                                               oncomplete="$('#modalExcluir').modal('hide');" 
+                                               update=":tabelaGenero"  
+                                               actionListener="#{generoControle.excluir()}"/>
+                                <p:commandLink value="Não" 
+                                               immediate="true" 
+                                               styleClass="btn btn-default" 
+                                               oncomplete="$('#modalExcluir').modal('hide');"/> 
+                            </h:panelGroup>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <!-- Fim Pagina de cadastro -->
         <!-- botao do login parte 2 -->
         <div id="loginIfBlock" >
             <p:commandLink value="Log In"
@@ -127,23 +259,15 @@
         <script type="text/javascript">
             var currentPath = window.location.pathname;
             var currentPge = window.location.href;
-            var block = document.getElementById("block");
-            var block2 = document.getElementById("block2");
+            var block = document.getElementById("block");            
             var loginIfBlock = document.getElementById("loginIfBlock");
-            if (currentPath === "/memes/faces/ui/navbar.xhtml" ||
-                    currentPath === "/memes/faces/ui/navbar.xhtml#" ||
-                    currentPath === "/memes/faces/cadastroArtistaTeste.xhtml" ||
-                    currentPath === "/memes/faces/cadastroArtistaTeste.xhtml#") {
-                var tipo = document.getElementById("f1:tipoUser").value;
+            var tipo = document.getElementById("f1:tipoUser").value;
+            var admUser = document.getElementById("admUser");
+            if (currentPath === "/memes/faces/cadastroGeneroT.xhtml" ||
+                    currentPath === "/memes/faces/cadastroGeneroT.xhtml#") {
                 console.log(tipo);
                 if (tipo === "0") {
                     block.style.display = "none";
-                    jQuery.ajax({
-                        url: currentPath,
-                        success: function (result) {
-                            html = jQuery('<div/>').html(result).find("div#block2");
-                        }
-                    });
                     loginIfBlock.style.display = "inline";
                 } else {
                     loginIfBlock.style.display = "none";
@@ -151,13 +275,20 @@
                 }
             }
             ;
+            
+            if (tipo === "0") {
+                admUser.style.display = "none";
+            } else {
+                admUser.style.display = "inline";
+            }
+            ;
+
             function signOut() {
                 var auth2 = gapi.auth2.getAuthInstance();
                 auth2.signOut().then(function () {
                     console.log('User signed out.');
                     login.style.display = "inline";
                     optionsUser.style.display = "none";
-                    sop.style.display = "none";
 
                 });
                 document.getElementById('f1:registra').click();
@@ -168,7 +299,6 @@
                 var profile = googleUser.getBasicProfile();
                 var login = document.getElementById("login");
                 var optionsUser = document.getElementById("optionsUser");
-                var sop = document.getElementById("sop");
                 var email = document.getElementById('f:email');
                 var idR = document.getElementById('f:idR');
                 var idR2 = document.getElementById('f1:idR');
@@ -179,7 +309,6 @@
                 if (profile.getId() !== null) {
                     login.style.display = "none";
                     optionsUser.style.display = "inline";
-                    sop.style.display = "inline";
                     console.log('ID: ' + profile.getId());
                     email.value = profile.getEmail();
                     idR.value = profile.getId();
@@ -193,4 +322,3 @@
         </script>
     </h:body>
 </html>
-

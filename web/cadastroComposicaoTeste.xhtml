@@ -11,29 +11,28 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="css/listaAlbuns.css"/>
+        <link rel="stylesheet" href="css/lista.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </h:head>
     <h:body>
-        <ui:include src="ui/navbar.xhtml"/>
         <div>
             <h1>Lista Composicoes</h1>
             <h:form id="tabelaAvaliacao">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4">
-                            <table class="table table-hover cATable">
-                                <thead class="cAThead">
-                                    <tr class="cAThead">
+                            <table class="table table-hover cTable">
+                                <thead class="cThead">
+                                    <tr class="cThead">
                                         <th>Artista</th>
                                         <th>Musica</th>
                                         <th>Opções</th>
                                     </tr>
                                 </thead>
-                                <tbody class="cATbody">
+                                <tbody class="cTbody">
                                     <ui:repeat value="#{composicaoControle.composicoes}" var="q">
-                                        <tr class="cAThead">
+                                        <tr class="cThead">
                                             <td>#{q.artista.nomeArtista}</td>
                                             <td>#{q.musica.nomeMusica}</td>
                                             <td>

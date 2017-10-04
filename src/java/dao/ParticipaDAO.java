@@ -30,7 +30,7 @@ public class ParticipaDAO {
         stmt.close();
         con.close();
     }
-
+    
     public static void alterar(Participa participa) throws SQLException {
         Connection con = Conexao.getConnection();
         String sql
