@@ -33,10 +33,16 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="/memes/faces/cadastroMusicaTeste.xhtml">MusicaTeste <span class="sr-only">(current)</span></a></li>
-                            <li><a href="/memes/faces/cadastroGeneroTeste.xhtml">GeneroTeste</a></li>
-                            <li><a href="/memes/faces/cadastroAlbumTeste.xhtml">AlbumTeste</a></li>
-                            <li><a href="/memes/faces/cadastroArtistaTeste.xhtml">ArtistaTeste</a></li>
+                            <li class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" id="admUser" style="display: none; padding: 8px; margin-top: 6px; margin-right: 6px;" type="button" data-toggle="dropdown"> Admin Options
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/memes/faces/cadastroMusicaTeste.xhtml">MusicaTeste</a></li>
+                                    <li><a href="/memes/faces/cadastroGeneroT.xhtml">GeneroTeste</a></li>
+                                    <li><a href="/memes/faces/cadastroAlbumTeste.xhtml">AlbumTeste</a></li>
+                                    <li><a href="/memes/faces/cadastroArtistaT.xhtml">ArtistaTeste</a></li>
+                                </ul>
+                            </li>
                         </ul>
                         <div class="navbar-form navbar-left">
                             <ul class="nav navbar-nav">
@@ -64,35 +70,8 @@
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
             </nav>
-            <!-- MODAL LOGIN -->
-            <h:form id="memes">
-                <div class="modal fade" 
-                     id="myModal"
-                     tabindex="-1" role="dialog"
-                     aria-labelledby="myModal" 
-                     aria-hidden="true" 
-                     data-keyboard="false" 
-                     data-backdrop="static">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <h:form id="myMemes">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&#215;</button>
-                                    <h4 class="modal-title">Test Modal</h4>
-                                </div>
-                                <div class="modal-body">
-                                    Content area
-                                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                                </div>
-                                <h:panelGroup layout="block" styleClass="modal-footer">
-                                    <p:commandLink value="Close" immediate="true" styleClass="btn btn-default" oncomplete="$('#myModal').modal('hide');" />
-                                </h:panelGroup>
-                            </h:form>
-                        </div>
-                    </div>
-                </div>
-            </h:form>
             <div style="height: 51px;"/>
+            <!-- Checagem de usuario -->
             <h:form id="f" style="display: none">
                 <h:inputText id="email" value="#{usuarioControle.usuario.email}"/>
                 <h:inputText id="idR" value="#{usuarioControle.usuario.idR}"/>
@@ -104,38 +83,72 @@
                                  />
             </h:form>
             <h:form id="f1" style="display: none">
-                <h:inputText id="idR" value="#{usuarioControle.idR}"/>
+                <p:inputText id="idR" value="#{usuarioControle.idR}"/>
                 <p:commandButton value="Salvar" 
                                  id="registra"
                                  class="btn btn-default"
-                                 update="tipoUser"
+                                 update="f1"
                                  action="#{usuarioControle.pegerIdR()}"
                                  />
-                <h:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
+                <p:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
             </h:form>
         </div>
-        <div id="loginIfBlock">
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <!-- botao do login parte 2 -->
+        <div id="loginIfBlock" >
+            <p:commandLink value="Log In"
+                           styleClass="btn btn-default" 
+                           style="padding: 8px; margin-top: 6px; margin-right: 6px;"
+                           onclick="$('#myModal').modal('show');"
+                           update=":memes:myMemes"
+                           immediate="true" />
             <a href="#" onclick="signOut();">Sign out</a>
         </div>
-            
+        <!-- MODAL LOGIN -->
+        <h:form id="memes">
+            <div class="modal fade" 
+                 id="myModal"
+                 tabindex="-1" role="dialog"
+                 aria-labelledby="myModal" 
+                 aria-hidden="true" 
+                 data-keyboard="false" 
+                 data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <h:form id="myMemes">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                                <h4 class="modal-title">Login</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="g-signin2" style="margin-left: 25%" data-onsuccess="onSignIn"></div>
+                            </div>
+                            <h:panelGroup layout="block" styleClass="modal-footer">
+                                <p:commandLink value="Close" immediate="true" styleClass="btn btn-default" oncomplete="$('#myModal').modal('hide');" />
+                            </h:panelGroup>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </h:form>
         <script type="text/javascript">
-            var currentPage = window.location.pathname;
+            var currentPath = window.location.pathname;
+            var currentPge = window.location.href;
             var block = document.getElementById("block");
+            var block2 = document.getElementById("block2");
             var loginIfBlock = document.getElementById("loginIfBlock");
-            if (currentPage === "/memes/faces/ui/navbar.xhtml" ||
-                    currentPage === "/memes/faces/ui/navbar.xhtml#") {
+            if (currentPath === "/memes/faces/navbar.xhtml" ||
+                    currentPath === "/memes/faces/navbar.xhtml#" ||
+                    currentPath === "/memes/faces/cadastroArtistaTeste.xhtml" ||
+                    currentPath === "/memes/faces/cadastroArtistaTeste.xhtml#") {
                 var tipo = document.getElementById("f1:tipoUser").value;
                 console.log(tipo);
                 if (tipo === "0") {
-                    console.log(tipo);
                     block.style.display = "none";
                     loginIfBlock.style.display = "inline";
                 } else {
                     loginIfBlock.style.display = "none";
                     block.style.display = "inline";
                 }
-
             }
             ;
             function signOut() {
@@ -145,11 +158,12 @@
                     login.style.display = "inline";
                     optionsUser.style.display = "none";
                     sop.style.display = "none";
-                    tipo.value = null;
 
                 });
+                document.getElementById('f1:registra').click();
                 location.reload();
             }
+
             function onSignIn(googleUser) {
                 var profile = googleUser.getBasicProfile();
                 var login = document.getElementById("login");
@@ -179,4 +193,3 @@
         </script>
     </h:body>
 </html>
-
