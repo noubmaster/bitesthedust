@@ -14,9 +14,8 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
         <script src="https://apis.google.com/js/platform.js"></script>
-        <title>BitesTheDust</title>
         <h:outputStylesheet library="css" name="musicP.css"/>
-        <h:outputStylesheet library="css" name="searchBoxes.css"/>
+        <title>#{buscaControle.musica.nomeMusica}</title>
     </h:head>
     <h:body>
         <div class="container">
@@ -79,19 +78,33 @@
                 <div class="row">
                     <div class="col-md-2"/>
                     <div class="col-md-8 bgcool">
-                        <ui:repeat value="#{buscaControle.result}" var="a" varStatus="q">
-                            <h:form>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h:commandLink action="#{buscaControle.getMusicaRedirect(a.musica.idMusica)}"><h4>#{a.musica.nomeMusica}</h4></h:commandLink>
-                                        <h:commandLink action="#{buscaControle.getMusicaRedirect(a.musica.idMusica)}"><h6>#{a.artista.nomeArtista}</h6></h:commandLink>
-                                    </div>
-                                    <div class="panel-body" style="text-overflow: fade; white-space: nowrap;
-                                         overflow: hidden;">
-                                        <h:commandLink action="#{buscaControle.getMusicaRedirect(a.musica.idMusica)}"><h6>#{a.musica.letra}</h6></h:commandLink>
-                                    </div>
-                                </div>
-                            </h:form>
+                        <div class="page-header">
+                            <h1>#{buscaControle.musica.nomeMusica}</h1>
+                        </div>
+                        <p style="white-space: pre-wrap;">#{buscaControle.musica.letra}</p>
+                        <!-- Avaliaçao -->
+                        <h:form id="avaliacao">
+                            <p:panel id="panelA" styleClass="panel panel-danger">
+                                <p:rating value="#{avaliacaoControle.avaliacao.nota}" />
+                                <h:inputTextarea style="resize: none;" 
+                                                 styleClass="form-control"
+                                                 id="comentario"
+                                                 rows="3"
+                                                 cols="33"
+                                                 required="true"
+                                                 value="#{avaliacaoControle.avaliacao.comentario}"></h:inputTextarea>
+                                <p:inputText style="display: none" id="idUser" value="#{avaliacaoControle.idUsuario}"/>
+                                <p:inputText style="display: none" id="idMus" value="#{avaliacaoControle.idMusica}"/>
+                                <p:commandLink value="Salvar" 
+                                               class="btn btn-default"
+                                               action="#{avaliacaoControle.salvar}"
+                                               />
+                            </p:panel>
+                        </h:form>
+                        <ui:repeat value="#{avaliacaoControle.avaliacoes2}" var="a">
+                            <p>#{a.comentario}</p>
+                            <p>#{a.usuario.email}</p>
+                            <br/>
                         </ui:repeat>
                     </div>
                 </div>
@@ -108,15 +121,18 @@
                         </p:commandButton>
                     </p:panel>
                 </h:form>
-                <h:form id="f1" style="display: none">
+                <h:form id="f1" style="display: none;">
                     <p:panel id="panel">
                         <p:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
                         <p:inputText id="idR" value="#{usuarioControle.idR}"/>
+                        <p:inputText id="idUsuario" value="#{usuarioControle.idUsuario}"/>
+                        <p:inputText id="idMusica" value="#{buscaControle.musica.idMusica}"/>
                         <p:commandButton value="Salvar" 
                                          id="registra"
                                          class="btn btn-default"
                                          update="f1"
                                          actionListener="#{usuarioControle.pegerIdR()}">
+                            <p:resetInput target=":avaliacao:panelA" />
                         </p:commandButton>
                     </p:panel>
                 </h:form>
@@ -154,8 +170,7 @@
                                     <h4 class="modal-title">Login</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="g-signin2" style="margin-left: 25%" data-onsuccess="onSignIn">
-                                    </div>
+                                    <div class="g-signin2" style="margin-left: 25%" data-onsuccess="onSignIn"></div>
                                 </div>
                                 <h:panelGroup layout="block" styleClass="modal-footer">
                                     <p:commandLink value="Close" immediate="true" styleClass="btn btn-default" oncomplete="$('#myModal').modal('hide');" />
@@ -173,13 +188,19 @@
             var loginIfBlock = document.getElementById("loginIfBlock");
             var tipo = document.getElementById("f1:tipoUser").value;
             var admUser = document.getElementById("admUser");
-            var idR = document.getElementById('f:idR');
-            var idR2 = document.getElementById('f1:idR');
+            var idUser = document.getElementById('f1:idUsuario');
+            var idMusica = document.getElementById('f1:idMusica');
+            var idUserAv = document.getElementById('avaliacao:idUser');
+            var idMus = document.getElementById('avaliacao:idMus');
             var login = document.getElementById("login");
             var optionsUser = document.getElementById("optionsUser");
             var email = document.getElementById('f:email');
+            var idR = document.getElementById('f:idR');
+            var idR2 = document.getElementById('f1:idR');
             var perfil = document.getElementById('f:perfil');
             var idRGet;
+            idUserAv.value = idUser.value;
+            idMus.value = idMusica.value;
 
             if (currentPath === "/memes/faces/cadastroGeneroT.xhtml" ||
                     currentPath === "/memes/faces/cadastroGeneroT.xhtml#") {
@@ -193,6 +214,7 @@
                 }
             }
             ;
+
             function admin() {
                 tipo = document.getElementById("f1:tipoUser").value;
                 console.log(tipo);
@@ -222,7 +244,7 @@
                 var profile = googleUser.getBasicProfile();
                 console.log('Name: ' + profile.getName());
                 console.log('Image URL: ' + profile.getImageUrl());
-                console.log('Email: ' + profile.getEmail());
+                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
                 if (profile.getId() !== null) {
                     idRGet = profile.getId();
                     login.style.display = "none";
@@ -235,7 +257,7 @@
                     document.getElementById('f:registra').click();
                     document.getElementById('f1:registra').click();
                 }
-                setTimeout(admin, 1000);
+                                setTimeout(admin, 1000);
                 $('#myModal').modal('hide');
             }
         </script>

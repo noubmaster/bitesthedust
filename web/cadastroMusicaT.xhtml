@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="css/lista.css"/>
+        <h:outputStylesheet library="css" name="lista.css"/>
         <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
         <script src="https://apis.google.com/js/platform.js"></script>
     </h:head>
@@ -47,8 +47,10 @@
                         </ul>
                         <div class="navbar-form navbar-left">
                             <ul class="nav navbar-nav">
-                                <li><p:inputText style="width: 180px" placeholder="Search" class="form-control"/></li>
-                                <li><h:commandButton type="submit" value="Submit" class="btn btn-default"></h:commandButton></li>
+                                <li><h:form>
+                                        <p:inputText style="width: 180px" value="#{buscaControle.webInput}" placeholder="Search" class="form-control"/>
+                                        <h:commandLink type="submit" value="Submit" action="#{buscaControle.buscar}" class="btn btn-default"></h:commandLink>
+                                    </h:form></li>
                             </ul>
                         </div>
                         <ul class="nav navbar-nav navbar-right">
@@ -91,6 +93,12 @@
                                  action="#{usuarioControle.pegerIdR()}"
                                  />
                 <p:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
+            </h:form>
+            <h:form id="fodasse" style="display: none">
+                <p:commandButton value="fodasse"
+                                 id="fodasse"
+                                 update="fodasse"
+                                 action="#{usuarioControle.nullar()}"/>
             </h:form>
             <!-- Inicio Pagina de cadastro -->
             <h1>Cadastro de Musicas</h1>
@@ -151,76 +159,76 @@
         </div>
         <!-- Modal Cadastro -->
 
-            <div class="modal fade" 
-                 id="modalCadastro" 
-                 tabindex="-1" role="dialog" 
-                 aria-labelledby="modalCadastro" 
-                 aria-hidden="true" 
-                 data-keyboard="false" 
-                 data-backdrop="static">
-                <div class="modal-dialog modal-md">
-                    <div class="modal-content">
-                        <h:form id="cadastramento">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&#215;</button>
-                                <h4 class="modal-title">Registrar</h4>
-                            </div>
-                            <div class="modal-body">
-                                <h:panelGrid columns="2" id="painel">
-                                    <label style="margin-right: 50px" for="nome">Nome</label>
-                                    <p:inputText 
-                                        style="width: 225px"
-                                        styleClass="form-control"
-                                        id="nome"
-                                        required="true"
-                                        maxlength="30"
-                                        value="#{musicaControle.musica.nomeMusica}"></p:inputText>
-                                    <label for="genero">Genero</label>
-                                    <h:selectOneMenu 
-                                        style="width: 225px" 
-                                        required="true" id="genero" 
-                                        class="btn btn-default dropdown-toggle" 
-                                        value="#{musicaControle.idGenero}">
-                                        <f:selectItem itemValue="Selecione"/>
-                                        <f:selectItems value="#{generoControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
-                                    </h:selectOneMenu>
-                                    <label for="album">Albums</label>
-                                    <h:selectOneMenu 
-                                        style="width: 225px" 
-                                        required="true" id="album" 
-                                        class="btn btn-default dropdown-toggle" 
-                                        value="#{musicaControle.idAlbum}">
-                                        <f:selectItem itemValue="Selecione"/>
-                                        <f:selectItems value="#{albumControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
-                                    </h:selectOneMenu>
-                                    <label for="letra">Letra</label>
-                                    <h:inputTextarea 
-                                        style="width: 450px; height: 200px; resize: none;" 
-                                        styleClass="form-control"
-                                        id="letra"
-                                        rows="5"
-                                        cols="33"
-                                        required="true"
-                                        value="#{musicaControle.musica.letra}"></h:inputTextarea>
-                                </h:panelGrid>
-                            </div>
-                            <div class="modal-footer">
-                                <p:commandLink value="Salvar" 
-                                               class="btn btn-default"
-                                               update=":tabelaMusica"
-                                               action="#{musicaControle.salvar}"
-                                               oncomplete="$('#modalCadastro').modal('hide');"
-                                               />
-                                <p:commandLink value="Fechar" 
-                                               immediate="true" 
-                                               styleClass="btn btn-default" 
-                                               oncomplete="$('#modalCadastro').modal('hide');"/>
-                            </div>
-                        </h:form>
-                    </div>
+        <div class="modal fade" 
+             id="modalCadastro" 
+             tabindex="-1" role="dialog" 
+             aria-labelledby="modalCadastro" 
+             aria-hidden="true" 
+             data-keyboard="false" 
+             data-backdrop="static">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <h:form id="cadastramento">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                            <h4 class="modal-title">Registrar</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h:panelGrid columns="2" id="painel">
+                                <label style="margin-right: 50px" for="nome">Nome</label>
+                                <p:inputText 
+                                    style="width: 225px"
+                                    styleClass="form-control"
+                                    id="nome"
+                                    required="true"
+                                    maxlength="30"
+                                    value="#{musicaControle.musica.nomeMusica}"></p:inputText>
+                                <label for="genero">Genero</label>
+                                <h:selectOneMenu 
+                                    style="width: 225px" 
+                                    required="true" id="genero" 
+                                    class="btn btn-default dropdown-toggle" 
+                                    value="#{musicaControle.idGenero}">
+                                    <f:selectItem itemValue="Selecione"/>
+                                    <f:selectItems value="#{generoControle.generos}" var="aux" itemValue="#{aux.idGenero}" itemLabel="#{aux.nome}"></f:selectItems>
+                                </h:selectOneMenu>
+                                <label for="album">Albums</label>
+                                <h:selectOneMenu 
+                                    style="width: 225px" 
+                                    required="true" id="album" 
+                                    class="btn btn-default dropdown-toggle" 
+                                    value="#{musicaControle.idAlbum}">
+                                    <f:selectItem itemValue="Selecione"/>
+                                    <f:selectItems value="#{albumControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
+                                </h:selectOneMenu>
+                                <label for="letra">Letra</label>
+                                <h:inputTextarea 
+                                    style="width: 450px; height: 200px; resize: none;" 
+                                    styleClass="form-control"
+                                    id="letra"
+                                    rows="5"
+                                    cols="33"
+                                    required="true"
+                                    value="#{musicaControle.musica.letra}"></h:inputTextarea>
+                            </h:panelGrid>
+                        </div>
+                        <div class="modal-footer">
+                            <p:commandLink value="Salvar" 
+                                           class="btn btn-default"
+                                           update=":tabelaMusica"
+                                           action="#{musicaControle.salvar}"
+                                           oncomplete="$('#modalCadastro').modal('hide');"
+                                           />
+                            <p:commandLink value="Fechar" 
+                                           immediate="true" 
+                                           styleClass="btn btn-default" 
+                                           oncomplete="$('#modalCadastro').modal('hide');"/>
+                        </div>
+                    </h:form>
                 </div>
             </div>
-   
+        </div>
+
 
         <!-- Modal Excluir -->
         <h:form id="modalDeExcluir">
@@ -299,25 +307,33 @@
             var loginIfBlock = document.getElementById("loginIfBlock");
             var tipo = document.getElementById("f1:tipoUser").value;
             var admUser = document.getElementById("admUser");
-            if (currentPath === "/memes/faces/cadastroMusicaT.xhtml" ||
-                    currentPath === "/memes/faces/cadastroMusicaT.xhtml#") {
+            function bloquear() {
+                if (currentPath === "/memes/faces/cadastroMusicaT.xhtml" ||
+                        currentPath === "/memes/faces/cadastroMusicaT.xhtml#") {
+                    tipo = document.getElementById("f1:tipoUser").value;
+                    console.log(tipo);
+                    if (tipo === "0") {
+                        block.style.display = "none";
+                        loginIfBlock.style.display = "inline";
+                    } else {
+                        loginIfBlock.style.display = "none";
+                        block.style.display = "inline";
+                    }
+                }
+                ;
+            }
+            bloquear();
+            
+            function admin() {
+                tipo = document.getElementById("f1:tipoUser").value;
                 console.log(tipo);
                 if (tipo === "0") {
-                    block.style.display = "none";
-                    loginIfBlock.style.display = "inline";
-                } else {
-                    loginIfBlock.style.display = "none";
-                    block.style.display = "inline";
+                    admUser.style.display = "none";
+                } else if (tipo === "1" || tipo === "2") {
+                    admUser.style.display = "inline";
                 }
+                ;
             }
-            ;
-
-            if (tipo === "0") {
-                admUser.style.display = "none";
-            } else {
-                admUser.style.display = "inline";
-            }
-            ;
 
             function signOut() {
                 var auth2 = gapi.auth2.getAuthInstance();
@@ -327,7 +343,7 @@
                     optionsUser.style.display = "none";
 
                 });
-                document.getElementById('f1:registra').click();
+                document.getElementById('fodasse:fodasse').click();
                 location.reload();
             }
 
@@ -353,6 +369,8 @@
                     document.getElementById('f:registra').click();
                     document.getElementById('f1:registra').click();
                 }
+                setTimeout(admin, 1000);
+                setTimeout(bloquear, 1000);
                 $('#myModal').modal('hide');
             }
         </script>

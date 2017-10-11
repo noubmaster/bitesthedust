@@ -20,7 +20,7 @@ import util.Conexao;
 
 public class BuscaDAO {
 
-    public static List<Busca> searchMain() throws SQLException {
+    public static List<Busca> searchMain(String webInput) throws SQLException {
         List<Busca> lista = new ArrayList<Busca>();
         Connection con = Conexao.getConnection();
         String sql = "SELECT\n"
@@ -32,12 +32,15 @@ public class BuscaDAO {
                 + "LEFT JOIN\n"
                 + "	artista a ON p.Artista_idArtista = a.idArtista\n"
                 + "WHERE\n"
-                + "	m.nomeMusica like '%?%' or\n"
-                + "	m.letra like '%?%' or\n"
-                + "	a.nomeArtista like '%?%'\n"
+                + "	m.nomeMusica like CONCAT('%', ?, '%') or\n"
+                + "	m.letra like CONCAT('%', ?, '%') or\n"
+                + "	a.nomeArtista like CONCAT('%', ?, '%')\n"
                 + "GROUP BY\n"
                 + "	m.idMusica";
         PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, webInput);
+        stmt.setString(2, webInput);
+        stmt.setString(3, webInput);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             Musica musica = new Musica();
@@ -68,75 +71,36 @@ public class BuscaDAO {
         return lista;
     }
 
-    public static List<Busca> getListaMusicas() throws SQLException {
-        List<Busca> lista = new ArrayList<Busca>();
+    public static Musica getMusicaByID(int idMusica) throws SQLException {
+        Musica musica = new Musica();
         Connection con = Conexao.getConnection();
-        String sql = "select * from album al, artista ar, composicao co, genero ge, participa pa, musica mu "
-                + "where mu.idAlbumMusica=al.idAlbum and mu.idGeneroMusica=ge.idGenero and "
-                + "pa.Artista_idArtista=ar.idArtista and co.Artista_idArtista=ar.idArtista and "
-                + "pa.Musica_idMusica=mu.idMusica and co.Musica_idMusica=mu.idMusica "
-                + "order by mu.score;";
+        String sql = "SELECT * FROM musica m, album a, genero g WHERE m.idMusica = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, idMusica);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            Musica musica = new Musica();
-            musica.setIdMusica(rs.getInt("idMusica"));
-            musica.setNomeMusica(rs.getString("nomeMusica"));
-            musica.setScore(rs.getFloat("score"));
-            musica.setLetra(rs.getString("letra"));
-
-            Artista artista = new Artista();
-            artista.setIdArtista(rs.getInt("idArtista"));
-            artista.setNomeArtista(rs.getString("nomeArtista"));
-
-            Participa participa = new Participa();
-            participa.setPapel(rs.getString("papel"));
-            participa.setArtista(artista);
-            participa.setMusica(musica);
-
             Album album = new Album();
             album.setIdAlbum(rs.getInt("idAlbum"));
             album.setNomeAlbum(rs.getString("nomeAlbum"));
             album.setAno(rs.getInt("ano"));
 
-            Composicao composicao = new Composicao();
-            composicao.setArtista(artista);
-            composicao.setMusica(musica);
-
             Genero genero = new Genero();
             genero.setIdGenero(rs.getInt("idGenero"));
             genero.setNome(rs.getString("nomeGenero"));
 
-            Busca busca = new Busca();
-            busca.setAlbum(album);
-            busca.setArtista(artista);
-            busca.setComposicao(composicao);
-            busca.setGenero(genero);
-            busca.setMusica(musica);
-            busca.setParticipa(participa);
-            lista.add(busca);
+            musica.setIdMusica(rs.getInt("idMusica"));
+            musica.setNomeMusica(rs.getString("nomeMusica"));
+            musica.setScore(rs.getFloat("score"));
+            musica.setLetra(rs.getString("letra"));
+
+            musica.setAlbum(album);
+            musica.setGenero(genero);
+
         }
         stmt.close();
         rs.close();
         con.close();
-
-        return lista;
-    }
-
-    public static void main(String[] args) {
-
-        try {
-            List<Busca> lista = searchMain();
-
-            for (Busca m : lista) {
-                System.out.println("MUSICA......: " + m.getArtista().getNomeArtista());
-                System.out.println("MUSICA......: " + m.getMusica().getNomeMusica());
-                System.out.println("MUSICA......: " + m.getParticipa().getArtista().getNomeArtista());
-                System.out.println("MUSICA......: " + m.getParticipa().getMusica().getNomeMusica());
-                System.out.println("-----------------------------------");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        System.out.println(musica.getNomeMusica());
+        return musica;
     }
 }

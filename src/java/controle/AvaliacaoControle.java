@@ -16,8 +16,9 @@ import modelo.Musica;
 public class AvaliacaoControle {
 
     private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
+    private List<Avaliacao> avaliacoes2 = new ArrayList<Avaliacao>();
     private Avaliacao avaliacao = new Avaliacao();
-    private boolean salvar = false;
+    private boolean salvar = true;
     private int idUsuario = 0;
     private int idMusica = 0;
 
@@ -36,7 +37,7 @@ public class AvaliacaoControle {
     public void setIdMusica(int idMusica) {
         this.idMusica = idMusica;
     }
-    
+
     @PostConstruct
     public void atualizaAvaliacoes() {
         try {
@@ -53,11 +54,20 @@ public class AvaliacaoControle {
         idMusica = 0;
     }
 
+    public void listAsd() {
+        try {
+            avaliacoes2 = AvaliacaoDAO.getListaAsd(idMusica);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void preparaAlterar() {
         salvar = false;
         idUsuario = avaliacao.getUsuario().getIdUsuario();
         idMusica = avaliacao.getMusica().getIdMusica();
-        
+
     }
 
     public void salvar() {
@@ -65,10 +75,10 @@ public class AvaliacaoControle {
         Musica musica = new Musica();
         usuario.setIdUsuario(idUsuario);
         musica.setIdMusica(idMusica);
-        
+
         avaliacao.setUsuario(usuario);
         avaliacao.setMusica(musica);
-        
+
         if (salvar) {
             try {
                 AvaliacaoDAO.inserir(avaliacao);
@@ -82,7 +92,7 @@ public class AvaliacaoControle {
                 e.printStackTrace();
             }
         }
-     
+
         atualizaAvaliacoes();
     }
 
@@ -110,4 +120,13 @@ public class AvaliacaoControle {
     public void setAvaliacao(Avaliacao avaliacao) {
         this.avaliacao = avaliacao;
     }
+
+    public List<Avaliacao> getAvaliacoes2() {
+        return avaliacoes2;
+    }
+
+    public void setAvaliacoes2(List<Avaliacao> avaliacoes2) {
+        this.avaliacoes2 = avaliacoes2;
+    }
+
 }

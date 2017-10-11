@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/bitesthedust/src/java/dao/BuscaDAO.java</file>
-            <file>file:/F:/bitesthedust/web/index.xhtml</file>
-            <file>file:/F:/bitesthedust/src/java/dao/UsuarioDAO.java</file>
-            <file>file:/F:/bitesthedust/src/java/dao/MusicaDAO.java</file>
+            <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/musica.xhtml</file>
+            <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/cadastroArtistaT.xhtml</file>
+            <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/cadastroAlbumT.xhtml</file>
+            <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/index.xhtml</file>
+            <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/cadastroMusicaT.xhtml</file>
+            <file>file:/C:/Users/Dendi/Desktop/bitesthedust/web/cadastroGeneroT.xhtml</file>
         </group>
     </open-files>
 </project-private>

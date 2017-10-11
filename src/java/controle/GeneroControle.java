@@ -1,13 +1,13 @@
 package controle;
 
-import dao.ArtistaDAO;
+import dao.GeneroDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import modelo.Artista;
+import modelo.Genero;
 
 /**
  *
@@ -15,15 +15,15 @@ import modelo.Artista;
  */
 @ManagedBean
 @SessionScoped
-public class ArtistaControle {
-    private List<Artista> artistas = new ArrayList<Artista>();
-    private Artista artista = new Artista();
+public class GeneroControle {
+    private List<Genero> generos = new ArrayList<Genero>();
+    private Genero genero = new Genero();
     private boolean salvar = false;
     
     @PostConstruct
-    public void atualizarArtistas() {
+    public void atualizarGeneros() {
         try {
-            artistas = ArtistaDAO.getLista();
+            generos = GeneroDAO.getLista();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -32,7 +32,7 @@ public class ArtistaControle {
     public void preparaIncluir() {
         System.out.println("ta passando pelo incluir");
         salvar = true;
-        artista = new Artista();
+        genero = new Genero();
     }
     
     public void preparaAlterar() {
@@ -42,47 +42,47 @@ public class ArtistaControle {
     public void salvar() {
         if (salvar) {
            try{
-               ArtistaDAO.inserir(artista);
-               System.out.println("artista incluido");
+               GeneroDAO.inserir(genero);
+               System.out.println("genero incluido");
            } catch (SQLException e) {
                e.printStackTrace();
            }
         }else{
             try{
-                ArtistaDAO.alterar(artista);
-                System.out.println("artista alterado");
+                GeneroDAO.alterar(genero);
+                System.out.println("genero alterado");
             } catch (SQLException e) {
                e.printStackTrace();
            }
         }
         
-        atualizarArtistas();
+        atualizarGeneros();
     }
     
     public void excluir() {
         try {
-            ArtistaDAO.excluir(artista);
-            atualizarArtistas();
-            System.out.println("artista excluido");
+            GeneroDAO.excluir(genero);
+            atualizarGeneros();
+            System.out.println("genero excluido");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public List<Artista> getArtistas() {
-        return artistas;
+    public List<Genero> getGeneros() {
+        return generos;
     }
 
-    public void setArtistas(List<Artista> artistas) {
-        this.artistas = artistas;
+    public void setGeneros(List<Genero> generos) {
+        this.generos = generos;
     }
 
-    public Artista getArtista() {
-        return artista;
+    public Genero getGenero() {
+        return genero;
     }
 
-    public void setArtista(Artista artista) {
-        this.artista = artista;
+    public void setGenero(Genero genero) {
+        this.genero = genero;
     }
 
 }

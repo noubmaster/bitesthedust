@@ -50,6 +50,25 @@ public class UsuarioDAO {
 
         return lista;
     }
+    
+    public static List<Usuario> getId(Usuario usuario) throws SQLException {
+        List<Usuario> lista = new ArrayList<Usuario>();
+        Connection con = Conexao.getConnection();
+        String sql = "SELECT us.idUsuario FROM usuario us WHERE  idR = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, usuario.getIdR());
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            usuario.setIdUsuario(rs.getInt("idUsuario"));
+            lista.add(usuario);
+        }
+        stmt.close();
+        rs.close();
+        con.close();
+
+        return lista;
+    }
+    
     public static void alterar(Usuario usuario) throws SQLException {
         Connection con = Conexao.getConnection();
         String sql

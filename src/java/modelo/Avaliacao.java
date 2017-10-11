@@ -9,7 +9,7 @@ public class Avaliacao {
     private String comentario;
     private Musica musica;
     private Usuario usuario;
-
+    
     public int getIdAvaliacao() {
         return idAvaliacao;
     }
