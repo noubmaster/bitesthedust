@@ -16,6 +16,8 @@
         <script src="https://apis.google.com/js/platform.js"></script>
         <h:outputStylesheet library="css" name="musicP.css"/>
         <title>#{buscaControle.musica.nomeMusica}</title>
+        <script>
+        </script>
     </h:head>
     <h:body>
         <div class="container">
@@ -82,66 +84,77 @@
                             <h1>#{buscaControle.musica.nomeMusica}</h1>
                         </div>
                         <p style="white-space: pre-wrap;">#{buscaControle.musica.letra}</p>
+                        <!-- Checagem de usuario -->
+                        <h:form id="f" style="display: none">
+                            <p:panel id="panel">
+                                <p:inputText id="email" value="#{usuarioControle.usuario.email}"/>
+                                <p:inputText id="idR" value="#{usuarioControle.usuario.idR}"/>
+                                <p:inputText id="perfil" value="#{usuarioControle.usuario.perfil}"/>
+                                <p:commandButton value="Salvar" 
+                                                 id="registra"
+                                                 class="btn btn-default"
+                                                 action="#{usuarioControle.salvar}">
+                                </p:commandButton>
+                            </p:panel>
+                        </h:form>
+                        <h:form id="f1" style="display: none;">
+                            <p:panel id="panel">
+                                <p:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
+                                <p:inputText id="idR" value="#{usuarioControle.idR}"/>
+                                <p:inputText id="idUsuario" value="#{usuarioControle.idUsuario}"/>
+                                <p:inputText id="idMusica" value="#{buscaControle.musica.idMusica}"/>
+                                <p:commandButton value="Salvar" 
+                                                 id="registra"
+                                                 class="btn btn-default"
+                                                 update="f1"
+                                                 actionListener="#{usuarioControle.pegerIdR()}">
+                                    <p:resetInput target=":avaliacao:panelA" />
+                                </p:commandButton>
+                            </p:panel>
+                        </h:form>
+                        <h:form id="fodasse" style="display: none">
+                            <p:commandButton value="fodasse"
+                                             id="fodasse"
+                                             update="fodasse"
+                                             action="#{usuarioControle.nullar()}"/>
+                        </h:form>
                         <!-- Avaliaçao -->
                         <h:form id="avaliacao">
-                            <p:panel id="panelA" styleClass="panel panel-danger">
+                            <h:panelGrid id="panelA" styleClass="panel">
                                 <p:rating value="#{avaliacaoControle.avaliacao.nota}" />
-                                <h:inputTextarea style="resize: none;" 
+                                <p:inputTextarea style="resize: none;" 
                                                  styleClass="form-control"
                                                  id="comentario"
                                                  rows="3"
                                                  cols="33"
                                                  required="true"
-                                                 value="#{avaliacaoControle.avaliacao.comentario}"></h:inputTextarea>
+                                                 value="#{avaliacaoControle.avaliacao.comentario}"></p:inputTextarea>
                                 <p:inputText style="display: none" id="idUser" value="#{avaliacaoControle.idUsuario}"/>
                                 <p:inputText style="display: none" id="idMus" value="#{avaliacaoControle.idMusica}"/>
-                                <p:commandLink value="Salvar" 
+                                <p:commandButton value="Salvar" 
                                                class="btn btn-default"
                                                action="#{avaliacaoControle.salvar}"
-                                               />
-                            </p:panel>
+                                               >
+                                    <p:resetInput target=":avaliacao:panelA" />
+                                </p:commandButton>
+                            </h:panelGrid>
                         </h:form>
-                        <ui:repeat value="#{avaliacaoControle.avaliacoes2}" var="a">
-                            <p>#{a.comentario}</p>
-                            <p>#{a.usuario.email}</p>
-                            <br/>
-                        </ui:repeat>
+                        <h:form id="aval">
+                            <p:commandButton value="fodasse"
+                                             style="display: none"
+                                             id="vava"
+                                             update=":aval"
+                                             action="#{avaliacaoControle.listAsd(buscaControle.musica.idMusica)}"/>
+                            <ui:repeat  value="#{avaliacaoControle.avaliacoes2}" var="a" varStatus="q">
+                                <img class="img-responsive" src="#{a.usuario.perfil}" style="width: 25px; height: 25px; display: inline;" />
+                                <p style="display: inline;">#{a.usuario.email}</p>
+                                <p:rating value="#{a.nota}" readonly="true"/>
+                                <p>#{a.comentario}</p>
+                                <br/>
+                            </ui:repeat>
+                        </h:form>
                     </div>
                 </div>
-                <!-- Checagem de usuario -->
-                <h:form id="f" style="display: none">
-                    <p:panel id="panel">
-                        <p:inputText id="email" value="#{usuarioControle.usuario.email}"/>
-                        <p:inputText id="idR" value="#{usuarioControle.usuario.idR}"/>
-                        <p:inputText id="perfil" value="#{usuarioControle.usuario.perfil}"/>
-                        <p:commandButton value="Salvar" 
-                                         id="registra"
-                                         class="btn btn-default"
-                                         action="#{usuarioControle.salvar}">
-                        </p:commandButton>
-                    </p:panel>
-                </h:form>
-                <h:form id="f1" style="display: none;">
-                    <p:panel id="panel">
-                        <p:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
-                        <p:inputText id="idR" value="#{usuarioControle.idR}"/>
-                        <p:inputText id="idUsuario" value="#{usuarioControle.idUsuario}"/>
-                        <p:inputText id="idMusica" value="#{buscaControle.musica.idMusica}"/>
-                        <p:commandButton value="Salvar" 
-                                         id="registra"
-                                         class="btn btn-default"
-                                         update="f1"
-                                         actionListener="#{usuarioControle.pegerIdR()}">
-                            <p:resetInput target=":avaliacao:panelA" />
-                        </p:commandButton>
-                    </p:panel>
-                </h:form>
-                <h:form id="fodasse" style="display: none">
-                    <p:commandButton value="fodasse"
-                                     id="fodasse"
-                                     update="fodasse"
-                                     action="#{usuarioControle.nullar()}"/>
-                </h:form>
             </div>
             <!-- botao do login parte 2 -->
             <div id="loginIfBlock" style="display: none">
@@ -188,8 +201,8 @@
             var loginIfBlock = document.getElementById("loginIfBlock");
             var tipo = document.getElementById("f1:tipoUser").value;
             var admUser = document.getElementById("admUser");
-            var idUser = document.getElementById('f1:idUsuario');
             var idMusica = document.getElementById('f1:idMusica');
+            var idUser = document.getElementById('f1:idUsuario');
             var idUserAv = document.getElementById('avaliacao:idUser');
             var idMus = document.getElementById('avaliacao:idMus');
             var login = document.getElementById("login");
@@ -199,12 +212,11 @@
             var idR2 = document.getElementById('f1:idR');
             var perfil = document.getElementById('f:perfil');
             var idRGet;
+            document.getElementById('aval:vava').click();
             idUserAv.value = idUser.value;
             idMus.value = idMusica.value;
-
             if (currentPath === "/memes/faces/cadastroGeneroT.xhtml" ||
                     currentPath === "/memes/faces/cadastroGeneroT.xhtml#") {
-                console.log(tipo);
                 if (tipo === "0") {
                     block.style.display = "none";
                     loginIfBlock.style.display = "inline";
@@ -217,7 +229,6 @@
 
             function admin() {
                 tipo = document.getElementById("f1:tipoUser").value;
-                console.log(tipo);
                 if (tipo === "0") {
                     admUser.style.display = "none";
                 } else if (tipo === "1" || tipo === "2") {
@@ -257,7 +268,7 @@
                     document.getElementById('f:registra').click();
                     document.getElementById('f1:registra').click();
                 }
-                                setTimeout(admin, 1000);
+                setTimeout(admin, 1000);
                 $('#myModal').modal('hide');
             }
         </script>

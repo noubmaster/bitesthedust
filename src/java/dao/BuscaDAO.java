@@ -26,21 +26,29 @@ public class BuscaDAO {
         String sql = "SELECT\n"
                 + "*\n"
                 + "FROM\n"
-                + "	musica m\n"
+                + "musica m\n"
                 + "LEFT JOIN\n"
-                + "	participa p ON p.Musica_idMusica = m.idMusica\n"
+                + "participa p ON p.Musica_idMusica = m.idMusica\n"
                 + "LEFT JOIN\n"
-                + "	artista a ON p.Artista_idArtista = a.idArtista\n"
+                + "artista a ON p.Artista_idArtista = a.idArtista\n"
+                + "LEFT JOIN\n"
+                + "album al ON al.idAlbum = m.idAlbumMusica\n"
+                + "LEFT JOIN\n"
+                + "genero ge ON ge.idGenero = m.idGeneroMusica\n"
                 + "WHERE\n"
-                + "	m.nomeMusica like CONCAT('%', ?, '%') or\n"
-                + "	m.letra like CONCAT('%', ?, '%') or\n"
-                + "	a.nomeArtista like CONCAT('%', ?, '%')\n"
+                + "m.nomeMusica like CONCAT('%', ?, '%') or\n"
+                + "m.letra like CONCAT('%', ?, '%') or\n"
+                + "a.nomeArtista like CONCAT('%', ?, '%') or\n"
+                + "ge.nomeGenero like CONCAT('%', ?, '%') or\n"
+                + "al.nomeAlbum like CONCAT('%', ?, '%')\n"
                 + "GROUP BY\n"
-                + "	m.idMusica";
+                + "m.idMusica";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1, webInput);
         stmt.setString(2, webInput);
         stmt.setString(3, webInput);
+        stmt.setString(4, webInput);
+        stmt.setString(5, webInput);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             Musica musica = new Musica();
@@ -58,10 +66,21 @@ public class BuscaDAO {
             participa.setArtista(artista);
             participa.setMusica(musica);
 
+            Album album = new Album();
+            album.setIdAlbum(rs.getInt("idAlbum"));
+            album.setNomeAlbum(rs.getString("nomeAlbum"));
+            album.setAno(rs.getInt("ano"));
+
+            Genero genero = new Genero();
+            genero.setIdGenero(rs.getInt("idGenero"));
+            genero.setNome(rs.getString("nomeGenero"));
+
             Busca busca = new Busca();
             busca.setArtista(artista);
             busca.setMusica(musica);
             busca.setParticipa(participa);
+            busca.setAlbum(album);
+            busca.setGenero(genero);
             lista.add(busca);
         }
         stmt.close();
@@ -100,7 +119,122 @@ public class BuscaDAO {
         stmt.close();
         rs.close();
         con.close();
-        System.out.println(musica.getNomeMusica());
         return musica;
+    }
+
+    public static Artista getArtistByID(int idMusica) throws SQLException {
+        Musica musica = new Musica();
+        Artista artista = new Artista();
+        Connection con = Conexao.getConnection();
+        String sql = "SELECT * FROM album al, musica m, participa p, artista a WHERE m.idMusica = p.Musica_idMusica AND p.Artista_idArtista = a.idArtista AND m.idMusica = ? group by m.idMusica";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, idMusica);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Album album = new Album();
+            album.setIdAlbum(rs.getInt("idAlbum"));
+            album.setNomeAlbum(rs.getString("nomeAlbum"));
+            album.setAno(rs.getInt("ano"));
+
+            musica.setIdMusica(rs.getInt("idMusica"));
+            musica.setNomeMusica(rs.getString("nomeMusica"));
+            musica.setScore(rs.getFloat("score"));
+            musica.setLetra(rs.getString("letra"));
+
+            musica.setAlbum(album);
+
+            artista.setIdArtista(rs.getInt("idArtista"));
+            artista.setNomeArtista(rs.getString("nomeArtista"));
+
+            Participa participa = new Participa();
+            participa.setPapel(rs.getString("papel"));
+
+            participa.setArtista(artista);
+            participa.setMusica(musica);
+
+        }
+        stmt.close();
+        rs.close();
+        con.close();
+        return artista;
+    }
+
+    public static Artista getArtistAlbumsByID(int idMusica) throws SQLException {
+        Musica musica = new Musica();
+        Artista artista = new Artista();
+        List<Artista> lista = new ArrayList<Artista>();
+        Connection con = Conexao.getConnection();
+        String sql = "select\n"
+                + "*\n"
+                + "from\n"
+                + "album al,\n"
+                + "musica mu,\n"
+                + "participa pa,\n"
+                + "artista ar\n"
+                + "where\n"
+                + "al.idAlbum = mu.idAlbumMusica and\n"
+                + "mu.idMusica = pa.Musica_idMusica and\n"
+                + "pa.Artista_idArtista = ar.idArtista and\n"
+                + "ar.idArtista = ?\n"
+                + "order by\n"
+                + "al.ano,\n"
+                + "mu.faixa";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, idMusica);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Album album = new Album();
+            album.setIdAlbum(rs.getInt("idAlbum"));
+            album.setNomeAlbum(rs.getString("nomeAlbum"));
+            album.setAno(rs.getInt("ano"));
+
+            musica.setIdMusica(rs.getInt("idMusica"));
+            musica.setNomeMusica(rs.getString("nomeMusica"));
+            musica.setScore(rs.getFloat("score"));
+            musica.setLetra(rs.getString("letra"));
+
+            musica.setAlbum(album);
+
+            artista.setIdArtista(rs.getInt("idArtista"));
+            artista.setNomeArtista(rs.getString("nomeArtista"));
+
+            Participa participa = new Participa();
+            participa.setPapel(rs.getString("papel"));
+
+            participa.setArtista(artista);
+            participa.setMusica(musica);
+
+        }
+        stmt.close();
+        rs.close();
+        con.close();
+        return artista;
+    }
+
+    public static Album getAlbumByID(int idMusica) throws SQLException {
+        Musica musica = new Musica();
+        Album album = new Album();
+        Connection con = Conexao.getConnection();
+        String sql = "select * from musica m, album a where m.idAlbumMusica = a.idAlbum and m.idAlbumMusica = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, idMusica);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            album.setIdAlbum(rs.getInt("idAlbum"));
+            album.setNomeAlbum(rs.getString("nomeAlbum"));
+            album.setAno(rs.getInt("ano"));
+
+            musica.setIdMusica(rs.getInt("idMusica"));
+            musica.setNomeMusica(rs.getString("nomeMusica"));
+            musica.setScore(rs.getFloat("score"));
+            musica.setLetra(rs.getString("letra"));
+
+            musica.setAlbum(album);
+        }
+        stmt.close();
+        rs.close();
+        con.close();
+        System.out.println(album.getNomeAlbum());
+        return album;
     }
 }

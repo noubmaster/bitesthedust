@@ -12,6 +12,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import modelo.Artista;
+import modelo.Album;
 import modelo.Busca;
 import modelo.Musica;
 
@@ -25,7 +27,9 @@ public class BuscaControle {
 
     private List<Busca> result = new ArrayList<Busca>();
     private String webInput = "";
-    private Musica musica = new Musica();    
+    private Musica musica = new Musica(); 
+    private Artista artista = new Artista();
+    private Album album = new Album();
 
     @PostConstruct
     public void buscar() {
@@ -43,6 +47,33 @@ public class BuscaControle {
             e.printStackTrace();
         }
         return "musica.xhtml?faces-redirect=true";
+    }
+    
+    public String getArtistaRedirect(int idMusica) {
+        try {
+            artista = BuscaDAO.getArtistByID(idMusica);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "artista.xhtml?faces-redirect=true";
+    }
+    
+    public String getAlbumRedirect(int idMusica) {
+        try {
+            album = BuscaDAO.getAlbumByID(idMusica);
+            System.out.println(idMusica);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "album.xhtml?faces-redirect=true";
+    }
+    
+    public void getArtistAlbum(int idMusica) {
+        try {
+            artista = BuscaDAO.getArtistAlbumsByID(idMusica);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Busca> getResult() {
@@ -67,6 +98,22 @@ public class BuscaControle {
 
     public void setMusica(Musica musica) {
         this.musica = musica;
+    }
+
+    public Artista getArtista() {
+        return artista;
+    }
+
+    public void setArtista(Artista artista) {
+        this.artista = artista;
+    }
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 
     

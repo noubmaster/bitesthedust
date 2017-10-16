@@ -50,9 +50,14 @@
                             </ul>
                             <div class="navbar-form navbar-left">
                                 <ul class="nav navbar-nav">
-                                    <li><h:form>
-                                            <p:inputText style="width: 180px" value="#{buscaControle.webInput}" placeholder="Search" class="form-control"/>
-                                            <h:commandLink type="submit" value="Submit" action="#{buscaControle.buscar}" class="btn btn-default"></h:commandLink>
+                                    <li><h:form id="busca">
+                                            <div class="input-group">
+                                                <p:inputText style="width: 180px;" id="txt" value="#{buscaControle.webInput}" placeholder="Search" class="form-control"/>
+                                                <span class="input-group-btn">
+                                                    <p:commandLink onclick="vozes();" class="btn btn-default"><i class="glyphicon glyphicon-record"/></p:commandLink>
+                                                    <h:commandLink type="submit" value="Submit" action="#{buscaControle.buscar}" class="btn btn-default"></h:commandLink>
+                                                </span>
+                                            </div>
                                         </h:form></li>
                                 </ul>
                             </div>
@@ -84,7 +89,8 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h:commandLink action="#{buscaControle.getMusicaRedirect(a.musica.idMusica)}"><h4>#{a.musica.nomeMusica}</h4></h:commandLink>
-                                        <h:commandLink action="#{buscaControle.getMusicaRedirect(a.musica.idMusica)}"><h6>#{a.artista.nomeArtista}</h6></h:commandLink>
+                                        <h:commandLink style="display: inline" action="#{buscaControle.getArtistaRedirect(a.musica.idMusica)}"><h5>#{a.artista.nomeArtista}</h5></h:commandLink>
+                                        <h:commandLink style="display: inline" action="#{buscaControle.getAlbumRedirect(a.album.idAlbum)}"><h6>#{a.album.nomeAlbum}</h6></h:commandLink>
                                     </div>
                                     <div class="panel-body" style="text-overflow: fade; white-space: nowrap;
                                          overflow: hidden;">
@@ -237,6 +243,25 @@
                 }
                 setTimeout(admin, 1000);
                 $('#myModal').modal('hide');
+            }
+        </script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+        <script>
+            function vozes() {
+                console.log('ta passando aqui carai');
+                var textInput = document.getElementById("busca:txt");
+                if (annyang) {
+
+                    annyang.addCallback('result', function (phrases) {
+                        console.log("I think the user said: ", phrases[0]);
+                        textInput.value = phrases[0];
+                        console.log("But then again, it could be any of the following: ", phrases);
+
+                    });
+
+                    // Start listening.
+                    annyang.start();
+                }
             }
         </script>
     </h:body>

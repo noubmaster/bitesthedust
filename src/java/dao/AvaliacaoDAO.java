@@ -56,7 +56,6 @@ public class AvaliacaoDAO {
                 = "DELETE FROM `memes`.`avaliacao` WHERE  `idAvaliacao`=?;";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, avaliacao.getIdAvaliacao());
-
         stmt.execute();
         stmt.close();
         con.close();
@@ -75,7 +74,9 @@ public class AvaliacaoDAO {
                 + "WHERE\n"
                 + "av.idMusicaAvaliacao = mu.idMusica AND \n"
                 + "av.idUsuarioAvaliacao = us.idUsuario AND\n"
-                + "mu.idMusica = ?";
+                + "mu.idMusica = ?\n"
+                + "ORDER BY\n"
+                + "av.idAvaliacao DESC";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, idMusica);
         ResultSet rs = stmt.executeQuery();

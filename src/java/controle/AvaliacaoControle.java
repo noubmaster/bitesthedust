@@ -30,14 +30,6 @@ public class AvaliacaoControle {
         this.idUsuario = idUsuario;
     }
 
-    public int getIdMusica() {
-        return idMusica;
-    }
-
-    public void setIdMusica(int idMusica) {
-        this.idMusica = idMusica;
-    }
-
     @PostConstruct
     public void atualizaAvaliacoes() {
         try {
@@ -54,9 +46,10 @@ public class AvaliacaoControle {
         idMusica = 0;
     }
 
-    public void listAsd() {
+    public void listAsd(int idMusicaC) {
         try {
-            avaliacoes2 = AvaliacaoDAO.getListaAsd(idMusica);
+            avaliacoes2 = AvaliacaoDAO.getListaAsd(idMusicaC);
+            System.out.println(idMusicaC);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -82,6 +75,7 @@ public class AvaliacaoControle {
         if (salvar) {
             try {
                 AvaliacaoDAO.inserir(avaliacao);
+                avaliacao = new Avaliacao();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -99,6 +93,8 @@ public class AvaliacaoControle {
     public void excluir() {
         try {
             AvaliacaoDAO.excluir(avaliacao);
+
+            avaliacao = new Avaliacao();
             atualizaAvaliacoes();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -127,6 +123,14 @@ public class AvaliacaoControle {
 
     public void setAvaliacoes2(List<Avaliacao> avaliacoes2) {
         this.avaliacoes2 = avaliacoes2;
+    }
+
+    public int getIdMusica() {
+        return idMusica;
+    }
+
+    public void setIdMusica(int idMusica) {
+        this.idMusica = idMusica;
     }
 
 }
