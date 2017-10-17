@@ -189,7 +189,6 @@
 
             if (currentPath === "/memes/faces/cadastroGeneroT.xhtml" ||
                     currentPath === "/memes/faces/cadastroGeneroT.xhtml#") {
-                console.log(tipo);
                 if (tipo === "0") {
                     block.style.display = "none";
                     loginIfBlock.style.display = "inline";
@@ -201,7 +200,6 @@
             ;
             function admin() {
                 tipo = document.getElementById("f1:tipoUser").value;
-                console.log(tipo);
                 if (tipo === "0") {
                     admUser.style.display = "none";
                 } else if (tipo === "1" || tipo === "2") {
@@ -226,14 +224,10 @@
 
             function onSignIn(googleUser) {
                 var profile = googleUser.getBasicProfile();
-                console.log('Name: ' + profile.getName());
-                console.log('Image URL: ' + profile.getImageUrl());
-                console.log('Email: ' + profile.getEmail());
                 if (profile.getId() !== null) {
                     idRGet = profile.getId();
                     login.style.display = "none";
                     optionsUser.style.display = "inline";
-                    console.log('ID: ' + profile.getId());
                     email.value = profile.getEmail();
                     idR.value = idRGet;
                     idR2.value = idRGet;
