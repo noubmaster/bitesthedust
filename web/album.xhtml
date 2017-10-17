@@ -13,13 +13,13 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
-        <script src="https://apis.google.com/js/platform.js"></script>
+        <script src="https://apis.google.com/js/platform.js"  async="async"></script>
         <h:outputStylesheet library="css" name="musicP.css"/>
         <title>#{buscaControle.album.nomeAlbum}</title>
         <script>
         </script>
     </h:head>
-    <h:body>
+    <h:body onload="#{buscaControle.getListaMusicasByAlbum(buscaControle.album.idAlbum)}">
         <div class="container">
             <div id="block" >
                 <nav class="navbar navbar-default navbar-fixed-top">
@@ -51,9 +51,14 @@
                             </ul>
                             <div class="navbar-form navbar-left">
                                 <ul class="nav navbar-nav">
-                                    <li><h:form>
-                                            <p:inputText style="width: 180px" value="#{buscaControle.webInput}" placeholder="Search" class="form-control"/>
-                                            <h:commandLink type="submit" value="Submit" action="#{buscaControle.buscar}" class="btn btn-default"></h:commandLink>
+                                    <li><h:form id="busca">
+                                            <div class="input-group">
+                                                <p:inputText style="width: 180px;" id="txt" value="#{buscaControle.webInput}" placeholder="Search" class="form-control"/>
+                                                <span class="input-group-btn">
+                                                    <p:commandLink onclick="vozes();" class="btn btn-default"><i class="glyphicon glyphicon-record"/></p:commandLink>
+                                                    <h:commandLink type="submit" value="Submit" actionListener="#{buscaControle.buscar}" action="index.xhtml" class="btn btn-default"></h:commandLink>
+                                                </span>
+                                            </div>
                                         </h:form></li>
                                 </ul>
                             </div>
@@ -83,7 +88,13 @@
                         <div class="page-header">
                             <h1>#{buscaControle.album.nomeAlbum}</h1>
                         </div>
-                        <p style="white-space: pre-wrap;"></p>
+                        <h:form>
+                            <div class="panel">
+                                <ui:repeat value="#{buscaControle.musicasAlbum}" var="q" varStatus="d">
+                                    <h:commandLink action="#{buscaControle.getMusicaRedirect(q.idMusica)}"><p>#{q.faixa}-#{q.nomeMusica}</p></h:commandLink>
+                                </ui:repeat>
+                            </div>
+                        </h:form>
                         <!-- Checagem de usuario -->
                         <h:form id="f" style="display: none">
                             <p:panel id="panel">
@@ -165,20 +176,13 @@
             var loginIfBlock = document.getElementById("loginIfBlock");
             var tipo = document.getElementById("f1:tipoUser").value;
             var admUser = document.getElementById("admUser");
-            var idMusica = document.getElementById('f1:idMusica');
-            var idUser = document.getElementById('f1:idUsuario');
-            var idUserAv = document.getElementById('avaliacao:idUser');
-            var idMus = document.getElementById('avaliacao:idMus');
+            var idR = document.getElementById('f:idR');
+            var idR2 = document.getElementById('f1:idR');
             var login = document.getElementById("login");
             var optionsUser = document.getElementById("optionsUser");
             var email = document.getElementById('f:email');
-            var idR = document.getElementById('f:idR');
-            var idR2 = document.getElementById('f1:idR');
             var perfil = document.getElementById('f:perfil');
             var idRGet;
-            document.getElementById('aval:vava').click();
-            idUserAv.value = idUser.value;
-            idMus.value = idMusica.value;
             if (currentPath === "/memes/faces/cadastroGeneroT.xhtml" ||
                     currentPath === "/memes/faces/cadastroGeneroT.xhtml#") {
                 if (tipo === "0") {
@@ -234,6 +238,24 @@
                 }
                 setTimeout(admin, 1000);
                 $('#myModal').modal('hide');
+            }
+        </script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js">
+            function vozes() {
+                console.log('ta passando aqui carai');
+                var textInput = document.getElementById("busca:txt");
+                if (annyang) {
+
+                    annyang.addCallback('result', function (phrases) {
+                        console.log("I think the user said: ", phrases[0]);
+                        textInput.value = phrases[0];
+                        console.log("But then again, it could be any of the following: ", phrases);
+
+                    });
+
+                    // Start listening.
+                    annyang.start();
+                }
             }
         </script>
     </h:body>

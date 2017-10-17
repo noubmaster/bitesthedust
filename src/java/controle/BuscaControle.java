@@ -26,8 +26,10 @@ import modelo.Musica;
 public class BuscaControle {
 
     private List<Busca> result = new ArrayList<Busca>();
+    private List<Album> albumsArtist = new ArrayList<Album>();
+    private List<Musica> musicasAlbum = new ArrayList<Musica>();
     private String webInput = "";
-    private Musica musica = new Musica(); 
+    private Musica musica = new Musica();
     private Artista artista = new Artista();
     private Album album = new Album();
 
@@ -39,7 +41,7 @@ public class BuscaControle {
             e.printStackTrace();
         }
     }
-    
+
     public String getMusicaRedirect(int idMusica) {
         try {
             musica = BuscaDAO.getMusicaByID(idMusica);
@@ -48,7 +50,7 @@ public class BuscaControle {
         }
         return "musica.xhtml?faces-redirect=true";
     }
-    
+
     public String getArtistaRedirect(int idMusica) {
         try {
             artista = BuscaDAO.getArtistByID(idMusica);
@@ -57,7 +59,15 @@ public class BuscaControle {
         }
         return "artista.xhtml?faces-redirect=true";
     }
-    
+
+    public void getListaMusicasByAlbum(int idAlbum) {
+        try {
+            musicasAlbum = BuscaDAO.getListaMusicaByAlbum(idAlbum);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }       
+    }
+
     public String getAlbumRedirect(int idMusica) {
         try {
             album = BuscaDAO.getAlbumByID(idMusica);
@@ -67,10 +77,11 @@ public class BuscaControle {
         }
         return "album.xhtml?faces-redirect=true";
     }
-    
-    public void getArtistAlbum(int idMusica) {
+
+    public void getArtistsAlbum(int idArtista) {
         try {
-            artista = BuscaDAO.getArtistAlbumsByID(idMusica);
+            albumsArtist = BuscaDAO.getArtistAlbumsByID(idArtista);
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -116,5 +127,21 @@ public class BuscaControle {
         this.album = album;
     }
 
+    public List<Album> getAlbumsArtist() {
+        return albumsArtist;
+    }
+
+    public void setAlbumsArtist(List<Album> albumsArtist) {
+        this.albumsArtist = albumsArtist;
+    }
+
+    public List<Musica> getMusicasAlbum() {
+        return musicasAlbum;
+    }
+
+    public void setMusicasAlbum(List<Musica> musicasAlbum) {
+        this.musicasAlbum = musicasAlbum;
+    }
+    
     
 }

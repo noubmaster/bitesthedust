@@ -13,7 +13,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
-        <script src="https://apis.google.com/js/platform.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async="async"></script>
         <title>BitesTheDust</title>
         <h:outputStylesheet library="css" name="musicP.css"/>
         <h:outputStylesheet library="css" name="searchBoxes.css"/>
@@ -55,7 +55,7 @@
                                                 <p:inputText style="width: 180px;" id="txt" value="#{buscaControle.webInput}" placeholder="Search" class="form-control"/>
                                                 <span class="input-group-btn">
                                                     <p:commandLink onclick="vozes();" class="btn btn-default"><i class="glyphicon glyphicon-record"/></p:commandLink>
-                                                    <h:commandLink type="submit" value="Submit" action="#{buscaControle.buscar}" class="btn btn-default"></h:commandLink>
+                                                    <h:commandLink type="submit" value="Submit" actionListener="#{buscaControle.buscar}" action="index.xhtml" class="btn btn-default"></h:commandLink>
                                                 </span>
                                             </div>
                                         </h:form></li>
@@ -89,8 +89,9 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h:commandLink action="#{buscaControle.getMusicaRedirect(a.musica.idMusica)}"><h4>#{a.musica.nomeMusica}</h4></h:commandLink>
-                                        <h:commandLink style="display: inline" action="#{buscaControle.getArtistaRedirect(a.musica.idMusica)}"><h5>#{a.artista.nomeArtista}</h5></h:commandLink>
-                                        <h:commandLink style="display: inline" action="#{buscaControle.getAlbumRedirect(a.album.idAlbum)}"><h6>#{a.album.nomeAlbum}</h6></h:commandLink>
+                                        <h:commandLink action="#{buscaControle.getArtistaRedirect(a.musica.idMusica)}">#{a.artista.nomeArtista}</h:commandLink>
+                                         / 
+                                        <h:commandLink action="#{buscaControle.getAlbumRedirect(a.album.idAlbum)}">#{a.album.nomeAlbum}</h:commandLink>
                                     </div>
                                     <div class="panel-body" style="text-overflow: fade; white-space: nowrap;
                                          overflow: hidden;">

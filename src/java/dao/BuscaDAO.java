@@ -159,56 +159,24 @@ public class BuscaDAO {
         return artista;
     }
 
-    public static Artista getArtistAlbumsByID(int idMusica) throws SQLException {
-        Musica musica = new Musica();
-        Artista artista = new Artista();
-        List<Artista> lista = new ArrayList<Artista>();
+    public static List<Album> getArtistAlbumsByID(int idArtista) throws SQLException {
+        List<Album> lista = new ArrayList<Album>();
         Connection con = Conexao.getConnection();
-        String sql = "select\n"
-                + "*\n"
-                + "from\n"
-                + "album al,\n"
-                + "musica mu,\n"
-                + "participa pa,\n"
-                + "artista ar\n"
-                + "where\n"
-                + "al.idAlbum = mu.idAlbumMusica and\n"
-                + "mu.idMusica = pa.Musica_idMusica and\n"
-                + "pa.Artista_idArtista = ar.idArtista and\n"
-                + "ar.idArtista = ?\n"
-                + "order by\n"
-                + "al.ano,\n"
-                + "mu.faixa";
+        String sql = "SELECT al.idAlbum, al.nomeAlbum, al.ano FROM artista ar, participa pa, musica mu, album al WHERE mu.idAlbumMusica = al.idAlbum AND ar.idArtista = pa.Artista_idArtista AND pa.Musica_idMusica = mu.idMusica AND ar.idArtista = ? GROUP BY al.idAlbum";
         PreparedStatement stmt = con.prepareStatement(sql);
-        stmt.setInt(1, idMusica);
+        stmt.setInt(1, idArtista);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             Album album = new Album();
             album.setIdAlbum(rs.getInt("idAlbum"));
             album.setNomeAlbum(rs.getString("nomeAlbum"));
             album.setAno(rs.getInt("ano"));
-
-            musica.setIdMusica(rs.getInt("idMusica"));
-            musica.setNomeMusica(rs.getString("nomeMusica"));
-            musica.setScore(rs.getFloat("score"));
-            musica.setLetra(rs.getString("letra"));
-
-            musica.setAlbum(album);
-
-            artista.setIdArtista(rs.getInt("idArtista"));
-            artista.setNomeArtista(rs.getString("nomeArtista"));
-
-            Participa participa = new Participa();
-            participa.setPapel(rs.getString("papel"));
-
-            participa.setArtista(artista);
-            participa.setMusica(musica);
-
+            lista.add(album);
         }
         stmt.close();
         rs.close();
         con.close();
-        return artista;
+        return lista;
     }
 
     public static Album getAlbumByID(int idMusica) throws SQLException {
@@ -236,5 +204,39 @@ public class BuscaDAO {
         con.close();
         System.out.println(album.getNomeAlbum());
         return album;
+    }
+
+    public static List<Musica> getListaMusicaByAlbum(int idAlbum) throws SQLException {
+        List<Musica> lista = new ArrayList<Musica>();
+        Connection con = Conexao.getConnection();
+        String sql = "SELECT * FROM musica mu, album al, genero ge WHERE mu.idAlbumMusica = al.idAlbum AND mu.idGeneroMusica = idGenero AND al.idAlbum = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, idAlbum);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Album album = new Album();
+            album.setIdAlbum(rs.getInt("idAlbum"));
+            album.setNomeAlbum(rs.getString("nomeAlbum"));
+            album.setAno(rs.getInt("ano"));
+
+            Genero genero = new Genero();
+            genero.setIdGenero(rs.getInt("idGenero"));
+            genero.setNome(rs.getString("nomeGenero"));
+
+            Musica musica = new Musica();
+            musica.setIdMusica(rs.getInt("idMusica"));
+            musica.setNomeMusica(rs.getString("nomeMusica"));
+            musica.setScore(rs.getFloat("score"));
+            musica.setLetra(rs.getString("letra"));
+            musica.setFaixa(rs.getInt("faixa"));
+
+            musica.setAlbum(album);
+            musica.setGenero(genero);
+            lista.add(musica);
+        }
+        stmt.close();
+        rs.close();
+        con.close();
+        return lista;
     }
 }

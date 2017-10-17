@@ -13,13 +13,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <meta name="google-signin-client_id" content="488287116710-mg5d2db5prvt3gep4l6a037k2jclguoa.apps.googleusercontent.com"/>
-        <script src="https://apis.google.com/js/platform.js"></script>
+        <script src="https://apis.google.com/js/platform.js"  async="async"></script>
         <h:outputStylesheet library="css" name="musicP.css"/>
         <title>#{buscaControle.musica.nomeMusica}</title>
-        <script>
-        </script>
     </h:head>
-    <h:body>
+    <h:body onload="#{avaliacaoControle.listAsd(buscaControle.musica.idMusica)}">
         <div class="container">
             <div id="block" >
                 <nav class="navbar navbar-default navbar-fixed-top">
@@ -51,9 +49,14 @@
                             </ul>
                             <div class="navbar-form navbar-left">
                                 <ul class="nav navbar-nav">
-                                    <li><h:form>
-                                            <p:inputText style="width: 180px" value="#{buscaControle.webInput}" placeholder="Search" class="form-control"/>
-                                            <h:commandLink type="submit" value="Submit" action="#{buscaControle.buscar}" class="btn btn-default"></h:commandLink>
+                                    <li><h:form id="busca">
+                                            <div class="input-group">
+                                                <p:inputText style="width: 180px;" id="txt" value="#{buscaControle.webInput}" placeholder="Search" class="form-control"/>
+                                                <span class="input-group-btn">
+                                                    <p:commandLink onclick="vozes();" class="btn btn-default"><i class="glyphicon glyphicon-record"/></p:commandLink>
+                                                    <h:commandLink type="submit" value="Submit" actionListener="#{buscaControle.buscar}" action="index.xhtml" class="btn btn-default"></h:commandLink>
+                                                </span>
+                                            </div>
                                         </h:form></li>
                                 </ul>
                             </div>
@@ -94,6 +97,7 @@
                                                  id="registra"
                                                  class="btn btn-default"
                                                  action="#{usuarioControle.salvar}">
+                                    <f:ajax render="@all"/>
                                 </p:commandButton>
                             </p:panel>
                         </h:form>
@@ -119,32 +123,29 @@
                                              action="#{usuarioControle.nullar()}"/>
                         </h:form>
                         <!-- Avaliaçao -->
-                        <h:form id="avaliacao">
-                            <h:panelGrid id="panelA" styleClass="panel">
-                                <p:rating value="#{avaliacaoControle.avaliacao.nota}" />
-                                <p:inputTextarea style="resize: none;" 
-                                                 styleClass="form-control"
-                                                 id="comentario"
-                                                 rows="3"
-                                                 cols="33"
-                                                 required="true"
-                                                 value="#{avaliacaoControle.avaliacao.comentario}"></p:inputTextarea>
-                                <p:inputText style="display: none" id="idUser" value="#{avaliacaoControle.idUsuario}"/>
-                                <p:inputText style="display: none" id="idMus" value="#{avaliacaoControle.idMusica}"/>
-                                <p:commandButton value="Salvar" 
-                                               class="btn btn-default"
-                                               action="#{avaliacaoControle.salvar}"
-                                               >
-                                    <p:resetInput target=":avaliacao:panelA" />
-                                </p:commandButton>
-                            </h:panelGrid>
-                        </h:form>
+                        <div id="xxxxxx">
+                            <h:form id="avaliacao">
+                                <h:panelGrid  id="panelA" styleClass="panel">
+                                    <p:rating value="#{avaliacaoControle.avaliacao.nota}" />
+                                    <p:inputTextarea style="resize: none;" 
+                                                     styleClass="form-control"
+                                                     id="comentario"
+                                                     rows="3"
+                                                     cols="33"
+                                                     required="true"
+                                                     value="#{avaliacaoControle.avaliacao.comentario}"></p:inputTextarea>
+                                    <p:inputText style="display: none" id="idUser" value="#{avaliacaoControle.idUsuario}"/>
+                                    <p:inputText style="display: none" id="idMus" value="#{avaliacaoControle.idMusica}"/>
+                                    <p:commandButton value="Salvar" 
+                                                     class="btn btn-default"
+                                                     action="#{avaliacaoControle.salvar}"
+                                                     >
+                                        <p:resetInput target=":avaliacao:panelA" />
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </h:form>
+                        </div>
                         <h:form id="aval">
-                            <p:commandButton value="fodasse"
-                                             style="display: none"
-                                             id="vava"
-                                             update=":aval"
-                                             action="#{avaliacaoControle.listAsd(buscaControle.musica.idMusica)}"/>
                             <ui:repeat  value="#{avaliacaoControle.avaliacoes2}" var="a" varStatus="q">
                                 <img class="img-responsive" src="#{a.usuario.perfil}" style="width: 25px; height: 25px; display: inline;" />
                                 <p style="display: inline;">#{a.usuario.email}</p>
@@ -212,7 +213,6 @@
             var idR2 = document.getElementById('f1:idR');
             var perfil = document.getElementById('f:perfil');
             var idRGet;
-            document.getElementById('aval:vava').click();
             idUserAv.value = idUser.value;
             idMus.value = idMusica.value;
             if (currentPath === "/memes/faces/cadastroGeneroT.xhtml" ||
@@ -226,6 +226,10 @@
                 }
             }
             ;
+
+            if (idUser === 0) {
+                document.getElementById("xxxxxx").style.display = "none";
+            }
 
             function admin() {
                 tipo = document.getElementById("f1:tipoUser").value;
@@ -270,6 +274,24 @@
                 }
                 setTimeout(admin, 1000);
                 $('#myModal').modal('hide');
+            }
+        </script>
+        <script>
+            function vozes() {
+                console.log('ta passando aqui carai');
+                var textInput = document.getElementById("busca:txt");
+                if (annyang) {
+
+                    annyang.addCallback('result', function (phrases) {
+                        console.log("I think the user said: ", phrases[0]);
+                        textInput.value = phrases[0];
+                        console.log("But then again, it could be any of the following: ", phrases);
+
+                    });
+
+                    // Start listening.
+                    annyang.start();
+                }
             }
         </script>
     </h:body>
