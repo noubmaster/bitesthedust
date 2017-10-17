@@ -16,8 +16,9 @@ import modelo.Musica;
 public class ParticipaControle {
 
     private List<Participa> participacoes = new ArrayList<Participa>();
+    private String[] pId;
     private Participa participa = new Participa();
-    private boolean salvar = false;
+    private boolean salvar = true;
     private int idArtista = 0;
     private int idMusica = 0;
 
@@ -45,7 +46,7 @@ public class ParticipaControle {
             e.printStackTrace();
         }
     }
-
+    
     public void preparaIncluir() {
         salvar = true;
         participa = new Participa();
@@ -68,7 +69,6 @@ public class ParticipaControle {
         
         participa.setArtista(artista);
         participa.setMusica(musica);
-        
         if (salvar) {
             try {
                 ParticipaDAO.inserir(participa);
@@ -110,4 +110,15 @@ public class ParticipaControle {
     public void setParticipa(Participa participa) {
         this.participa = participa;
     }
+
+    public String[] getpId() {
+        return pId;
+    }
+
+    public void setpId(String[] pId) {
+        this.pId = pId;
+    }
+
+
+    
 }

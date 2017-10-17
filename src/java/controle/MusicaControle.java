@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 import modelo.Genero;
 import modelo.Musica;
 import modelo.Album;
+import modelo.Participa;
 
 @ManagedBean
 @SessionScoped
@@ -17,6 +18,7 @@ public class MusicaControle {
 
     private List<Musica> musicas = new ArrayList<Musica>();
     private Musica musica = new Musica();
+    private Participa participa = new Participa();
     private boolean salvar = false;
     private int idGenero = 0;
     private int idAlbum = 0;

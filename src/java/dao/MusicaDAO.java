@@ -9,6 +9,7 @@ import java.util.List;
 import modelo.Album;
 import modelo.Musica;
 import modelo.Genero;
+import modelo.Participa;
 import util.Conexao;
 
 /**
@@ -17,21 +18,6 @@ import util.Conexao;
  */
 public class MusicaDAO {
 
-    public static void inserirO(Musica musica) throws SQLException {
-        Connection con = Conexao.getConnection();
-        String sql
-                = "INSERT INTO `memes`.`musica` (`nomeMusica`, `letra`, `faixa`, `idAlbumMusica`, `idGeneroMusica`) VALUES (?, ?, ?, ?);";
-        PreparedStatement stmt = con.prepareStatement(sql);
-        stmt.setString(1, musica.getNomeMusica());
-        stmt.setString(2, musica.getLetra());
-        stmt.setInt(3, musica.getFaixa());
-        stmt.setInt(4, musica.getAlbum().getIdAlbum());
-        stmt.setInt(5, musica.getGenero().getIdGenero());
-
-        stmt.execute();
-        stmt.close();
-        con.close();
-    }
     public static void inserir(Musica musica) throws SQLException {
         Connection con = Conexao.getConnection();
         String sql
@@ -50,12 +36,14 @@ public class MusicaDAO {
         rs.first();
         int ultimaMusica = rs.getInt("idMusica");
         System.out.println(ultimaMusica);
+        stmt2.execute();
+        
         stmt2.close();
         rs.close();
         stmt.close();
         con.close();
     }
-
+    
     public static void alterar(Musica musica) throws SQLException {
         Connection con = Conexao.getConnection();
         String sql

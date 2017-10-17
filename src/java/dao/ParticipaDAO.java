@@ -19,15 +19,24 @@ public class ParticipaDAO {
 
     public static void inserir(Participa participa) throws SQLException {
         Connection con = Conexao.getConnection();
+        String sql2
+                = "select max(idMusica) as idMusica from musica";
+        PreparedStatement stmt2 = con.prepareStatement(sql2);
+        ResultSet rs = stmt2.executeQuery();
+        rs.first();
+        int ultimaMusica = rs.getInt("idMusica");
+        System.out.println(ultimaMusica);
+        stmt2.execute();
         String sql
                 = "INSERT INTO `memes`.`participa` (`Musica_idMusica`, `Artista_idArtista`, `papel`) VALUES (?, ?, ?);";
         PreparedStatement stmt = con.prepareStatement(sql);
-        stmt.setInt(1, participa.getMusica().getIdMusica());
+        stmt.setInt(1, ultimaMusica);
         stmt.setInt(2, participa.getArtista().getIdArtista());
         stmt.setString(3, participa.getPapel());
 
         stmt.execute();
         stmt.close();
+        stmt2.close();
         con.close();
     }
     
@@ -60,6 +69,24 @@ public class ParticipaDAO {
         con.close();
     }
 
+    public static List<Artista> getIdArtistaLista() throws SQLException {
+        List<Artista> lista = new ArrayList<Artista>();
+        Connection con = Conexao.getConnection();
+        String sql = "SELECT al.idArtista FROM artista al;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Artista artista = new Artista();
+            artista.setIdArtista(rs.getInt("idArtista"));
+            
+            lista.add(artista);
+        }
+        stmt.close();
+        rs.close();
+        con.close();
+
+        return lista;
+    }
     public static List<Participa> getLista() throws SQLException {
         List<Participa> lista = new ArrayList<Participa>();
         Connection con = Conexao.getConnection();

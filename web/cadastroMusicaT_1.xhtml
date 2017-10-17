@@ -174,7 +174,7 @@
                             <h4 class="modal-title">Registrar</h4>
                         </div>
                         <div class="modal-body">
-                            <p:panelGrid columns="2" id="painel" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+                            <h:panelGrid columns="2" id="painel">
                                 <label style="margin-right: 50px" for="nome">Nome</label>
                                 <p:inputText 
                                     style="width: 225px"
@@ -210,42 +210,23 @@
                                     <f:selectItems value="#{albumControle.albums}" var="aux" itemValue="#{aux.idAlbum}" itemLabel="#{aux.nomeAlbum}"></f:selectItems>
                                 </h:selectOneMenu>
                                 <label for="letra">Letra</label>
-                                <p:inputTextarea 
-                                    style="resize: none;" 
+                                <h:inputTextarea 
+                                    style="width: 450px; height: 200px; resize: none;" 
                                     styleClass="form-control"
                                     id="letra"
                                     rows="5"
                                     cols="33"
                                     required="true"
-                                    value="#{musicaControle.musica.letra}"></p:inputTextarea>
-                                <h:outputLabel for="interprete" value="Intérprete:" />
-                                <p:selectCheckboxMenu appendTo="interprete" id="interprete" value="#{participaControle.pId}" label="Artistas" multiple="true"
-                                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-                                    <f:selectItems value="#{artistaControle.artistas}" var="aux" itemValue="#{aux.idArtista}" itemLabel="#{aux.nomeArtista}"></f:selectItems>
-                                </p:selectCheckboxMenu>
-                                <label style="margin-right: 2px" for="participa">Papel</label>
-                                    <h:selectOneMenu 
-                                        style="width: 225px" 
-                                        required="true" id="participa" 
-                                        class="btn btn-default dropdown-toggle" 
-                                        value="#{participaControle.participa.papel}">
-                                        <f:selectItem itemValue="Selecione"/>
-                                        <f:selectItem itemValue="Intérprete" itemLabel="Intérprete"></f:selectItem>
-                                        <f:selectItem itemValue="Participante" itemLabel="Participante"></f:selectItem>
-                                    </h:selectOneMenu>
-                            </p:panelGrid>
+                                    value="#{musicaControle.musica.letra}"></h:inputTextarea>
+                            </h:panelGrid>
                         </div>
                         <div class="modal-footer">
                             <p:commandLink value="Salvar" 
                                            class="btn btn-default"
                                            update=":tabelaMusica"
                                            action="#{musicaControle.salvar}"
+                                           oncomplete="$('#modalCadastro').modal('hide');"
                                            />
-                            <p:commandLink value="SalvarP" 
-                                               class="btn btn-default"
-                                               update=":tabelaMusica"
-                                               action="#{participaControle.salvar}"
-                                               />
                             <p:commandLink value="Fechar" 
                                            immediate="true" 
                                            styleClass="btn btn-default" 
@@ -350,7 +331,7 @@
                 ;
             }
             bloquear();
-
+            
             function admin() {
                 tipo = document.getElementById("f1:tipoUser").value;
                 console.log(tipo);
