@@ -16,6 +16,8 @@
         <script src="https://apis.google.com/js/platform.js"  async="async"></script>
         <h:outputStylesheet library="css" name="musicP.css"/>
         <title>#{buscaControle.musica.nomeMusica}</title>
+        <script>
+        </script>
     </h:head>
     <h:body onload="#{avaliacaoControle.listAsd(buscaControle.musica.idMusica)}">
         <div class="container">
@@ -53,7 +55,7 @@
                                             <div class="input-group">
                                                 <p:inputText style="width: 180px;" id="txt" value="#{buscaControle.webInput}" placeholder="Search" class="form-control"/>
                                                 <span class="input-group-btn">
-                                                    <p:commandLink onclick="vozes();" class="btn btn-default"><i class="glyphicon glyphicon-record"/></p:commandLink>
+                                                    <p:commandLink onclick="vozes()" class="btn btn-default"><i class="glyphicon glyphicon-record"/></p:commandLink>
                                                     <h:commandLink type="submit" value="Submit" actionListener="#{buscaControle.buscar}" action="index.xhtml" class="btn btn-default"></h:commandLink>
                                                 </span>
                                             </div>
@@ -81,12 +83,42 @@
                 </nav>
                 <div style="height: 51px;"/>
                 <div class="row">
-                    <div class="col-md-2"/>
-                    <div class="col-md-8 bgcool">
+                    <div class="col-md-8 col-md-offset-2 bgcool">
                         <div class="page-header">
                             <h1>#{buscaControle.musica.nomeMusica}</h1>
                         </div>
                         <p style="white-space: pre-wrap;">#{buscaControle.musica.letra}</p>
+                        <!-- Avaliação -->
+                        <h:form id="avaliacao">
+                            <h:panelGrid  id="panelA" styleClass="panel">
+                                <p:rating value="#{avaliacaoControle.avaliacao.nota}" />
+                                <p:inputTextarea style="resize: none;" 
+                                                 styleClass="form-control"
+                                                 id="comentario"
+                                                 rows="3"
+                                                 cols="33"
+                                                 required="true"
+                                                 value="#{avaliacaoControle.avaliacao.comentario}"></p:inputTextarea>
+                                <p:inputText style="display: none" id="idUser" value="#{avaliacaoControle.idUsuario}"/>
+                                <p:inputText style="display: none" id="idMus" value="#{avaliacaoControle.idMusica}"/>
+                                <p:commandButton value="Salvar" 
+                                                 class="btn btn-default"
+                                                 action="#{avaliacaoControle.salvar}"
+                                                 >
+                                    <p:resetInput target=":avaliacao:panelA" />
+                                </p:commandButton>
+                            </h:panelGrid>
+                        </h:form>
+                        <!--Lista de Avaliação -->
+                        <h:form id="aval">
+                            <ui:repeat  value="#{avaliacaoControle.avaliacoes2}" var="a" varStatus="q">
+                                <img class="img-responsive" src="#{a.usuario.perfil}" style="width: 25px; height: 25px; display: inline;" />
+                                <p style="display: inline;">#{a.usuario.email}</p>
+                                <p:rating value="#{a.nota}" readonly="true"/>
+                                <p>#{a.comentario}</p>
+                                <br/>
+                            </ui:repeat>
+                        </h:form>
                         <!-- Checagem de usuario -->
                         <h:form id="f" style="display: none">
                             <p:panel id="panel">
@@ -97,11 +129,10 @@
                                                  id="registra"
                                                  class="btn btn-default"
                                                  action="#{usuarioControle.salvar}">
-                                    <f:ajax render="@all"/>
                                 </p:commandButton>
                             </p:panel>
                         </h:form>
-                        <h:form id="f1" style="display: none;">
+                        <h:form id="f1" style="display: none">
                             <p:panel id="panel">
                                 <p:inputText id="tipoUser" value="#{usuarioControle.tipo}"/>
                                 <p:inputText id="idR" value="#{usuarioControle.idR}"/>
@@ -111,8 +142,7 @@
                                                  id="registra"
                                                  class="btn btn-default"
                                                  update="f1"
-                                                 actionListener="#{usuarioControle.pegerIdR()}">
-                                    <p:resetInput target=":avaliacao:panelA" />
+                                                 actionListener="#{usuarioControle.pegerIdR()}">    
                                 </p:commandButton>
                             </p:panel>
                         </h:form>
@@ -121,38 +151,6 @@
                                              id="fodasse"
                                              update="fodasse"
                                              action="#{usuarioControle.nullar()}"/>
-                        </h:form>
-                        <!-- Avaliaçao -->
-                        <div id="xxxxxx">
-                            <h:form id="avaliacao">
-                                <h:panelGrid  id="panelA" styleClass="panel">
-                                    <p:rating value="#{avaliacaoControle.avaliacao.nota}" />
-                                    <p:inputTextarea style="resize: none;" 
-                                                     styleClass="form-control"
-                                                     id="comentario"
-                                                     rows="3"
-                                                     cols="33"
-                                                     required="true"
-                                                     value="#{avaliacaoControle.avaliacao.comentario}"></p:inputTextarea>
-                                    <p:inputText style="display: none" id="idUser" value="#{avaliacaoControle.idUsuario}"/>
-                                    <p:inputText style="display: none" id="idMus" value="#{avaliacaoControle.idMusica}"/>
-                                    <p:commandButton value="Salvar" 
-                                                     class="btn btn-default"
-                                                     action="#{avaliacaoControle.salvar}"
-                                                     >
-                                        <p:resetInput target=":avaliacao:panelA" />
-                                    </p:commandButton>
-                                </h:panelGrid>
-                            </h:form>
-                        </div>
-                        <h:form id="aval">
-                            <ui:repeat  value="#{avaliacaoControle.avaliacoes2}" var="a" varStatus="q">
-                                <img class="img-responsive" src="#{a.usuario.perfil}" style="width: 25px; height: 25px; display: inline;" />
-                                <p style="display: inline;">#{a.usuario.email}</p>
-                                <p:rating value="#{a.nota}" readonly="true"/>
-                                <p>#{a.comentario}</p>
-                                <br/>
-                            </ui:repeat>
                         </h:form>
                     </div>
                 </div>
@@ -202,19 +200,23 @@
             var loginIfBlock = document.getElementById("loginIfBlock");
             var tipo = document.getElementById("f1:tipoUser").value;
             var admUser = document.getElementById("admUser");
-            var idMusica = document.getElementById('f1:idMusica');
-            var idUser = document.getElementById('f1:idUsuario');
-            var idUserAv = document.getElementById('avaliacao:idUser');
-            var idMus = document.getElementById('avaliacao:idMus');
+            var idR = document.getElementById('f:idR');
+            var idR2 = document.getElementById('f1:idR');
             var login = document.getElementById("login");
             var optionsUser = document.getElementById("optionsUser");
             var email = document.getElementById('f:email');
-            var idR = document.getElementById('f:idR');
-            var idR2 = document.getElementById('f1:idR');
             var perfil = document.getElementById('f:perfil');
             var idRGet;
-            idUserAv.value = idUser.value;
-            idMus.value = idMusica.value;
+            //ID Usuario, Música
+            var idUsuario = document.getElementById('f1:idUsuario').value;
+            var idMusica = document.getElementById('f1:idMusica').value;
+            //Avaliação
+            var avUsuario = document.getElementById('avaliacao:idUser');
+            var avMusica = document.getElementById('avaliacao:idMus');
+            //ID -> Avaliação
+            avUsuario.value = idUsuario;
+            avMusica.value = idMusica;
+            
             if (currentPath === "/memes/faces/cadastroGeneroT.xhtml" ||
                     currentPath === "/memes/faces/cadastroGeneroT.xhtml#") {
                 if (tipo === "0") {
@@ -226,10 +228,6 @@
                 }
             }
             ;
-
-            if (idUser === 0) {
-                document.getElementById("xxxxxx").style.display = "none";
-            }
 
             function admin() {
                 tipo = document.getElementById("f1:tipoUser").value;
@@ -276,6 +274,7 @@
                 $('#myModal').modal('hide');
             }
         </script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
         <script>
             function vozes() {
                 console.log('ta passando aqui carai');
