@@ -16,9 +16,9 @@ import modelo.Musica;
 public class ParticipaControle {
 
     private List<Participa> participacoes = new ArrayList<Participa>();
-    private String[] pId;
+    private int[] pId;
     private Participa participa = new Participa();
-    private boolean salvar = true;
+    private boolean salvar = false;
     private int idArtista = 0;
     private int idMusica = 0;
 
@@ -37,7 +37,7 @@ public class ParticipaControle {
     public void setIdMusica(int idMusica) {
         this.idMusica = idMusica;
     }
-    
+
     @PostConstruct
     public void atualizaParticipacoes() {
         try {
@@ -46,19 +46,48 @@ public class ParticipaControle {
             e.printStackTrace();
         }
     }
-    
+
     public void preparaIncluir() {
         salvar = true;
         participa = new Participa();
+        System.out.println(idMusica);
         idArtista = 0;
-        idMusica = 0;
+
     }
 
     public void preparaAlterar() {
         salvar = false;
         idArtista = participa.getArtista().getIdArtista();
         idMusica = participa.getMusica().getIdMusica();
-        
+
+    }
+
+    public void salvarP() {
+        Musica musica = new Musica();
+        musica.setIdMusica(idMusica);
+        participa.setMusica(musica);
+        if (salvar) {
+            try {
+                for (int i = 0; i < pId.length; i++) {
+                    Artista artista = new Artista();
+                    artista.setIdArtista(pId[i]);
+                    participa.setArtista(artista);
+                    participa.setPapel("Participante");
+                    ParticipaDAO.inserir(participa);
+                }
+                pId = null;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                ParticipaDAO.alterar(participa);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        atualizaParticipacoes();
     }
 
     public void salvar() {
@@ -66,7 +95,7 @@ public class ParticipaControle {
         Musica musica = new Musica();
         artista.setIdArtista(idArtista);
         musica.setIdMusica(idMusica);
-        
+
         participa.setArtista(artista);
         participa.setMusica(musica);
         if (salvar) {
@@ -82,7 +111,7 @@ public class ParticipaControle {
                 e.printStackTrace();
             }
         }
-     
+
         atualizaParticipacoes();
     }
 
@@ -111,14 +140,12 @@ public class ParticipaControle {
         this.participa = participa;
     }
 
-    public String[] getpId() {
+    public int[] getpId() {
         return pId;
     }
 
-    public void setpId(String[] pId) {
+    public void setpId(int[] pId) {
         this.pId = pId;
     }
 
-
-    
 }

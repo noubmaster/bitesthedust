@@ -49,6 +49,7 @@ public class ComposicaoControle {
     public void preparaIncluir() {
         salvar = true;
         composicao = new Composicao();
+        System.out.println("ta passando aqui tmb carai");
         idArtista = 0;
         idMusica = 0;
     }

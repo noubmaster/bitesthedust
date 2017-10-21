@@ -19,24 +19,15 @@ public class ParticipaDAO {
 
     public static void inserir(Participa participa) throws SQLException {
         Connection con = Conexao.getConnection();
-        String sql2
-                = "select max(idMusica) as idMusica from musica";
-        PreparedStatement stmt2 = con.prepareStatement(sql2);
-        ResultSet rs = stmt2.executeQuery();
-        rs.first();
-        int ultimaMusica = rs.getInt("idMusica");
-        System.out.println(ultimaMusica);
-        stmt2.execute();
         String sql
                 = "INSERT INTO `memes`.`participa` (`Musica_idMusica`, `Artista_idArtista`, `papel`) VALUES (?, ?, ?);";
         PreparedStatement stmt = con.prepareStatement(sql);
-        stmt.setInt(1, ultimaMusica);
+        stmt.setInt(1, participa.getMusica().getIdMusica());
         stmt.setInt(2, participa.getArtista().getIdArtista());
         stmt.setString(3, participa.getPapel());
 
         stmt.execute();
         stmt.close();
-        stmt2.close();
         con.close();
     }
     

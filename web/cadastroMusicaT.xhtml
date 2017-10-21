@@ -122,23 +122,35 @@
                                             <td>#{q.genero.nome}</td>
                                             <td>#{q.album.nomeAlbum}</td>
                                             <td>
-                                                <!-- Botao do Modal de excluir -->
-                                                <p:commandLink
-                                                    styleClass="btn btn-info btn-sm"
-                                                    onclick="$('#modalExcluir').modal('show');"
-                                                    immediate="true" >
-                                                    <f:setPropertyActionListener value="#{q}" target="#{musicaControle.musica}" />
-                                                    <i class="glyphicon glyphicon-trash"/>
-                                                </p:commandLink>
-                                                <!-- Botao do Modal de Alterar -->
-                                                <p:commandLink class="btn btn-info btn-sm" 
-                                                               action="#{musicaControle.preparaAlterar()}" 
-                                                               onclick="$('#modalCadastro').modal('show');" 
-                                                               update=":cadastramento">
-                                                    <p:resetInput target=":cadastramento:painel" />
-                                                    <f:setPropertyActionListener value="#{q}" target="#{musicaControle.musica}" />
-                                                    <i class="glyphicon glyphicon-cog"/>
-                                                </p:commandLink>
+                                                <div class="btn-group">
+                                                    <!-- Botao do Modal de excluir -->
+                                                    <p:commandLink
+                                                        styleClass="btn btn-info btn-sm"
+                                                        onclick="$('#modalExcluir').modal('show');"
+                                                        immediate="true" >
+                                                        <f:setPropertyActionListener value="#{q}" target="#{musicaControle.musica}" />
+                                                        <i class="glyphicon glyphicon-trash"/>
+                                                    </p:commandLink>
+                                                    <!-- Botao do Modal de Alterar -->
+                                                    <p:commandLink class="btn btn-info btn-sm" 
+                                                                   action="#{musicaControle.preparaAlterar()}" 
+                                                                   onclick="$('#modalCadastro').modal('show');" 
+                                                                   update=":cadastramento">
+                                                        <p:resetInput target=":cadastramento:painel" />
+                                                        <f:setPropertyActionListener value="#{q}" target="#{musicaControle.musica}" />
+                                                        <i class="glyphicon glyphicon-cog"/>
+                                                    </p:commandLink>
+                                                    <!-- Botao do Modal de PC -->
+                                                    <p:commandLink class="btn btn-info btn-sm" 
+                                                                   onclick="$('#modalParCom').modal('show');" 
+                                                                   update=":parcomento">
+                                                        <p:resetInput target=":parcomento:painel" />
+                                                        <f:setPropertyActionListener value="#{q}" target="#{musicaControle.musica}" />
+                                                        <i class="glyphicon glyphicon-pencil"/>
+                                                        <f:ajax listener="#{participaControle.preparaIncluir()}"/>
+                                                        <f:ajax listener="#{composicaoControle.preparaIncluir()}"/>
+                                                    </p:commandLink>
+                                                </div>
                                             </td>
                                         </tr>
                                     </ui:repeat>
@@ -158,7 +170,6 @@
             </h:form>
         </div>
         <!-- Modal Cadastro -->
-
         <div class="modal fade" 
              id="modalCadastro" 
              tabindex="-1" role="dialog" 
@@ -218,21 +229,6 @@
                                     cols="33"
                                     required="true"
                                     value="#{musicaControle.musica.letra}"></p:inputTextarea>
-                                <h:outputLabel for="interprete" value="Intérprete:" />
-                                <p:selectCheckboxMenu appendTo="interprete" id="interprete" value="#{participaControle.pId}" label="Artistas" multiple="true"
-                                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-                                    <f:selectItems value="#{artistaControle.artistas}" var="aux" itemValue="#{aux.idArtista}" itemLabel="#{aux.nomeArtista}"></f:selectItems>
-                                </p:selectCheckboxMenu>
-                                <label style="margin-right: 2px" for="participa">Papel</label>
-                                    <h:selectOneMenu 
-                                        style="width: 225px" 
-                                        required="true" id="participa" 
-                                        class="btn btn-default dropdown-toggle" 
-                                        value="#{participaControle.participa.papel}">
-                                        <f:selectItem itemValue="Selecione"/>
-                                        <f:selectItem itemValue="Intérprete" itemLabel="Intérprete"></f:selectItem>
-                                        <f:selectItem itemValue="Participante" itemLabel="Participante"></f:selectItem>
-                                    </h:selectOneMenu>
                             </p:panelGrid>
                         </div>
                         <div class="modal-footer">
@@ -240,12 +236,8 @@
                                            class="btn btn-default"
                                            update=":tabelaMusica"
                                            action="#{musicaControle.salvar}"
+                                           oncomplete="$('#modalCadastro').modal('hide');"
                                            />
-                            <p:commandLink value="SalvarP" 
-                                               class="btn btn-default"
-                                               update=":tabelaMusica"
-                                               action="#{participaControle.salvar}"
-                                               />
                             <p:commandLink value="Fechar" 
                                            immediate="true" 
                                            styleClass="btn btn-default" 
@@ -256,6 +248,54 @@
             </div>
         </div>
 
+        <!-- Modal Participa/Composição -->
+        <div class="modal fade" 
+             id="modalParCom" 
+             tabindex="-1" role="dialog" 
+             aria-labelledby="modalParCom" 
+             aria-hidden="true" 
+             data-keyboard="false" 
+             data-backdrop="static">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <h:form id="parcomento">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                            <h4 class="modal-title">Registrar</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p:panelGrid columns="2" id="painel" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+                                <label style="margin-right: 50px" for="id">Id</label>
+                                <p:inputText 
+                                    style="width: 225px"
+                                    styleClass="form-control"
+                                    id="id"
+                                    required="true"
+                                    maxlength="30"
+                                    value="#{musicaControle.musica.idMusica}"></p:inputText>
+                                <h:outputLabel for="participante" value="Participante:" />
+                                <p:selectCheckboxMenu appendTo="participante" id="participante" value="#{participaControle.pId}" label="Artistas" multiple="true"
+                                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                                    <f:selectItems value="#{artistaControle.artistas}" var="aux" itemValue="#{aux.idArtista}" itemLabel="#{aux.nomeArtista}"></f:selectItems>
+                                </p:selectCheckboxMenu>
+                            </p:panelGrid>
+                        </div>
+                        <div class="modal-footer">
+                            <p:commandLink value="Salvar" 
+                                           class="btn btn-default"
+                                           update=":tabelaMusica"
+                                           oncomplete="$('#modalParCom').modal('hide');">
+                                <f:ajax listener="#{participaControle.salvarP()}"/>
+                            </p:commandLink>
+                            <p:commandLink value="Fechar" 
+                                           immediate="true" 
+                                           styleClass="btn btn-default" 
+                                           oncomplete="$('#modalParCom').modal('hide');"/>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal Excluir -->
         <h:form id="modalDeExcluir">
@@ -334,6 +374,10 @@
             var loginIfBlock = document.getElementById("loginIfBlock");
             var tipo = document.getElementById("f1:tipoUser").value;
             var admUser = document.getElementById("admUser");
+
+
+            
+
             function bloquear() {
                 if (currentPath === "/memes/faces/cadastroMusicaT.xhtml" ||
                         currentPath === "/memes/faces/cadastroMusicaT.xhtml#") {
